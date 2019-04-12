@@ -95,20 +95,30 @@ class GameContainer extends Component {
 
         if (this.state.selected && !foundCell.value) {
             const tile = this.state.playerTiles.find(t => t.id === this.state.selected)
-
+            foundCell.tileId = tile.id
             foundCell.value = tile.letter 
             foundCell.points = tile.points 
             cells[cellIdx] = foundCell
 
-            this.setState({ cells, selected: null })
+            this.setState({ 
+                cells, 
+                selected: null, 
+                playerTiles: this.state.playerTiles.filter(pt => pt.id !== tile.id),
+                usedTiles: this.state.usedTiles.concat(tile)
+            })
         }
 
         if (!this.state.selected && foundCell.value) {
+            const tile = this.state.usedTiles.find(t => t.id === foundCell.tileId)
             foundCell.value = null
             foundCell.points = null
             cells[cellIdx] = foundCell
 
-            this.setState({ cells })
+            this.setState({ 
+                cells,
+                playerTiles: this.state.playerTiles.concat(tile),
+                usedTiles: this.state.usedTiles.filter(t => t.id !== tile.id)
+            })
         }
     }
 
