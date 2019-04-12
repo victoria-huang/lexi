@@ -2,31 +2,7 @@ import React, { Component } from 'react'
 import Cell from './Cell'
 
 class Board extends Component {
-    state = {
-        cells: []
-    }
-
-    componentDidMount() {
-        this.generatecells()
-    }
-
-    generatecells = () => {
-        let cells = []
-
-        for (let x = 0; x < 150; x += 10) {
-            for (let y = 0; y < 150; y += 10) {
-                let newCell = {
-                    x,
-                    y
-                }
-                cells.push(newCell)
-            }
-        }
-
-        this.setState({ cells })
-    }
-
-    renderCells = () => this.state.cells.map( (cell, idx) => <Cell key={idx} x={cell.x} y={cell.y} /> )
+    renderCells = () => this.props.cells.map( (cell, idx) => <Cell key={idx} x={cell.x} y={cell.y} /> )
 
     render() {
         return(

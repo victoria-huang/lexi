@@ -1,82 +1,20 @@
 import React, { Component } from 'react'
-import { TILES } from '../constants'
 import Tile from './Tile'
 
 class TileContainer extends Component {
-    state = {
-        unusedTiles: [],
-        playerTiles: [],
-        usedTiles: [],
-        selected: null
-    }
-
-    componentDidMount() {
-        this.setState({
-            unusedTiles: this.createTileBag()
-        }, () => { this.createHand() })
-    }
-
-    createTileBag = () => {
-        let id = 1
-
-        const tiles = TILES.map( t => {
-            let newTiles = []
-
-            for (let i = 0; i < t.amount; i++) {
-                const newTile = {
-                    id,
-                    letter: t.letter,
-                    points: t.points
-                }
-
-                newTiles.push(newTile)
-                id++
-            }
-
-            return newTiles
-        })
-
-        const flattened = [].concat.apply([], tiles);
-
-        return flattened
-    }
-
-    createHand() {
-        let playerTiles = []
-        let unusedTiles = [...this.state.unusedTiles]
-
-        for (let i = 0; i < 7; i++) {
-            const max = unusedTiles.length - 1
-            const min = 0
-            const randomIndex = Math.floor(Math.random() * (max - min) + min)
-            const foundTile = unusedTiles[randomIndex]
-            playerTiles.push(foundTile)
-            unusedTiles = unusedTiles.filter(t => t !== foundTile)
-        }
-
-        this.setState({
-            unusedTiles,
-            playerTiles
-        })
-    }
-
-    handleSelectTile = (selected) => {
-        this.setState({ selected })
-    }
-
-    renderPlayerTiles = () => this.state.playerTiles.map( (t, idx) => 
+    renderPlayerTiles = () => this.props.playerTiles.map( (t, idx) => 
         <Tile 
             key={ idx }
             { ...t }
-            selected={ this.state.selected }
-            handleSelectTile={ this.handleSelectTile } 
+            selected={ this.props.selected }
+            handleSelectTile={ this.props.handleSelectTile } 
         /> 
     )
 
     render() {
         return (
             <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'center' }}>
-                { this.state.playerTiles.length > 0 && this.renderPlayerTiles() }
+                { this.props.playerTiles.length > 0 && this.renderPlayerTiles() }
             </div>
         )
     }
