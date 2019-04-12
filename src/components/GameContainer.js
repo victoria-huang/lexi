@@ -23,14 +23,13 @@ class GameContainer extends Component {
 
     generatecells = () => {
         let cells = []
+        let id = 1
 
         for (let x = 0; x < 150; x += 10) {
             for (let y = 0; y < 150; y += 10) {
-                let newCell = {
-                    x,
-                    y
-                }
+                let newCell = { id, x, y }
                 cells.push(newCell)
+                id++
             }
         }
 
@@ -82,14 +81,49 @@ class GameContainer extends Component {
     }
 
     handleSelectTile = (selected) => {
-        this.setState({ selected })
+        if (selected === this.state.selected) {
+            this.setState({ selected: null })
+        } else {
+            this.setState({ selected })
+        } 
+    }
+
+    handleClickCell = (cellId) => {
+        const cells = [...this.state.cells]
+        const cellIdx = cells.findIndex(c => c.id === cellId)
+        const foundCell = { ...this.state.cells[cellIdx] }
+
+        if (this.state.selected && !foundCell.value) {
+            const tile = this.state.playerTiles.find(t => t.id === this.state.selected)
+
+            foundCell.value = tile.letter 
+            foundCell.points = tile.points 
+            cells[cellIdx] = foundCell
+
+            this.setState({ cells, selected: null })
+        }
+
+        if (!this.state.selected && foundCell.value) {
+            foundCell.value = null
+            foundCell.points = null
+            cells[cellIdx] = foundCell
+
+            this.setState({ cells })
+        }
     }
 
     render() {
         return (
             <>
-                <Board cells={ this.state.cells } />
-                <TileContainer playerTiles={ this.state.playerTiles } selected={ this.state.selected } handleSelectTile={ this.handleSelectTile } />
+                <Board 
+                    cells={ this.state.cells } 
+                    handleClickCell = { this.handleClickCell }
+                />
+                <TileContainer 
+                    playerTiles={ this.state.playerTiles } 
+                    selected={ this.state.selected } 
+                    handleSelectTile={ this.handleSelectTile } 
+                />
             </>
         )
     }

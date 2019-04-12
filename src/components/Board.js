@@ -2,7 +2,13 @@ import React, { Component } from 'react'
 import Cell from './Cell'
 
 class Board extends Component {
-    renderCells = () => this.props.cells.map( (cell, idx) => <Cell key={idx} x={cell.x} y={cell.y} /> )
+    renderCells = () => this.props.cells.map( (cell, idx) => 
+        <Cell 
+            key={idx} 
+            { ...cell } 
+            handleClickCell={ this.props.handleClickCell } 
+        /> 
+    )
 
     render() {
         return(

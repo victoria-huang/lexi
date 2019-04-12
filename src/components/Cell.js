@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
 
 class Cell extends Component {
-    state = {
-        value: ''
-    }
-
     render() {
         return (
             <g>
-                <text x={ this.props.x + 3 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">h</text>
-                <text x={ this.props.x + 7 } y={ this.props.y + 3.5 } fontFamily="Verdana" fontSize="3" fill="red">2</text>
+                <text x={ this.props.x + 3 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">{ this.props.value }</text>
+                <text x={ this.props.x + 7 } y={ this.props.y + 3.5 } fontFamily="Verdana" fontSize="3" fill="red">{ this.props.points }</text>
                 <rect
-                    onClick={ () => console.log('clicked cell', this.props.x, this.props.y) }
+                    onClick={ () => this.props.handleClickCell(this.props.id, this.props.x, this.props.y) }
                     className="rect-svg"
                     x={this.props.x}
                     y={this.props.y}
