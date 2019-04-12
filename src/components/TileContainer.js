@@ -6,7 +6,8 @@ class TileContainer extends Component {
     state = {
         unusedTiles: [],
         playerTiles: [],
-        usedTiles: []
+        usedTiles: [],
+        selected: null
     }
 
     componentDidMount() {
@@ -59,7 +60,18 @@ class TileContainer extends Component {
         })
     }
 
-    renderPlayerTiles = () => this.state.playerTiles.map( (t, idx) => <Tile key={ idx } letter={ t.letter } points={ t.points } /> )
+    handleSelectTile = (selected) => {
+        this.setState({ selected })
+    }
+
+    renderPlayerTiles = () => this.state.playerTiles.map( (t, idx) => 
+        <Tile 
+            key={ idx }
+            { ...t }
+            selected={ this.state.selected }
+            handleSelectTile={ this.handleSelectTile } 
+        /> 
+    )
 
     render() {
         return (

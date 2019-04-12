@@ -7,8 +7,11 @@ class Cell extends Component {
 
     render() {
         return (
-            <>
-               <rect
+            <g>
+                <text x={ this.props.x + 3 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">h</text>
+                <text x={ this.props.x + 7 } y={ this.props.y + 3.5 } fontFamily="Verdana" fontSize="3" fill="red">2</text>
+                <rect
+                    onClick={ () => console.log('clicked cell', this.props.x, this.props.y) }
                     className="rect-svg"
                     x={this.props.x}
                     y={this.props.y}
@@ -17,9 +20,9 @@ class Cell extends Component {
                     stroke="black"
                     strokeWidth='0.5'
                     fill="white"
-                    opacity="0.8"
+                    opacity="0.3"
                 />
-            </>
+            </g>
         )
     }
 }
