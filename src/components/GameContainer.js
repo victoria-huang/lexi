@@ -7,12 +7,14 @@ import ErrorContainer from './ErrorContainer'
 class GameContainer extends Component {
     state = {
         cells: [],
+        usedCells: [],
         unusedTiles: [],
         playerTiles: [],
         usedTiles: [],
         selected: null,
         tryTiles: [],
-        errors: []
+        errors: [],
+        points: 0
     }
 
     componentDidMount() {
@@ -91,37 +93,42 @@ class GameContainer extends Component {
     }
 
     handleClickCell = (cellId) => {
-        const cells = [...this.state.cells]
-        const cellIdx = cells.findIndex(c => c.id === cellId)
-        const foundCell = { ...this.state.cells[cellIdx] }
+        if (!this.state.usedCells.includes(cellId)) {
+            const cells = [...this.state.cells]
+            const cellIdx = cells.findIndex(c => c.id === cellId)
+            const foundCell = { ...this.state.cells[cellIdx] }
 
-        if (this.state.selected && !foundCell.value) {
-            const tile = this.state.playerTiles.find(t => t.id === this.state.selected)
-            foundCell.tileId = tile.id
-            foundCell.value = tile.letter 
-            foundCell.points = tile.points 
-            cells[cellIdx] = foundCell
+            if (this.state.selected && !foundCell.value) {
+                const tile = this.state.playerTiles.find(t => t.id === this.state.selected)
+                foundCell.tileId = tile.id
+                foundCell.value = tile.letter 
+                foundCell.points = tile.points 
+                cells[cellIdx] = foundCell
 
-            this.setState({ 
-                cells, 
-                selected: null, 
-                playerTiles: this.state.playerTiles.filter(pt => pt.id !== tile.id),
-                tryTiles: this.state.tryTiles.concat(tile)
-            })
-        }
+                this.setState({ 
+                    cells, 
+                    selected: null, 
+                    playerTiles: this.state.playerTiles.filter(pt => pt.id !== tile.id),
+                    tryTiles: this.state.tryTiles.concat(tile)
+                })
+            }
 
-        if (!this.state.selected && foundCell.value) {
-            const tile = this.state.tryTiles.find(t => t.id === foundCell.tileId)
-            foundCell.value = null
-            foundCell.points = null
-            cells[cellIdx] = foundCell
+            if (!this.state.selected && foundCell.value) {
+                const tile = this.state.tryTiles.find(t => t.id === foundCell.tileId)
+                foundCell.value = null
+                foundCell.points = null
+                cells[cellIdx] = foundCell
 
-            this.setState({ 
-                cells,
-                playerTiles: this.state.playerTiles.concat(tile),
-                tryTiles: this.state.tryTiles.filter(t => t.id !== tile.id)
-            })
-        }
+                this.setState({ 
+                    cells,
+                    playerTiles: this.state.playerTiles.concat(tile),
+                    tryTiles: this.state.tryTiles.filter(t => t.id !== tile.id)
+                })
+            }
+        } 
+        // else {
+        //     alert('cell taken')
+        // }  
     }
 
     findFilledCells = () => this.state.cells.filter(c => c.value)
@@ -177,9 +184,24 @@ class GameContainer extends Component {
                         errors: this.state.errors.concat(error)
                     })
                 } else {
-                    // 2. get word and test validity
+                    // 2. get word
                     const word = tryCells.map(cell => cell.value).join('')
-                    console.log(word)
+                    console.log('word', word)
+                    // 3. test validity 
+                        // assume anything is valid for now
+                    // 4. get points
+                    const points = tryCells.reduce( ((acc, cell) => acc + cell.points), 0)
+                    console.log('points', points)
+                    const tryCellIds = tryCells.map(cell => cell.id)
+                    // 5. add points to user's score
+                    // 6. add try tiles to used tiles
+                    // 7. disable cells
+                    this.setState((prevState) => ({
+                        points: prevState.points + points,
+                        tryTiles: [],
+                        usedTiles: prevState.usedTiles.concat(this.state.tryTiles),
+                        usedCells: prevState.usedCells.concat(tryCellIds)
+                    }))
                 }
             }
         })
