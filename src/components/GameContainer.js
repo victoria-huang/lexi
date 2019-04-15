@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { TILES } from '../constants'
 import Board from './Board'
 import TileContainer from './TileContainer'
+import ErrorContainer from './ErrorContainer'
 
 class GameContainer extends Component {
     state = {
@@ -10,7 +11,8 @@ class GameContainer extends Component {
         playerTiles: [],
         usedTiles: [],
         selected: null,
-        tryWords: []
+        tryTiles: [],
+        errors: []
     }
 
     componentDidMount() {
@@ -104,12 +106,12 @@ class GameContainer extends Component {
                 cells, 
                 selected: null, 
                 playerTiles: this.state.playerTiles.filter(pt => pt.id !== tile.id),
-                usedTiles: this.state.usedTiles.concat(tile)
+                tryTiles: this.state.tryTiles.concat(tile)
             })
         }
 
         if (!this.state.selected && foundCell.value) {
-            const tile = this.state.usedTiles.find(t => t.id === foundCell.tileId)
+            const tile = this.state.tryTiles.find(t => t.id === foundCell.tileId)
             foundCell.value = null
             foundCell.points = null
             cells[cellIdx] = foundCell
@@ -117,14 +119,78 @@ class GameContainer extends Component {
             this.setState({ 
                 cells,
                 playerTiles: this.state.playerTiles.concat(tile),
-                usedTiles: this.state.usedTiles.filter(t => t.id !== tile.id)
+                tryTiles: this.state.tryTiles.filter(t => t.id !== tile.id)
             })
         }
+    }
+
+    findFilledCells = () => this.state.cells.filter(c => c.value)
+
+    findTryCells = () => this.findFilledCells().filter(c => this.state.tryTiles.find(t => t.id === c.tileId))
+
+    handleTrySubmit = () => {
+        // const filledCells = this.findFilledCells()
+        const tryCells = this.findTryCells()
+        // const tryCellX = tryCells.map(c => c.x)
+        // const tryCellY = tryCells.map(c => c.y)
+        const distinctX = [...new Set(tryCells.map(c => c.x))]
+        const distinctY = [...new Set(tryCells.map(c => c.y))]
+
+        this.setState({ errors: [] }, () => {
+            // test length of word
+            if (tryCells.length < 2) {
+                const error = { message: "Words must be at least 2 letters long." }
+
+                this.setState({
+                    errors: this.state.errors.concat(error)
+                })
+            }
+
+            // test adjancency of tiles
+            if (tryCells.length > 1 && distinctX.length > 1 && distinctY.length > 1) {
+                const error = { message: "New tiles must be placed adjacent to one another in one direction." }
+
+                this.setState({
+                    errors: this.state.errors.concat(error)
+                })
+            } else {
+                const firstLetter = tryCells[0]
+                const lastLetter = tryCells[tryCells.length - 1]
+                const maxDistance = tryCells.length * 10
+                let distance;
+
+                // test vertical word
+                if (tryCells.length > 1 && distinctX.length === 1 && distinctY.length > 1) {
+                    distance = lastLetter.y - firstLetter.y + 10
+                }
+
+                // test horizontal word
+                if (tryCells.length > 1 && distinctY.length === 1 && distinctX.length > 1) {
+                    distance = lastLetter.x - firstLetter.x + 10
+                }
+
+                // 1. test adjancency
+                if (distance > maxDistance) {
+                    const error = { message: "New tiles must be placed adjacent to one another." }
+
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+                } else {
+                    // 2. get word and test validity
+                    const word = tryCells.map(cell => cell.value).join('')
+                    console.log(word)
+                }
+            }
+        })
     }
 
     render() {
         return (
             <>
+                <ErrorContainer 
+                    errors={ this.state.errors }
+                />
                 <Board 
                     cells={ this.state.cells } 
                     handleClickCell = { this.handleClickCell }
@@ -133,6 +199,7 @@ class GameContainer extends Component {
                     playerTiles={ this.state.playerTiles } 
                     selected={ this.state.selected } 
                     handleSelectTile={ this.handleSelectTile } 
+                    handleTrySubmit={ this.handleTrySubmit }
                 />
             </>
         )

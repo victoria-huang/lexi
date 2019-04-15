@@ -5,7 +5,7 @@ class Cell extends Component {
         return (
             <g>
                 <text x={ this.props.x + 3 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">{ this.props.value }</text>
-                <text x={ this.props.x + 7 } y={ this.props.y + 3.5 } fontFamily="Verdana" fontSize="3" fill="red">{ this.props.points }</text>
+                <text x={ this.props.x + 6 } y={ this.props.y + 3 } fontFamily="Verdana" fontSize="2.5" fill="red">{ this.props.points }</text>
                 <rect
                     onClick={ () => this.props.handleClickCell(this.props.id, this.props.x, this.props.y) }
                     className="rect-svg"
@@ -15,7 +15,7 @@ class Cell extends Component {
                     height='10'
                     stroke="black"
                     strokeWidth='0.5'
-                    fill="white"
+                    fill={ this.props.value ? "purple" : "white" }
                     opacity="0.3"
                 />
             </g>
