@@ -18,14 +18,14 @@ class GameContainer extends Component {
     }
 
     componentDidMount() {
-        this.generatecells()
+        this.generateCells()
 
         this.setState({
             unusedTiles: this.createTileBag()
         }, () => { this.createHand(7) })
     }
 
-    generatecells = () => {
+    generateCells = () => {
         let cells = []
         let id = 1
 
@@ -127,10 +127,7 @@ class GameContainer extends Component {
                     tryTiles: this.state.tryTiles.filter(t => t.id !== tile.id)
                 })
             }
-        } 
-        // else {
-        //     alert('cell taken')
-        // }  
+        }  
     }
 
     findFilledCells = () => this.state.cells.filter(c => c.value)
@@ -597,7 +594,6 @@ class GameContainer extends Component {
             //     this.setState({
             //         errors: this.state.errors.concat(error)
             //     })
-
             //     return
             // }
 
