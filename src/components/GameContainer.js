@@ -643,7 +643,8 @@ class GameContainer extends Component {
                 />
 
                 <Board 
-                    cells={ this.state.cells } 
+                    cells={ this.state.cells }
+                    usedCells={ this.state.usedCells } 
                     handleClickCell = { this.handleClickCell }
                 />
 

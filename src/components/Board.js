@@ -6,6 +6,7 @@ class Board extends Component {
         <Cell 
             key={idx} 
             { ...cell } 
+            usedCells={ this.props.usedCells }
             handleClickCell={ this.props.handleClickCell } 
         /> 
     )
