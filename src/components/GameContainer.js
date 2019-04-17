@@ -345,7 +345,107 @@ class GameContainer extends Component {
             // console.log(tryWords)
 
             // 2. If only one letter was placed, scan both row and column for words
+            if (tryCells.length === 1) {
+                // scan row
+                const rowCells = filledCells.filter(cell => cell.y === y)
+                const tryCellRowIdx = rowCells.indexOf(tryCells[0])
+                let firstRowLetterIdx = tryCellRowIdx
+                let lastRowLetterIdx = tryCellRowIdx
+                let firstRowTileX = tryCells[0].x 
+                let lastRowTileX = tryCells[0].x
 
+                while (firstRowLetterIdx > 0) {
+                    const cellBefore = rowCells[firstRowLetterIdx - 1]
+                    const tileX = cellBefore.x 
+
+                    if (firstRowTileX - tileX > 10) break 
+
+                    firstRowTileX = tileX
+                    firstRowLetterIdx -= 1
+                }
+                // console.log('first letter', rowCells[firstLetterIdx])
+
+                while (lastRowLetterIdx < rowCells.length - 1) {
+                    const cellAfter = rowCells[lastRowLetterIdx + 1]
+                    const tileX = cellAfter.x 
+                    
+                    if (tileX - lastRowTileX > 10) break 
+
+                    lastRowTileX = tileX
+                    lastRowLetterIdx += 1
+                }
+
+                if (firstRowLetterIdx === lastRowLetterIdx) {
+                    const errors = [
+                        { message: "Words must be at least 2 letters long." },
+                        { message: "New tiles must be placed adjacent to one another." }
+                    ]
+
+                    this.setState({
+                        errors: this.state.errors.concat(errors)
+                    })
+    
+                    return
+                }
+
+                if (firstRowLetterIdx !== lastRowLetterIdx) {
+                    const wordCells = rowCells.slice(firstRowLetterIdx, lastRowLetterIdx + 1)
+                    const tryWord = wordCells.map(cell => cell.value).join('')
+
+                    tryWords.push(tryWord)
+                }
+
+
+                // scan column
+                const colCells = filledCells.filter(cell => cell.x === x)
+                const tryCellColIdx = colCells.indexOf(tryCells[0])
+                let firstColLetterIdx = tryCellColIdx
+                let lastColLetterIdx = tryCellColIdx
+                let firstColTileY = tryCells[0].y 
+                let lastColTileY = tryCells[0].y
+
+                while (firstColLetterIdx > 0) {
+                    const cellBefore = colCells[firstColLetterIdx - 1]
+                    const tileY = cellBefore.y 
+                    
+                    if (firstColTileY - tileY > 10) break 
+
+                    firstColTileY = tileY
+                    firstColLetterIdx -= 1
+                }
+                // console.log('first letter', colCells[firstLetterIdx])
+
+                while (lastColLetterIdx < colCells.length - 1) {
+                    const cellAfter = colCells[lastColLetterIdx + 1]
+                    const tileY = cellAfter.y 
+                    
+                    if (tileY - lastColTileY > 10) break 
+
+                    lastColTileY = tileY 
+                    lastColLetterIdx += 1
+                }
+
+                if (firstColLetterIdx === lastColLetterIdx) {
+                    const errors = [
+                        { message: "Words must be at least 2 letters long." },
+                        { message: "New tiles must be placed adjacent to one another." }
+                    ]
+
+                    this.setState({
+                        errors: this.state.errors.concat(errors)
+                    })
+    
+                    return
+                }
+
+                if (firstColLetterIdx !== lastColLetterIdx) {
+                    const wordCells = colCells.slice(firstColLetterIdx, lastColLetterIdx + 1)
+                    const tryWord = wordCells.map(cell => cell.value).join('')
+
+                    tryWords.push(tryWord)
+                }
+            }
+            console.log(tryWords)
 
 
             // 3. Need to also determine adjancency to other tiles
