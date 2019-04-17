@@ -261,9 +261,9 @@ class GameContainer extends Component {
 
                         if (firstLetterIdx !== lastLetterIdx) {
                             const wordCells = colCells.slice(firstLetterIdx, lastLetterIdx + 1)
-                            const tryWord = wordCells.map(cell => cell.value).join('')
+                            // const tryWord = wordCells.map(cell => cell.value).join('')
 
-                            tryWords.push(tryWord)
+                            tryWords.push(wordCells)
                         }
                         // console.log('last letter', colCells[lastLetterIdx])
                         // console.log(colCells, tryCellIdx)
@@ -272,8 +272,8 @@ class GameContainer extends Component {
 
                 if (tryWords.length < 1) {
                     if (this.state.usedCells.length === 0 || wordCells.length > tryCells.length) {
-                        const tryWord = wordCells.map(cell => cell.value).join('')
-                        tryWords.push(tryWord)
+                        // const tryWord = wordCells.map(cell => cell.value).join('')
+                        tryWords.push(wordCells)
                     } else {
                         // 3. Need to also determine adjancency to existing tiles
                         const error = { message: "New tiles must be placed adjacent to existing tiles." }
@@ -285,8 +285,8 @@ class GameContainer extends Component {
                         return
                     }
                 } else {
-                    const tryWord = wordCells.map(cell => cell.value).join('')
-                    tryWords.push(tryWord)
+                    // const tryWord = wordCells.map(cell => cell.value).join('')
+                    tryWords.push(wordCells)
                 }
             }
 
@@ -372,9 +372,9 @@ class GameContainer extends Component {
 
                         if (firstLetterIdx !== lastLetterIdx) {
                             const wordCells = rowCells.slice(firstLetterIdx, lastLetterIdx + 1)
-                            const tryWord = wordCells.map(cell => cell.value).join('')
+                            // const tryWord = wordCells.map(cell => cell.value).join('')
 
-                            tryWords.push(tryWord)
+                            tryWords.push(wordCells)
                         }
                         // console.log('last letter', rowCells[lastLetterIdx])
                         // console.log(colCells, tryCellIdx)
@@ -383,8 +383,8 @@ class GameContainer extends Component {
 
                 if (tryWords.length < 1) {
                     if (this.state.usedCells.length === 0 || wordCells.length > tryCells.length) {
-                        const tryWord = wordCells.map(cell => cell.value).join('')
-                        tryWords.push(tryWord)
+                        // const tryWord = wordCells.map(cell => cell.value).join('')
+                        tryWords.push(wordCells)
                     } else {
                         // 3. Need to also determine adjancency to existing tiles
                         const error = { message: "New tiles must be placed adjacent to existing tiles." }
@@ -396,8 +396,8 @@ class GameContainer extends Component {
                         return
                     }
                 } else {
-                    const tryWord = wordCells.map(cell => cell.value).join('')
-                    tryWords.push(tryWord)
+                    // const tryWord = wordCells.map(cell => cell.value).join('')
+                    tryWords.push(wordCells)
                 }
             }
             // console.log(tryWords)
@@ -486,16 +486,16 @@ class GameContainer extends Component {
 
                 if (firstColLetterIdx !== lastColLetterIdx) {
                     const wordCells = colCells.slice(firstColLetterIdx, lastColLetterIdx + 1)
-                    const tryWord = wordCells.map(cell => cell.value).join('')
+                    // const tryWord = wordCells.map(cell => cell.value).join('')
 
-                    tryWords.push(tryWord)
+                    tryWords.push(wordCells)
                 }
 
                 if (firstRowLetterIdx !== lastRowLetterIdx) {
                     const wordCells = rowCells.slice(firstRowLetterIdx, lastRowLetterIdx + 1)
-                    const tryWord = wordCells.map(cell => cell.value).join('')
+                    // const tryWord = wordCells.map(cell => cell.value).join('')
 
-                    tryWords.push(tryWord)
+                    tryWords.push(wordCells)
                 }
             }
             console.log(tryWords)
@@ -552,9 +552,9 @@ class GameContainer extends Component {
             //     distance = lastLetter.x - firstLetter.x + 10
             // }
 
-            const colCells = this.state.cells.filter(c => c.x === x)
-            const rCells = this.state.cells.filter(c => c.y === y)
-            const allLetters = colCells.filter(c => c.value).concat(rCells.filter(c => c.value))
+            // const colCells = this.state.cells.filter(c => c.x === x)
+            // const rCells = this.state.cells.filter(c => c.y === y)
+            // const allLetters = colCells.filter(c => c.value).concat(rCells.filter(c => c.value))
 
             // allColLetters = colCells.filter(c => c.value)
             // allRowLetters = rowCells.filter(c => c.value)
@@ -580,15 +580,15 @@ class GameContainer extends Component {
             // }
 
             // test length of word
-            if (colCells.length < 2 && rCells.length < 2) {
-                const error = { message: "Words must be at least 2 letters long." }
+            // if (colCells.length < 2 && rCells.length < 2) {
+            //     const error = { message: "Words must be at least 2 letters long." }
 
-                this.setState({
-                    errors: this.state.errors.concat(error)
-                })
+            //     this.setState({
+            //         errors: this.state.errors.concat(error)
+            //     })
 
-                return
-            }
+            //     return
+            // }
 
             // test adjancency of tiles in both directions
             // if (allLetters.length > 1 && distinctX.length > 1 && distinctY.length > 1) {
@@ -602,19 +602,28 @@ class GameContainer extends Component {
             // }
 
             // 2. get word
-            const word = tryCells.map(cell => cell.value).join('')
-            console.log('word', word)
-            // 3. test validity 
-                // assume anything is valid for now
-            // 4. get points
-            const points = tryCells.reduce( ((acc, cell) => acc + cell.points), 0)
-            console.log('points', points)
+            // const word = tryCells.map(cell => cell.value).join('')
+            // console.log('word', word)
+            let pointTotal = 0
+            // 2. loop through tryWords 
+            tryWords.forEach(wordCells => {
+                // 3. test validity 
+                    // assume anything is valid for now
+                // 4. get points
+                const points = wordCells.reduce( ((acc, cell) => acc + cell.points), 0)
+                // 5. add points to user's score
+                pointTotal += points
+            })
+
+            // console.log(tryWords)
+            // console.log('points', pointTotal)
+
+            // 6. add try tiles to used tiles & try cells to used cells
             const tryCellIds = tryCells.map(cell => cell.id)
-            // 5. add points to user's score
-            // 6. add try tiles to used tiles
+            
             // 7. disable cells
             this.setState((prevState) => ({
-                points: prevState.points + points,
+                points: prevState.points + pointTotal,
                 tryTiles: [],
                 usedTiles: prevState.usedTiles.concat(this.state.tryTiles),
                 usedCells: prevState.usedCells.concat(tryCellIds)
