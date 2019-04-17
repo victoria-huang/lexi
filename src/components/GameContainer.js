@@ -22,7 +22,7 @@ class GameContainer extends Component {
 
         this.setState({
             unusedTiles: this.createTileBag()
-        }, () => { this.createHand() })
+        }, () => { this.createHand(7) })
     }
 
     generatecells = () => {
@@ -65,23 +65,25 @@ class GameContainer extends Component {
         return flattened
     }
 
-    createHand() {
-        let playerTiles = []
-        let unusedTiles = [...this.state.unusedTiles]
-
-        for (let i = 0; i < 7; i++) {
-            const max = unusedTiles.length - 1
-            const min = 0
-            const randomIndex = Math.floor(Math.random() * (max - min) + min)
-            const foundTile = unusedTiles[randomIndex]
-            playerTiles.push(foundTile)
-            unusedTiles = unusedTiles.filter(t => t !== foundTile)
-        }
-
-        this.setState({
-            unusedTiles,
-            playerTiles
-        })
+    createHand(num) {
+        if (this.state.unusedTiles.length >= num) {
+            let playerTiles = []
+            let unusedTiles = [...this.state.unusedTiles]
+    
+            for (let i = 0; i < num; i++) {
+                const max = unusedTiles.length - 1
+                const min = 0
+                const randomIndex = Math.floor(Math.random() * (max - min) + min)
+                const foundTile = unusedTiles[randomIndex]
+                playerTiles.push(foundTile)
+                unusedTiles = unusedTiles.filter(t => t !== foundTile)
+            }
+    
+            this.setState({
+                unusedTiles,
+                playerTiles: this.state.playerTiles.concat(playerTiles)
+            })
+        }  
     }
 
     handleSelectTile = (selected) => {
@@ -136,74 +138,341 @@ class GameContainer extends Component {
     findTryCells = () => this.findFilledCells().filter(c => this.state.tryTiles.find(t => t.id === c.tileId))
 
     handleTrySubmit = () => {
-        // const filledCells = this.findFilledCells()
+        const tryWords = []
+        const filledCells = this.findFilledCells()
         const tryCells = this.findTryCells()
-        // const tryCellX = tryCells.map(c => c.x)
-        // const tryCellY = tryCells.map(c => c.y)
         const distinctX = [...new Set(tryCells.map(c => c.x))]
         const distinctY = [...new Set(tryCells.map(c => c.y))]
 
         this.setState({ errors: [] }, () => {
-            // test length of word
-            if (tryCells.length < 2) {
-                const error = { message: "Words must be at least 2 letters long." }
+            // test input length
+            if (tryCells.length < 1) {
+                const error = { message: "You must place down at least 1 tile." }
 
                 this.setState({
                     errors: this.state.errors.concat(error)
                 })
+
+                return
             }
 
-            // test adjancency of tiles
-            if (tryCells.length > 1 && distinctX.length > 1 && distinctY.length > 1) {
+             // test adjancency of tiles in both directions
+            if (distinctX.length > 1 && distinctY.length > 1) {
                 const error = { message: "New tiles must be placed adjacent to one another in one direction." }
 
                 this.setState({
                     errors: this.state.errors.concat(error)
                 })
-            } else {
-                const firstLetter = tryCells[0]
-                const lastLetter = tryCells[tryCells.length - 1]
-                const maxDistance = tryCells.length * 10
-                let distance;
 
-                // test vertical word
-                if (tryCells.length > 1 && distinctX.length === 1 && distinctY.length > 1) {
-                    distance = lastLetter.y - firstLetter.y + 10
-                }
-
-                // test horizontal word
-                if (tryCells.length > 1 && distinctY.length === 1 && distinctX.length > 1) {
-                    distance = lastLetter.x - firstLetter.x + 10
-                }
-
-                // 1. test adjancency
-                if (distance > maxDistance) {
-                    const error = { message: "New tiles must be placed adjacent to one another." }
-
-                    this.setState({
-                        errors: this.state.errors.concat(error)
-                    })
-                } else {
-                    // 2. get word
-                    const word = tryCells.map(cell => cell.value).join('')
-                    console.log('word', word)
-                    // 3. test validity 
-                        // assume anything is valid for now
-                    // 4. get points
-                    const points = tryCells.reduce( ((acc, cell) => acc + cell.points), 0)
-                    console.log('points', points)
-                    const tryCellIds = tryCells.map(cell => cell.id)
-                    // 5. add points to user's score
-                    // 6. add try tiles to used tiles
-                    // 7. disable cells
-                    this.setState((prevState) => ({
-                        points: prevState.points + points,
-                        tryTiles: [],
-                        usedTiles: prevState.usedTiles.concat(this.state.tryTiles),
-                        usedCells: prevState.usedCells.concat(tryCellIds)
-                    }))
-                }
+                return
             }
+
+            // get [x, y] coordinates for first tile placed
+            const x = tryCells[0].x
+            const y = tryCells[0].y 
+            // let colCells, rowCells;
+
+            // const colCells = filledCells.filter(c => c.x === x)
+            // const rowCells = filledCells.filter(c => c.y === y)
+            // allLetters = colCells.filter(c => c.value).concat(rowCells.filter(c => c.value))
+            // console.log('colcells', colCells)
+            // console.log('rowcells', rowCells)
+
+            // 1. Determine if word was placed horizontally or vertically
+            // 2. If horizontal, scan the row for word & then each column the letters were placed for words
+            if (distinctY.length === 1 && distinctX.length > 1) {
+                const lastPlacedX = tryCells[tryCells.length - 1].x
+                const rowCells = filledCells.filter(cell => cell.y === y)
+                let firstLetterIdx = rowCells.indexOf(tryCells[0])
+                let lastLetterIdx = rowCells.indexOf(tryCells[tryCells.length - 1])
+                let firstTileX = x 
+                let lastTileX = lastPlacedX
+
+                // get index of start of word (find white space)
+                while (firstLetterIdx > 0) {
+                    const cellBefore = rowCells[firstLetterIdx - 1]
+                    const tileX = cellBefore.x
+                    
+                    if (firstTileX - tileX > 10) break
+                    
+                    firstTileX = tileX
+                    firstLetterIdx -= 1
+                }
+                // console.log('first letter idx', firstLetterIdx)
+                
+                // get index of end of word (find white space)
+                while (lastLetterIdx < rowCells.length - 1) {
+                    const cellAfter = rowCells[lastLetterIdx + 1]
+                    const tileX = cellAfter.x 
+
+                    if (tileX - lastTileX > 10) break 
+                    
+                    lastTileX = tileX
+                    lastLetterIdx += 1
+                }
+                // console.log('last letter idx', lastLetterIdx)
+
+                const wordCells = rowCells.slice(firstLetterIdx, lastLetterIdx + 1)
+                const tryWord = wordCells.map(cell => cell.value).join('')
+
+                tryWords.push(tryWord)
+
+                tryCells.forEach(tryCell => {
+                    const colCells = filledCells.filter(cell => cell.x === tryCell.x)
+                    // if there's more than one letter in that column
+                    if (colCells.length > 1) {
+                        const tryCellIdx = colCells.indexOf(tryCell)
+                        let firstLetterIdx = tryCellIdx 
+                        let lastLetterIdx = tryCellIdx
+                        let firstTileY = tryCell.y 
+                        let lastTileY = tryCell.y
+    
+                        while (firstLetterIdx > 0) {
+                            const cellBefore = colCells[firstLetterIdx - 1]
+                            const tileY = cellBefore.y 
+                            
+                            if (firstTileY - tileY > 10) break 
+    
+                            firstTileY = tileY
+                            firstLetterIdx -= 1
+                        }
+                        // console.log('first letter', colCells[firstLetterIdx])
+    
+                        while (lastLetterIdx < colCells.length - 1) {
+                            const cellAfter = colCells[lastLetterIdx + 1]
+                            const tileY = cellAfter.y 
+                            
+                            if (tileY - lastTileY > 10) break 
+    
+                            lastTileY = tileY 
+                            lastLetterIdx += 1
+                        }
+
+                        if (firstLetterIdx !== lastLetterIdx) {
+                            const wordCells = colCells.slice(firstLetterIdx, lastLetterIdx + 1)
+                            const tryWord = wordCells.map(cell => cell.value).join('')
+
+                            tryWords.push(tryWord)
+                        }
+                        // console.log('last letter', colCells[lastLetterIdx])
+                        // console.log(colCells, tryCellIdx)
+                    } 
+                })
+
+                // console.log(tryWords)
+            }
+
+            // 2. If vertical, scan each row the letters were placed for words
+            if (distinctX.length === 1 && distinctY.length > 1) {
+                const lastPlacedY = tryCells[tryCells.length - 1].y
+                const colCells = filledCells.filter(cell => cell.x === x)
+                let firstLetterIdx = colCells.indexOf(tryCells[0])
+                let lastLetterIdx = colCells.indexOf(tryCells[tryCells.length - 1])
+                let firstTileY = y 
+                let lastTileY = lastPlacedY
+
+                // get index of start of word (find white space)
+                while (firstLetterIdx > 0) {
+                    const cellBefore = colCells[firstLetterIdx - 1]
+                    const tileY = cellBefore.Y
+                    
+                    if (firstTileY - tileY > 10) break
+                    
+                    firstTileY = tileY
+                    firstLetterIdx -= 1
+                }
+                // console.log('first letter idx', firstLetterIdx)
+                
+                // get index of end of word (find white space)
+                while (lastLetterIdx < colCells.length - 1) {
+                    const cellAfter = colCells[lastLetterIdx + 1]
+                    const tileY = cellAfter.y
+
+                    if (tileY - lastTileY > 10) break 
+                    
+                    lastTileY = tileY
+                    lastLetterIdx += 1
+                }
+                // console.log('last letter idx', lastLetterIdx)
+
+                const wordCells = colCells.slice(firstLetterIdx, lastLetterIdx + 1)
+                const tryWord = wordCells.map(cell => cell.value).join('')
+
+                tryWords.push(tryWord)
+
+                tryCells.forEach(tryCell => {
+                    const rowCells = filledCells.filter(cell => cell.y === tryCell.y)
+                    // if there's more than one letter in that column
+                    if (rowCells.length > 1) {
+                        const tryCellIdx = rowCells.indexOf(tryCell)
+                        let firstLetterIdx = tryCellIdx 
+                        let lastLetterIdx = tryCellIdx
+                        let firstTileX = tryCell.x 
+                        let lastTileX = tryCell.x
+    
+                        while (firstLetterIdx > 0) {
+                            const cellBefore = rowCells[firstLetterIdx - 1]
+                            const tileX = cellBefore.x 
+
+                            if (firstTileX - tileX > 10) break 
+
+                            firstTileX = tileX
+                            firstLetterIdx -= 1
+                        }
+                        // console.log('first letter', rowCells[firstLetterIdx])
+    
+                        while (lastLetterIdx < rowCells.length - 1) {
+                            const cellAfter = rowCells[lastLetterIdx + 1]
+                            const tileX = cellAfter.x 
+                            
+                            if (tileX - lastTileX > 10) break 
+    
+                            lastTileX = tileX
+                            lastLetterIdx += 1
+                        }
+
+                        if (firstLetterIdx !== lastLetterIdx) {
+                            const wordCells = rowCells.slice(firstLetterIdx, lastLetterIdx + 1)
+                            const tryWord = wordCells.map(cell => cell.value).join('')
+
+                            tryWords.push(tryWord)
+                        }
+                        // console.log('last letter', rowCells[lastLetterIdx])
+                        // console.log(colCells, tryCellIdx)
+                    } 
+                })
+            }
+            // console.log(tryWords)
+
+            // 2. If only one letter was placed, scan both row and column for words
+
+
+
+            // 3. Need to also determine adjancency to other tiles
+
+            // test length of word
+            // if (tryCells.length < 2) {
+                // const error = { message: "Words must be at least 2 letters long." }
+
+                // this.setState({
+                //     errors: this.state.errors.concat(error)
+                // })
+
+                // return
+            // }
+
+            // test adjancency of tiles
+            // if (tryCells.length > 1 && distinctX.length > 1 && distinctY.length > 1) {
+            //     const error = { message: "New tiles must be placed adjacent to one another in one direction." }
+
+            //     this.setState({
+            //         errors: this.state.errors.concat(error)
+            //     })
+
+            //     return
+            // }
+
+            // const firstLetter = tryCells[0]
+            // const lastLetter = tryCells[tryCells.length - 1]
+            // const maxDistance = tryCells.length * 10
+            let firstLetter, lastLetter, maxDistance, distance, allLetters;
+
+            // test vertical word
+            // if (tryCells.length > 0 && distinctX.length === 1 && distinctY.length > 1) {
+            //     const x = tryCells[0].x
+            //     // find first letter - scan row for first instance of filled cell
+            //     const colCells = this.state.cells.filter(c => c.x === x)
+            //     allLetters = colCells.filter(c => c.value)
+            //     firstLetter = allLetters[0]
+            //     // find last letter - scan row after first letter for white space
+            //     lastLetter = allLetters[allLetters.length - 1]
+            //     // calculate max distance of word
+            //     maxDistance = allLetters.length * 10
+            //     distance = lastLetter.y - firstLetter.y + 10
+            // }
+
+            // test horizontal word
+            // if (tryCells.length > 0 && distinctY.length === 1 && distinctX.length > 1) {
+            //     const y = tryCells[0].y 
+            //     const rowCells = this.state.cells.filter(c => c.y === y)
+            //     allLetters = rowCells.filter(c => c.value)
+            //     firstLetter = allLetters[0]
+            //     lastLetter = allLetters[allLetters.length - 1]
+            //     maxDistance = allLetters.length * 10
+            //     distance = lastLetter.x - firstLetter.x + 10
+            // }
+
+            const colCells = this.state.cells.filter(c => c.x === x)
+            const rCells = this.state.cells.filter(c => c.y === y)
+            allLetters = colCells.filter(c => c.value).concat(rCells.filter(c => c.value))
+
+            // allColLetters = colCells.filter(c => c.value)
+            // allRowLetters = rowCells.filter(c => c.value)
+            
+            firstLetter = allLetters[0]
+            // find last letter - scan row after first letter for white space
+            lastLetter = allLetters[allLetters.length - 1]
+            // calculate max distance of word
+            maxDistance = allLetters.length * 10
+            distance = lastLetter.y - firstLetter.y + 10
+            
+
+            // 1. error check:
+            // test adjancency of tile in single direction
+            if (distance > maxDistance) {
+                const error = { message: "New tiles must be placed adjacent to one another." }
+
+                this.setState({
+                    errors: this.state.errors.concat(error)
+                })
+
+                return
+            }
+
+            // test length of word
+            if (colCells.length < 2 && rCells.length < 2) {
+                const error = { message: "Words must be at least 2 letters long." }
+
+                this.setState({
+                    errors: this.state.errors.concat(error)
+                })
+
+                return
+            }
+
+            // test adjancency of tiles in both directions
+            // if (allLetters.length > 1 && distinctX.length > 1 && distinctY.length > 1) {
+            //     const error = { message: "New tiles must be placed adjacent to one another in one direction." }
+
+            //     this.setState({
+            //         errors: this.state.errors.concat(error)
+            //     })
+
+            //     return
+            // }
+
+            // 2. get word
+            const word = tryCells.map(cell => cell.value).join('')
+            console.log('word', word)
+            // 3. test validity 
+                // assume anything is valid for now
+            // 4. get points
+            const points = tryCells.reduce( ((acc, cell) => acc + cell.points), 0)
+            console.log('points', points)
+            const tryCellIds = tryCells.map(cell => cell.id)
+            // 5. add points to user's score
+            // 6. add try tiles to used tiles
+            // 7. disable cells
+            this.setState((prevState) => ({
+                points: prevState.points + points,
+                tryTiles: [],
+                usedTiles: prevState.usedTiles.concat(this.state.tryTiles),
+                usedCells: prevState.usedCells.concat(tryCellIds)
+            }))
+
+            // 8. create new hand
+            const tilesNeeded = tryCells.length
+            this.createHand(tilesNeeded)
         })
     }
 
@@ -213,10 +482,16 @@ class GameContainer extends Component {
                 <ErrorContainer 
                     errors={ this.state.errors }
                 />
+
                 <Board 
                     cells={ this.state.cells } 
                     handleClickCell = { this.handleClickCell }
                 />
+
+                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '5px'}}>
+                    <span>Points: { this.state.points }</span>
+                </div>
+
                 <TileContainer 
                     playerTiles={ this.state.playerTiles } 
                     selected={ this.state.selected } 
