@@ -188,20 +188,6 @@ class GameContainer extends Component {
                 let firstTileX = x 
                 let lastTileX = lastPlacedX
 
-                // test adjancency of tile in single direction
-                const distance = lastPlacedX - x + 10 
-                const maxDistance = tryCells.length * 10
-
-                if (distance > maxDistance) {
-                    const error = { message: "New tiles must be placed adjacent to one another." }
-    
-                    this.setState({
-                        errors: this.state.errors.concat(error)
-                    })
-    
-                    return
-                }
-
                 // get index of start of word (find white space)
                 while (firstLetterIdx > 0) {
                     const cellBefore = rowCells[firstLetterIdx - 1]
@@ -227,6 +213,20 @@ class GameContainer extends Component {
                 // console.log('last letter idx', lastLetterIdx)
 
                 const wordCells = rowCells.slice(firstLetterIdx, lastLetterIdx + 1)
+
+                // test adjancency of tile in single direction
+                const distance = lastTileX - firstTileX + 10 
+                const maxDistance = wordCells.length * 10
+
+                if (distance > maxDistance) {
+                    const error = { message: "New tiles must be placed adjacent to one another." }
+    
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+    
+                    return
+                }
 
                 tryCells.forEach(tryCell => {
                     const colCells = filledCells.filter(cell => cell.x === tryCell.x)
@@ -270,18 +270,23 @@ class GameContainer extends Component {
                     } 
                 })
 
-                if (tryWords.length > 0 || this.state.usedTiles.length === 0) {
+                if (tryWords.length < 1) {
+                    if (this.state.usedCells.length === 0 || wordCells.length > tryCells.length) {
+                        const tryWord = wordCells.map(cell => cell.value).join('')
+                        tryWords.push(tryWord)
+                    } else {
+                        // 3. Need to also determine adjancency to existing tiles
+                        const error = { message: "New tiles must be placed adjacent to existing tiles." }
+
+                        this.setState({
+                            errors: this.state.errors.concat(error)
+                        })
+
+                        return
+                    }
+                } else {
                     const tryWord = wordCells.map(cell => cell.value).join('')
                     tryWords.push(tryWord)
-                } else {
-                    // 3. Need to also determine adjancency to existing tiles
-                    const error = { message: "New tiles must be placed adjacent to existing tiles." }
-
-                    this.setState({
-                        errors: this.state.errors.concat(error)
-                    })
-
-                    return
                 }
             }
 
@@ -293,20 +298,6 @@ class GameContainer extends Component {
                 let lastLetterIdx = colCells.indexOf(tryCells[tryCells.length - 1])
                 let firstTileY = y 
                 let lastTileY = lastPlacedY
-
-                // test adjancency of tile in single direction
-                const distance = lastPlacedY - y + 10 
-                const maxDistance = tryCells.length * 10
-
-                if (distance > maxDistance) {
-                    const error = { message: "New tiles must be placed adjacent to one another." }
-    
-                    this.setState({
-                        errors: this.state.errors.concat(error)
-                    })
-    
-                    return
-                }
 
                 // get index of start of word (find white space)
                 while (firstLetterIdx > 0) {
@@ -333,6 +324,20 @@ class GameContainer extends Component {
                 // console.log('last letter idx', lastLetterIdx)
 
                 const wordCells = colCells.slice(firstLetterIdx, lastLetterIdx + 1)
+
+                // test adjancency of tile in single direction
+                const distance = lastTileY - firstTileY + 10 
+                const maxDistance = wordCells.length * 10
+
+                if (distance > maxDistance) {
+                    const error = { message: "New tiles must be placed adjacent to one another." }
+    
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+    
+                    return
+                }
 
                 tryCells.forEach(tryCell => {
                     const rowCells = filledCells.filter(cell => cell.y === tryCell.y)
@@ -376,18 +381,23 @@ class GameContainer extends Component {
                     } 
                 })
 
-                if (tryWords.length > 0 || this.state.usedTiles.length === 0) {
+                if (tryWords.length < 1) {
+                    if (this.state.usedCells.length === 0 || wordCells.length > tryCells.length) {
+                        const tryWord = wordCells.map(cell => cell.value).join('')
+                        tryWords.push(tryWord)
+                    } else {
+                        // 3. Need to also determine adjancency to existing tiles
+                        const error = { message: "New tiles must be placed adjacent to existing tiles." }
+
+                        this.setState({
+                            errors: this.state.errors.concat(error)
+                        })
+
+                        return
+                    }
+                } else {
                     const tryWord = wordCells.map(cell => cell.value).join('')
                     tryWords.push(tryWord)
-                } else {
-                    // 3. Need to also determine adjancency to existing tiles
-                    const error = { message: "New tiles must be placed adjacent to existing tiles." }
-
-                    this.setState({
-                        errors: this.state.errors.concat(error)
-                    })
-
-                    return
                 }
             }
             // console.log(tryWords)
@@ -423,28 +433,6 @@ class GameContainer extends Component {
                     lastRowLetterIdx += 1
                 }
 
-                // 3. Need to also determine adjancency to existing tiles
-                if (firstRowLetterIdx === lastRowLetterIdx) {
-                    const errors = [
-                        { message: "Words must be at least 2 letters long." },
-                        { message: "New tiles must be placed adjacent to existing tiles." }
-                    ]
-
-                    this.setState({
-                        errors: this.state.errors.concat(errors)
-                    })
-    
-                    return
-                }
-
-                if (firstRowLetterIdx !== lastRowLetterIdx) {
-                    const wordCells = rowCells.slice(firstRowLetterIdx, lastRowLetterIdx + 1)
-                    const tryWord = wordCells.map(cell => cell.value).join('')
-
-                    tryWords.push(tryWord)
-                }
-
-
                 // scan column
                 const colCells = filledCells.filter(cell => cell.x === x)
                 const tryCellColIdx = colCells.indexOf(tryCells[0])
@@ -475,11 +463,19 @@ class GameContainer extends Component {
                 }
 
                 // 3. Need to also determine adjancency to existing tiles
-                if (firstColLetterIdx === lastColLetterIdx) {
-                    const errors = [
-                        { message: "Words must be at least 2 letters long." },
-                        { message: "New tiles must be placed adjacent to existing tiles." }
-                    ]
+                if (firstColLetterIdx === lastColLetterIdx && firstRowLetterIdx === lastRowLetterIdx) {
+                    let errors
+
+                    if (this.state.usedCells.length > 0) {
+                        errors = [
+                            { message: "Words must be at least 2 letters long." },
+                            { message: "New tiles must be placed adjacent to existing tiles." }
+                        ]
+                    } else {
+                        errors = [
+                            { message: "Words must be at least 2 letters long." },
+                        ]
+                    }
 
                     this.setState({
                         errors: this.state.errors.concat(errors)
@@ -490,6 +486,13 @@ class GameContainer extends Component {
 
                 if (firstColLetterIdx !== lastColLetterIdx) {
                     const wordCells = colCells.slice(firstColLetterIdx, lastColLetterIdx + 1)
+                    const tryWord = wordCells.map(cell => cell.value).join('')
+
+                    tryWords.push(tryWord)
+                }
+
+                if (firstRowLetterIdx !== lastRowLetterIdx) {
+                    const wordCells = rowCells.slice(firstRowLetterIdx, lastRowLetterIdx + 1)
                     const tryWord = wordCells.map(cell => cell.value).join('')
 
                     tryWords.push(tryWord)
@@ -522,7 +525,7 @@ class GameContainer extends Component {
             // const firstLetter = tryCells[0]
             // const lastLetter = tryCells[tryCells.length - 1]
             // const maxDistance = tryCells.length * 10
-            let firstLetter, lastLetter, maxDistance, distance, allLetters;
+            // let firstLetter, lastLetter, maxDistance, distance, allLetters;
 
             // test vertical word
             // if (tryCells.length > 0 && distinctX.length === 1 && distinctY.length > 1) {
@@ -551,30 +554,30 @@ class GameContainer extends Component {
 
             const colCells = this.state.cells.filter(c => c.x === x)
             const rCells = this.state.cells.filter(c => c.y === y)
-            allLetters = colCells.filter(c => c.value).concat(rCells.filter(c => c.value))
+            const allLetters = colCells.filter(c => c.value).concat(rCells.filter(c => c.value))
 
             // allColLetters = colCells.filter(c => c.value)
             // allRowLetters = rowCells.filter(c => c.value)
             
-            firstLetter = allLetters[0]
+            // firstLetter = allLetters[0]
             // find last letter - scan row after first letter for white space
-            lastLetter = allLetters[allLetters.length - 1]
+            // lastLetter = allLetters[allLetters.length - 1]
             // calculate max distance of word
-            maxDistance = allLetters.length * 10
-            distance = lastLetter.y - firstLetter.y + 10
+            // maxDistance = allLetters.length * 10
+            // distance = lastLetter.y - firstLetter.y + 10
             
 
             // 1. error check:
             // test adjancency of tile in single direction
-            if (distance > maxDistance) {
-                const error = { message: "New tiles must be placed adjacent to one another." }
+            // if (distance > maxDistance) {
+            //     const error = { message: "New tiles must be placed adjacent to one another." }
 
-                this.setState({
-                    errors: this.state.errors.concat(error)
-                })
+            //     this.setState({
+            //         errors: this.state.errors.concat(error)
+            //     })
 
-                return
-            }
+            //     return
+            // }
 
             // test length of word
             if (colCells.length < 2 && rCells.length < 2) {
