@@ -156,7 +156,7 @@ class GameContainer extends Component {
                 return
             }
 
-             // test adjancency of tiles in both directions
+            // test adjancency of tiles in both directions
             if (distinctX.length > 1 && distinctY.length > 1) {
                 const error = { message: "New tiles must be placed adjacent to one another in one direction." }
 
@@ -188,6 +188,20 @@ class GameContainer extends Component {
                 let firstTileX = x 
                 let lastTileX = lastPlacedX
 
+                // test adjancency of tile in single direction
+                const distance = lastPlacedX - x + 10 
+                const maxDistance = tryCells.length * 10
+
+                if (distance > maxDistance) {
+                    const error = { message: "New tiles must be placed adjacent to one another." }
+    
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+    
+                    return
+                }
+
                 // get index of start of word (find white space)
                 while (firstLetterIdx > 0) {
                     const cellBefore = rowCells[firstLetterIdx - 1]
@@ -213,9 +227,6 @@ class GameContainer extends Component {
                 // console.log('last letter idx', lastLetterIdx)
 
                 const wordCells = rowCells.slice(firstLetterIdx, lastLetterIdx + 1)
-                const tryWord = wordCells.map(cell => cell.value).join('')
-
-                tryWords.push(tryWord)
 
                 tryCells.forEach(tryCell => {
                     const colCells = filledCells.filter(cell => cell.x === tryCell.x)
@@ -259,7 +270,19 @@ class GameContainer extends Component {
                     } 
                 })
 
-                // console.log(tryWords)
+                if (tryWords.length > 0 || this.state.usedTiles.length === 0) {
+                    const tryWord = wordCells.map(cell => cell.value).join('')
+                    tryWords.push(tryWord)
+                } else {
+                    // 3. Need to also determine adjancency to existing tiles
+                    const error = { message: "New tiles must be placed adjacent to existing tiles." }
+
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+
+                    return
+                }
             }
 
             // 2. If vertical, scan each row the letters were placed for words
@@ -270,6 +293,20 @@ class GameContainer extends Component {
                 let lastLetterIdx = colCells.indexOf(tryCells[tryCells.length - 1])
                 let firstTileY = y 
                 let lastTileY = lastPlacedY
+
+                // test adjancency of tile in single direction
+                const distance = lastPlacedY - y + 10 
+                const maxDistance = tryCells.length * 10
+
+                if (distance > maxDistance) {
+                    const error = { message: "New tiles must be placed adjacent to one another." }
+    
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+    
+                    return
+                }
 
                 // get index of start of word (find white space)
                 while (firstLetterIdx > 0) {
@@ -296,9 +333,6 @@ class GameContainer extends Component {
                 // console.log('last letter idx', lastLetterIdx)
 
                 const wordCells = colCells.slice(firstLetterIdx, lastLetterIdx + 1)
-                const tryWord = wordCells.map(cell => cell.value).join('')
-
-                tryWords.push(tryWord)
 
                 tryCells.forEach(tryCell => {
                     const rowCells = filledCells.filter(cell => cell.y === tryCell.y)
@@ -341,6 +375,20 @@ class GameContainer extends Component {
                         // console.log(colCells, tryCellIdx)
                     } 
                 })
+
+                if (tryWords.length > 0 || this.state.usedTiles.length === 0) {
+                    const tryWord = wordCells.map(cell => cell.value).join('')
+                    tryWords.push(tryWord)
+                } else {
+                    // 3. Need to also determine adjancency to existing tiles
+                    const error = { message: "New tiles must be placed adjacent to existing tiles." }
+
+                    this.setState({
+                        errors: this.state.errors.concat(error)
+                    })
+
+                    return
+                }
             }
             // console.log(tryWords)
 
@@ -375,10 +423,11 @@ class GameContainer extends Component {
                     lastRowLetterIdx += 1
                 }
 
+                // 3. Need to also determine adjancency to existing tiles
                 if (firstRowLetterIdx === lastRowLetterIdx) {
                     const errors = [
                         { message: "Words must be at least 2 letters long." },
-                        { message: "New tiles must be placed adjacent to one another." }
+                        { message: "New tiles must be placed adjacent to existing tiles." }
                     ]
 
                     this.setState({
@@ -425,10 +474,11 @@ class GameContainer extends Component {
                     lastColLetterIdx += 1
                 }
 
+                // 3. Need to also determine adjancency to existing tiles
                 if (firstColLetterIdx === lastColLetterIdx) {
                     const errors = [
                         { message: "Words must be at least 2 letters long." },
-                        { message: "New tiles must be placed adjacent to one another." }
+                        { message: "New tiles must be placed adjacent to existing tiles." }
                     ]
 
                     this.setState({
@@ -446,9 +496,6 @@ class GameContainer extends Component {
                 }
             }
             console.log(tryWords)
-
-
-            // 3. Need to also determine adjancency to other tiles
 
             // test length of word
             // if (tryCells.length < 2) {
