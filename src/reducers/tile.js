@@ -1,6 +1,15 @@
+import { ALL_TILES } from '../constants'
+
 const initialState = {
-    usedTiles: [],
+    unusedTiles: ALL_TILES,
     tryTiles: [],
-    unusedTiles: [],
-    playerTiles: []
+    playerTiles: [],
+    usedTiles: [],
+}
+
+export default (state = initialState, action) => {
+    switch(action.type) {
+        default:
+            return state
+    }
 }

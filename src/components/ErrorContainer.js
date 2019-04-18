@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Error from './Error'
 import v4 from 'uuid'
 
@@ -17,4 +18,10 @@ const ErrorContainer = (props) => {
     )
 }
 
-export default ErrorContainer
+const mapStateToProps = (state) => {
+    return {
+        errors: state.errors
+    }
+}
+
+export default connect(mapStateToProps)(ErrorContainer)

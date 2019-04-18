@@ -1,5 +1,7 @@
+import { ALL_CELLS } from '../constants'
+
 const initialState = {
-    allCells: [],
+    allCells: ALL_CELLS,
     usedCells: []
 }
 
