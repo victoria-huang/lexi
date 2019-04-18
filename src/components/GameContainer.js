@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { TILES } from '../constants'
+import { ALL_TILES, ALL_CELLS } from '../constants'
 import Board from './Board'
 import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
 
 class GameContainer extends Component {
     state = {
-        cells: [],
+        cells: ALL_CELLS,
         usedCells: [],
-        unusedTiles: [],
+        unusedTiles: ALL_TILES,
         playerTiles: [],
         usedTiles: [],
         selected: null,
@@ -18,51 +18,7 @@ class GameContainer extends Component {
     }
 
     componentDidMount() {
-        this.generateCells()
-
-        this.setState({
-            unusedTiles: this.createTileBag()
-        }, () => { this.createHand(7) })
-    }
-
-    generateCells = () => {
-        let cells = []
-        let id = 1
-
-        for (let x = 0; x < 150; x += 10) {
-            for (let y = 0; y < 150; y += 10) {
-                let newCell = { id, x, y }
-                cells.push(newCell)
-                id++
-            }
-        }
-
-        this.setState({ cells })
-    }
-
-    createTileBag = () => {
-        let id = 1
-
-        const tiles = TILES.map( t => {
-            let newTiles = []
-
-            for (let i = 0; i < t.amount; i++) {
-                const newTile = {
-                    id,
-                    letter: t.letter,
-                    points: t.points
-                }
-
-                newTiles.push(newTile)
-                id++
-            }
-
-            return newTiles
-        })
-
-        const flattened = [].concat.apply([], tiles);
-
-        return flattened
+        this.createHand(7)
     }
 
     createHand(num) {
