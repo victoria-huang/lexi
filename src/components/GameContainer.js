@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Board from './Board'
 import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
+import ControlPanel from './ControlPanel'
 
 class GameContainer extends Component {
     render() {
@@ -18,6 +19,7 @@ class GameContainer extends Component {
             </div>
 
             <TileContainer />
+            <ControlPanel />
             </>
         )
     }

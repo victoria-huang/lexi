@@ -27,8 +27,7 @@ class Board extends Component {
 } 
 
 const mapStateToProps = (state) => ({
-    cells: state.cell.allCells,
-    usedCells: state.cell.usedCells
+    cells: state.cell.allCells
 })
 
 export default connect(mapStateToProps)(Board)
