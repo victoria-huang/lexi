@@ -1,7 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import Error from './Error'
 import v4 from 'uuid'
+
+import { connect } from 'react-redux'
+
+import Error from './Error'
 
 const ErrorContainer = (props) => {
     const renderErrors = () => props.errors.map(e => <Error key={v4()} {...e} />)

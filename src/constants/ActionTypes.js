@@ -1,2 +1,18 @@
-export const ADD_ERROR = 'ADD_ERROR'
+export const ADD_ERRORS = 'ADD_ERROR'
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
+
+export const UPDATE_CELLS = 'UPDATE_CELLS'
+export const SET_USED_CELLS = 'SET_USED_CELLS'
+
+export const SELECT_TILE = 'SELECT_TILE'
+export const DESELECT_TILE = 'DESELECT_TILE'
+export const REMOVE_FROM_HAND = 'REMOVE_FROM_HAND'
+export const ADD_TO_HAND = 'ADD_TO_HAND'
+export const ADD_TRY_TILE = 'ADD_TRY_TILE'
+export const REMOVE_TRY_TILE = 'REMOVE_TRY_TILE'
+export const CLEAR_TRY_TILES = 'CLEAR_TRY_TILES'
+export const DEAL_PLAYER_TILES = 'DEAL_PLAYER_TILES'
+export const UPDATE_UNUSED_TILES = 'UPDATE_UNUSED_TILES'
+export const UPDATE_USED_TILES = 'UPDATE_USED_TILES'
+
+export const ADD_POINTS = 'ADD_POINTS'

@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
+import v4 from 'uuid'
+
+import { connect } from 'react-redux'
+
 import Cell from './Cell'
 
 class Board extends Component {
-    renderCells = () => this.props.cells.map( (cell, idx) => 
-        <Cell 
-            key={idx} 
-            { ...cell } 
-            usedCells={ this.props.usedCells }
-            handleClickCell={ this.props.handleClickCell } 
-        /> 
-    )
+    renderCells = () => this.props.cells.map( cell => <Cell key={ v4() } { ...cell } /> )
 
     render() {
         return(
@@ -29,4 +26,9 @@ class Board extends Component {
     }
 } 
 
-export default Board
+const mapStateToProps = (state) => ({
+    cells: state.cell.allCells,
+    usedCells: state.cell.usedCells
+})
+
+export default connect(mapStateToProps)(Board)
