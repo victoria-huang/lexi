@@ -63,6 +63,11 @@ export const dealPlayerTiles = (tiles) => ({
     payload: tiles
 })
 
+export const shufflePlayerTiles = (tiles) => ({
+    type: types.SHUFFLE_PLAYER_TILES,
+    payload: tiles
+})
+
 export const updateUnusedTiles = (tiles) => ({
     type: types.UPDATE_UNUSED_TILES,
     payload: tiles

@@ -7,6 +7,7 @@ import {
 } from '../actions'
 
 import Submit from './Submit'
+import Shuffle from './Shuffle'
 
 class ControlPanel extends Component {
     componentDidMount() {
@@ -36,8 +37,8 @@ class ControlPanel extends Component {
         return (
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Submit createHand={ this.createHand } />
+                <Shuffle />
                 <button>exchange</button>
-                <button>shuffle</button>
                 <button>pass</button>
             </div>
         )

@@ -9,7 +9,8 @@ import {
     CLEAR_TRY_TILES,
     DEAL_PLAYER_TILES,
     UPDATE_UNUSED_TILES,
-    UPDATE_USED_TILES
+    UPDATE_USED_TILES,
+    SHUFFLE_PLAYER_TILES
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -71,6 +72,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 usedTiles: state.usedTiles.concat(action.payload)
+            }
+        case SHUFFLE_PLAYER_TILES:
+            return {
+                ...state,
+                playerTiles: action.payload
             }
         default:
             return state
