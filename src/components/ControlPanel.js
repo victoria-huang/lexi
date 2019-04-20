@@ -8,6 +8,7 @@ import {
 
 import Submit from './Submit'
 import Shuffle from './Shuffle'
+import Exchange from './Exchange'
 
 class ControlPanel extends Component {
     componentDidMount() {
@@ -38,7 +39,7 @@ class ControlPanel extends Component {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Submit createHand={ this.createHand } />
                 <Shuffle />
-                <button>exchange</button>
+                { (this.props.selected && !this.props.exchanged) && <Exchange /> }
                 <button>pass</button>
             </div>
         )
@@ -46,7 +47,9 @@ class ControlPanel extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    unusedTiles: state.tile.unusedTiles
+    unusedTiles: state.tile.unusedTiles,
+    selected: state.tile.selected,
+    exchanged: state.game.exchanged
 })
 
 const mapDispatchToProps = (dispatch) => ({

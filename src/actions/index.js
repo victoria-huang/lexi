@@ -84,3 +84,11 @@ export const addPoints = (points) => ({
     type: types.ADD_POINTS,
     payload: points
 })
+
+export const setExchanged = () => ({
+    type: types.SET_EXCHANGED
+})
+
+export const resetExchanged = () => ({
+    type: types.RESET_EXCHANGED
+})
