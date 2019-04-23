@@ -5,7 +5,8 @@ import { shufflePlayerTiles } from '../actions'
 
 const Shuffle = (props) => {
     const shuffleHand = () => {
-        const tiles = [...props.playerTiles]
+        const playerTiles = ( props.whoseTurn === 1 ? props.p1Tiles : props.p2Tiles )
+        const tiles = [...playerTiles]
 
         let i, j, temp
 
@@ -16,7 +17,7 @@ const Shuffle = (props) => {
             tiles[j] = temp
         }
 
-        props.shufflePlayerTiles(tiles)
+        props.shufflePlayerTiles(tiles, this.props.whoseTurn)
     }
 
     return (
@@ -25,11 +26,13 @@ const Shuffle = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    playerTiles: state.tile.playerTiles
+    p1Tiles: state.tile.p1Tiles,
+    p2Tiles: state.tile.p2Tiles,
+    whoseTurn: state.game.whoseTurn
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    shufflePlayerTiles: (tiles) => dispatch(shufflePlayerTiles(tiles))
+    shufflePlayerTiles: (tiles, player) => dispatch(shufflePlayerTiles(tiles, player))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shuffle)

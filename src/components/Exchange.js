@@ -20,8 +20,8 @@ const Exchange = (props) => {
         unusedTiles[randomIndex] = selectedTile
 
         props.deselectTile()
-        props.removeFromHand(selectedTile)
-        props.addToHand(randomTile)
+        props.removeFromHand(selectedTile, this.props.whoseTurn)
+        props.addToHand(randomTile, this.props.whoseTurn)
         props.updateUnusedTiles(unusedTiles)
         props.setExchanged()
     }
@@ -34,12 +34,13 @@ const Exchange = (props) => {
 const mapStateToProps = (state) => ({
     unusedTiles: state.tile.unusedTiles,
     playerTiles: state.tile.playerTiles,
-    selected: state.tile.selected
+    selected: state.tile.selected,
+    whoseTurn: state.game.whoseTurn
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addToHand: (tile) => dispatch(addToHand(tile)),
-    removeFromHand: (tile) => dispatch(removeFromHand(tile)),
+    addToHand: (tile, player) => dispatch(addToHand(tile, player)),
+    removeFromHand: (tile, player) => dispatch(removeFromHand(tile, player)),
     updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
     deselectTile: () => dispatch(deselectTile()),
     setExchanged: () => dispatch(setExchanged())

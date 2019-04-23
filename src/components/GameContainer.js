@@ -9,7 +9,6 @@ import ControlPanel from './ControlPanel'
 
 class GameContainer extends Component {
     render() {
-        console.log(this.props)
         return (
             <>
             <ErrorContainer />
@@ -18,6 +17,7 @@ class GameContainer extends Component {
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: '5px'}}>
                 <div>{ this.props.playerOne }: { this.props.p1Points } points</div> 
                 <div>{ this.props.playerTwo }: { this.props.p2Points } points</div>
+                <div>It's { this.props.whoseTurn === 1 ? this.props.playerOne : this.props.playerTwo }'s turn!</div>
             </div>
 
             <TileContainer />

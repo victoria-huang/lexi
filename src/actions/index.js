@@ -34,14 +34,20 @@ export const deselectTile = () => ({
     type: types.DESELECT_TILE
 })
 
-export const addToHand = (tile) => ({
+export const addToHand = (tile, player) => ({
     type: types.ADD_TO_HAND,
-    payload: tile
+    payload: {
+        tile,
+        player 
+    }
 })
 
-export const removeFromHand = (tile) => ({
+export const removeFromHand = (tile, player) => ({
     type: types.REMOVE_FROM_HAND,
-    payload: tile
+    payload: {
+        tile,
+        player
+    }
 })
 
 export const addTryTile = (tile) => ({
@@ -58,14 +64,20 @@ export const clearTryTiles = () => ({
     type: types.CLEAR_TRY_TILES
 })
 
-export const dealPlayerTiles = (tiles) => ({
+export const dealPlayerTiles = (tiles, player) => ({
     type: types.DEAL_PLAYER_TILES,
-    payload: tiles
+    payload: {
+        tiles,
+        player
+    }
 })
 
-export const shufflePlayerTiles = (tiles) => ({
+export const shufflePlayerTiles = (tiles, player) => ({
     type: types.SHUFFLE_PLAYER_TILES,
-    payload: tiles
+    payload: {
+        tiles,
+        player 
+    }
 })
 
 export const updateUnusedTiles = (tiles) => ({
@@ -74,7 +86,7 @@ export const updateUnusedTiles = (tiles) => ({
 })
 
 export const updateUsedTiles = (tiles) => ({
-    type: types.UPDATE_UNUSED_TILES,
+    type: types.UPDATE_USED_TILES,
     payload: tiles
 })
 

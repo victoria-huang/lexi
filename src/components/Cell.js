@@ -27,7 +27,7 @@ class Cell extends Component {
 
                 this.props.updateCells(cells)
                 this.props.deselectTile()
-                this.props.removeFromHand(tile)
+                this.props.removeFromHand(tile, this.props.whoseTurn)
                 this.props.addTryTile(tile)
             }
 
@@ -38,7 +38,7 @@ class Cell extends Component {
                 cells[cellIdx] = foundCell
 
                 this.props.updateCells(cells)
-                this.props.addToHand(tile)
+                this.props.addToHand(tile, this.props.whoseTurn)
                 this.props.removeTryTile(tile)
             }
         }  
@@ -78,15 +78,16 @@ const mapStateToProps = (state) => ({
     usedCells: state.cell.usedCells,
     selected: state.tile.selected,
     playerTiles: state.tile.playerTiles,
-    tryTiles: state.tile.tryTiles
+    tryTiles: state.tile.tryTiles,
+    whoseTurn: state.game.whoseTurn
 })
 
 const mapDispatchToProps = (dispatch) => ({
     updateCells: (cells) => dispatch(updateCells(cells)),
     selectTile: (tile) => dispatch(selectTile(tile)),
     deselectTile: () => dispatch(deselectTile()),
-    addToHand: (tile) => dispatch(addToHand(tile)),
-    removeFromHand: (tile) => dispatch(removeFromHand(tile)),
+    addToHand: (tile, player) => dispatch(addToHand(tile, player)),
+    removeFromHand: (tile, player) => dispatch(removeFromHand(tile, player)),
     addTryTile: (tile) => dispatch(addTryTile(tile)),
     removeTryTile: (tile) => dispatch(removeTryTile(tile))
 })

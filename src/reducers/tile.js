@@ -17,11 +17,15 @@ const initialState = {
     unusedTiles: ALL_TILES,
     tryTiles: [],
     playerTiles: [],
+    p1Tiles: [],
+    p2Tiles: [],
     usedTiles: [],
     selected: null
 }
 
 export default (state = initialState, action) => {
+    let key
+
     switch(action.type) {
         case SELECT_TILE:
             return {
@@ -34,14 +38,20 @@ export default (state = initialState, action) => {
                 selected: null
             }
         case ADD_TO_HAND:
+            key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
+
             return {
                 ...state,
-                playerTiles: state.playerTiles.concat(action.payload)
+                playerTiles: state.playerTiles.concat(action.payload.tile),
+                [key]: state[key].concat(action.payload.tile.id)
             }
         case REMOVE_FROM_HAND:
+            key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
+
             return {
                 ...state, 
-                playerTiles: state.playerTiles.filter(pt => pt.id !== action.payload.id)
+                playerTiles: state.playerTiles.filter(pt => pt.id !== action.payload.tile.id),
+                [key]: state[key].filter(tileId => tileId !== action.payload.tile.id )
             }
         case ADD_TRY_TILE:
             return {
@@ -59,9 +69,13 @@ export default (state = initialState, action) => {
                 tryTiles: []
             }
         case DEAL_PLAYER_TILES:
+            key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
+            const tileIds = action.payload.tiles.map( t => t.id )
+
             return {
                 ...state,
-                playerTiles: state.playerTiles.concat(action.payload)
+                playerTiles: state.playerTiles.concat(action.payload.tiles),
+                [key]: state[key].concat(tileIds)
             }
         case UPDATE_UNUSED_TILES:
             return {
@@ -74,9 +88,11 @@ export default (state = initialState, action) => {
                 usedTiles: state.usedTiles.concat(action.payload)
             }
         case SHUFFLE_PLAYER_TILES:
+            key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
+
             return {
                 ...state,
-                playerTiles: action.payload
+                [key]: action.payload.tiles
             }
         default:
             return state

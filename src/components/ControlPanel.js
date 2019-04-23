@@ -12,10 +12,12 @@ import Exchange from './Exchange'
 
 class ControlPanel extends Component {
     componentDidMount() {
-        this.createHand(7)
+        Promise.resolve()
+        .then(() => this.createHand(7, 1))
+        .then(() => this.createHand(7, 2))
     }
 
-    createHand = (num) => {
+    createHand = (num, player) => {
         if (this.props.unusedTiles.length >= num) {
             let playerTiles = []
             let unusedTiles = [...this.props.unusedTiles]
@@ -28,9 +30,9 @@ class ControlPanel extends Component {
                 playerTiles.push(foundTile)
                 unusedTiles = unusedTiles.filter(t => t !== foundTile)
             }
-
+            
             this.props.updateUnusedTiles(unusedTiles)
-            this.props.dealPlayerTiles(playerTiles)
+            this.props.dealPlayerTiles(playerTiles, player)
         }  
     }
 
@@ -53,7 +55,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    dealPlayerTiles: (tiles) => dispatch(dealPlayerTiles(tiles)),
+    dealPlayerTiles: (tiles, player) => dispatch(dealPlayerTiles(tiles, player)),
     updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
 })
 

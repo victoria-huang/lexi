@@ -328,9 +328,11 @@ const Submit = (props) => {
 
         // 8. create new hand
         const tilesNeeded = tryCells.length
-        props.createHand(tilesNeeded)
+        props.createHand(tilesNeeded, props.whoseTurn)
         props.resetExchanged()
         props.deselectTile()
+
+        // 9. switch turn
         props.switchTurn()
     }
 
@@ -342,8 +344,8 @@ const Submit = (props) => {
 const mapStateToProps = (state) => ({
     cells: state.cell.allCells,
     usedCells: state.cell.usedCells,
-    unusedTiles: state.tile.unusedTiles,
-    tryTiles: state.tile.tryTiles
+    tryTiles: state.tile.tryTiles,
+    whoseTurn: state.game.whoseTurn
 })
 
 const mapDispatchToProps = (dispatch) => ({
