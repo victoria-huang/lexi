@@ -100,3 +100,7 @@ export const login = (playerOne, playerTwo) => ({
         playerTwo
     }
 })
+
+export const switchTurn = () => ({
+    type: types.SWITCH_TURN
+})

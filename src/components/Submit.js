@@ -9,7 +9,8 @@ import {
     setUsedCells,
     updateUsedTiles,
     resetExchanged,
-    deselectTile
+    deselectTile,
+    switchTurn
 } from '../actions'
 
 const Submit = (props) => {
@@ -330,6 +331,7 @@ const Submit = (props) => {
         props.createHand(tilesNeeded)
         props.resetExchanged()
         props.deselectTile()
+        props.switchTurn()
     }
 
     return (
@@ -352,7 +354,8 @@ const mapDispatchToProps = (dispatch) => ({
     clearTryTiles: () => dispatch(clearTryTiles()),
     setUsedCells: (cellIds) => dispatch(setUsedCells(cellIds)),
     resetExchanged: () => dispatch(resetExchanged()),
-    deselectTile: () => dispatch(deselectTile())
+    deselectTile: () => dispatch(deselectTile()),
+    switchTurn: () => dispatch(switchTurn())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Submit)

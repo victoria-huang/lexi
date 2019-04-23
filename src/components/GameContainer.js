@@ -9,6 +9,7 @@ import ControlPanel from './ControlPanel'
 
 class GameContainer extends Component {
     render() {
+        console.log(this.props)
         return (
             <>
             <ErrorContainer />
@@ -26,7 +27,8 @@ class GameContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    points: state.game.points
+    points: state.game.points,
+    whoseTurn: state.game.whoseTurn
 })
 
 export default connect(mapStateToProps)(GameContainer)

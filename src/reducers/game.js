@@ -2,7 +2,8 @@ import {
     ADD_POINTS,
     SET_EXCHANGED,
     RESET_EXCHANGED,
-    LOGIN
+    LOGIN,
+    SWITCH_TURN
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -36,6 +37,13 @@ export default (state = initialState, action) => {
                 ...state,
                 playerOne: action.payload.playerOne,
                 playerTwo: action.payload.playerTwo
+            }
+        case SWITCH_TURN:
+            const whoseTurn = ( state.whoseTurn === 1 ? 2 : 1 )
+            
+            return {
+                ...state,
+                whoseTurn
             }
         default:
             return state
