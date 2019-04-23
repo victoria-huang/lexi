@@ -7,7 +7,8 @@ import {
 } from '../constants/ActionTypes'
 
 const initialState = {
-    points: 0,
+    p1Points: 0,
+    p2Points: 0,
     exchanged: false,
     playerOne: null,
     playerTwo: null,
@@ -18,9 +19,11 @@ const initialState = {
 export default (state = initialState, action) => {
     switch(action.type) {
         case ADD_POINTS:
+            const key = ( state.whoseTurn === 1 ? "p1Points" : "p2Points" )
+
             return { 
                 ...state,
-                points: state.points + action.payload 
+                [key]: state[key] + action.payload 
             }
         case SET_EXCHANGED:
             return {
@@ -40,7 +43,7 @@ export default (state = initialState, action) => {
             }
         case SWITCH_TURN:
             const whoseTurn = ( state.whoseTurn === 1 ? 2 : 1 )
-            
+
             return {
                 ...state,
                 whoseTurn
