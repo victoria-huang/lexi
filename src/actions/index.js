@@ -92,3 +92,11 @@ export const setExchanged = () => ({
 export const resetExchanged = () => ({
     type: types.RESET_EXCHANGED
 })
+
+export const login = (playerOne, playerTwo) => ({
+    type: types.LOGIN,
+    payload: {
+        playerOne,
+        playerTwo
+    }
+})
