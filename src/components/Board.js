@@ -10,8 +10,8 @@ class Board extends Component {
 
     render() {
         return(
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div style={{ height: '650px', width: '650px'}}>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                <div style={{ width: '80%'}}>
                     <svg
                         viewBox={`0 0 150 150`}
                         overflow="visible"

@@ -17,7 +17,7 @@ const Shuffle = (props) => {
             tiles[j] = temp
         }
 
-        props.shufflePlayerTiles(tiles, this.props.whoseTurn)
+        props.shufflePlayerTiles(tiles, props.whoseTurn)
     }
 
     return (

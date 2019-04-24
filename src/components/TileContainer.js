@@ -8,7 +8,7 @@ import Tile from './Tile'
 class TileContainer extends Component {
     renderPlayerTiles = () => {
         const tileIds = ( this.props.whoseTurn === 1 ? this.props.p1Tiles : this.props.p2Tiles )
-        const playerTiles = this.props.playerTiles.filter( pt => tileIds.includes(pt.id) )
+        const playerTiles = tileIds.map( tId => this.props.playerTiles.find(t => t.id === tId) )
         return playerTiles.map( t => <Tile key={ v4() } { ...t } /> )
     }
 

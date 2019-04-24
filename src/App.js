@@ -5,18 +5,19 @@ import { connect } from 'react-redux'
 import Login from './components/Login'
 import GameContainer from './components/GameContainer'
 
+import './App.css'
+
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <h1 style={{ border: '1px solid black', padding: '2px' }}>l e x i .</h1>
+      <>
         { this.props.playerOne && this.props.playerTwo ?
           <GameContainer />
           :
           <Login />
         }
-      </div>
-    );
+      </>
+    )
   }
 }
 

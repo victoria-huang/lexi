@@ -20,8 +20,8 @@ const Exchange = (props) => {
         unusedTiles[randomIndex] = selectedTile
 
         props.deselectTile()
-        props.removeFromHand(selectedTile, this.props.whoseTurn)
-        props.addToHand(randomTile, this.props.whoseTurn)
+        props.removeFromHand(selectedTile, props.whoseTurn)
+        props.addToHand(randomTile, props.whoseTurn)
         props.updateUnusedTiles(unusedTiles)
         props.setExchanged()
     }

@@ -13,23 +13,29 @@ const Login = (props) => {
     }
 
     return (
-        <form onSubmit={ handleSubmit }>
-            <label>Player One</label>
-            <input 
-                type='text'
-                value={ playerOne } 
-                onChange={ (e) => setPlayerOne(e.target.value) }
-            />
-            <br />
-            <label>Player Two</label>
-            <input 
-                type='text'
-                value={ playerTwo } 
-                onChange={ (e) => setPlayerTwo(e.target.value) }
-            />
-            <br />
-            <input type='submit' />
-        </form>
+        <>
+        <div className='wrapper'>
+            <h1 className='app-header'>l e x i .</h1>
+            <p>test the depth of your vocabulary</p>
+            <form onSubmit={ handleSubmit }>
+                <input 
+                    type='text'
+                    placeholder='player one'
+                    value={ playerOne } 
+                    onChange={ (e) => setPlayerOne(e.target.value) }
+                />
+                <br />
+                <input 
+                    type='text'
+                    placeholder='player two'
+                    value={ playerTwo } 
+                    onChange={ (e) => setPlayerTwo(e.target.value) }
+                />
+                <br />
+                <input type='submit' value='start game' />
+            </form>
+        </div>
+        </>
     )
 }
 
