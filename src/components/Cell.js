@@ -49,7 +49,9 @@ class Cell extends Component {
 
         return (
             <g>
-                <text x={ this.props.x + 3 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">{ this.props.value }</text>
+                <text x={ this.props.x + 3 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">
+                    { this.props.value }
+                </text>
                 <text x={ this.props.x + 6 } y={ this.props.y + 3 } fontFamily="Verdana" fontSize="2.5" fill="red">{ this.props.points }</text>
                 <rect
                     onClick={ () => this.handleClickCell(this.props.id, this.props.x, this.props.y) }
