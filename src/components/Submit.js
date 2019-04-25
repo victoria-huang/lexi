@@ -10,7 +10,8 @@ import {
     updateUsedTiles,
     resetExchanged,
     deselectTile,
-    switchTurn
+    switchTurn,
+    updateCells
 } from '../actions'
 
 const Submit = (props) => {
@@ -308,9 +309,32 @@ const Submit = (props) => {
                 // const tryWord = wordCells.map(cell => cell.value).join('')
                 // assume anything is valid for now
             // 4. get points
-            const points = wordCells.reduce( ((acc, cell) => acc + cell.points), 0)
+            let wordMultiplier = 1
+
+            const points = wordCells.reduce( ((acc, cell) => {
+                let letterMultiplier = 1
+
+                switch(cell.bonus) {
+                    case 'DL':
+                        letterMultiplier = 2
+                        break
+                    case 'DW':
+                        wordMultiplier = 3
+                        break
+                    case 'TL':
+                        letterMultiplier = 3
+                        break
+                    case 'TW': 
+                        wordMultiplier = 3
+                        break
+                    default:
+                        break
+                } 
+                
+                return acc + (cell.points * letterMultiplier)
+            }), 0)
             // 5. add points to user's score
-            pointTotal += points
+            pointTotal += (points * wordMultiplier)
         })
         
         props.addPoints(pointTotal)
@@ -320,7 +344,14 @@ const Submit = (props) => {
         // 6. add try tiles to used tiles & try cells to used cells
         props.clearTryTiles()
         
-        // 7. disable cells
+        // 7. disable cells & bonuses
+        const newCells = [...props.cells].map(cell => {
+            if (tryCells.includes(cell)) return { ...cell, bonus: null }
+            else return cell
+        })
+
+        props.updateCells(newCells)
+
         const tryCellIds = tryCells.map(cell => cell.id)
         
         props.setUsedCells(tryCellIds)
@@ -357,7 +388,8 @@ const mapDispatchToProps = (dispatch) => ({
     setUsedCells: (cellIds) => dispatch(setUsedCells(cellIds)),
     resetExchanged: () => dispatch(resetExchanged()),
     deselectTile: () => dispatch(deselectTile()),
-    switchTurn: () => dispatch(switchTurn())
+    switchTurn: () => dispatch(switchTurn()),
+    updateCells: (cells) => dispatch(updateCells(cells))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Submit)
