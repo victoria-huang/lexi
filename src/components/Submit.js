@@ -107,19 +107,19 @@ const Submit = (props) => {
         const distinctY = [...new Set(tryCells.map(c => c.y))]
     
         props.clearErrors()
-        
-        // test first move input on starting pos 
-        if (!props.gameStart && !tryCells.find(cell => cell.bonus === '✴')) {
-            const error = { message: "the first tile must be placed on the ✴ position" }
+
+        // test input length
+        if (tryCells.length < 1) {
+            const error = { message: "you must place down at least 1 tile." }
             
             props.addErrors(error)
             
             return
         }
 
-        // test input length
-        if (tryCells.length < 1) {
-            const error = { message: "you must place down at least 1 tile." }
+         // test first move input on starting pos 
+         if (!props.gameStart && !tryCells.find(cell => cell.bonus === '✴')) {
+            const error = { message: "the first tile must be placed on the ✴ position" }
             
             props.addErrors(error)
             
