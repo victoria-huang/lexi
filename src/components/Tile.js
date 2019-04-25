@@ -60,7 +60,7 @@ class Tile extends Component {
     handleSelectTile = (selected) => {
         if (selected === this.props.selected) this.props.deselectTile()
         else this.props.selectTile(selected)
-        this.openModal()
+
         // if blank tile
         if (selected === 99 || selected === 100) this.openModal()
     }
