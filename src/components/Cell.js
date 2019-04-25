@@ -46,18 +46,46 @@ class Cell extends Component {
 
     render() {
         const isUsedCell = this.props.usedCells.includes(this.props.id)
+        let color
 
+        switch(this.props.bonus) {
+            case 'DL':
+                color = 'green'
+                break
+            case 'TL':
+                color = 'blue'
+                break
+            case 'DW':
+                color = 'red'
+                break
+            case 'TW':
+                color = 'orange'
+                break
+            case '✴':
+                color = 'gold'
+                break
+            default:
+                color = 'white'
+        }
+        
         return (
             <g>
-                <text x={ this.props.x + 2.7 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="black">
+                { (this.props.bonus && !this.props.value) 
+                    && 
+                    <text x={ this.props.x + 3 } y={ this.props.bonus === '✴' ? this.props.y + 7 : this.props.y + 6 } fontSize={ this.props.bonus === '✴' ? '5' : '3' } fill="black">
+                        { this.props.bonus }
+                    </text>
+                }
+                
+                <text x={ this.props.x + 2.7 } y={ this.props.y + 7 } fontSize="5" fill="black">
                     { this.props.value }
                 </text>
-                <text x={ this.props.x + 6.5 } y={ this.props.y + 3 } fontFamily="Verdana" fontSize="2.5" fill="red">{ this.props.points }</text>
+                <text x={ this.props.x + 6.5 } y={ this.props.y + 3 } fontSize="2.5" fill="red">{ this.props.points }</text>
                 <rect
                     onClick={ () => this.handleClickCell(this.props.id, this.props.x, this.props.y) }
                     className="rect-svg"
-                    x={this.props.x}
-                    y={this.props.y}
+                    x={ this.props.x }
+                    y={ this.props.y }
                     width='10'
                     height='10'
                     stroke={ isUsedCell ? "rgb(157, 107, 250)" : "black" }
@@ -66,7 +94,7 @@ class Cell extends Component {
                         this.props.value ? 
                             isUsedCell ? "rgb(157, 107, 250)" : "rgb(255, 101, 229)"
                             : 
-                            "white" 
+                            color 
                         }
                     opacity={ isUsedCell ? "0.45" : "0.3" }
                 />
