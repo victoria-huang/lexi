@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
     updateUnusedTiles,
-    dealPlayerTiles
+    dealPlayerTiles,
+    switchTurn
 } from '../actions'
 
 import Submit from './Submit'
@@ -42,7 +43,7 @@ class ControlPanel extends Component {
                 <Submit createHand={ this.createHand } />
                 <Shuffle />
                 { (this.props.selected && !this.props.exchanged) && <Exchange /> }
-                <button>pass</button>
+                <button onClick={ this.props.switchTurn }>pass</button>
             </div>
         )
     }
@@ -57,6 +58,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     dealPlayerTiles: (tiles, player) => dispatch(dealPlayerTiles(tiles, player)),
     updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
+    switchTurn: () => dispatch(switchTurn())
 })
 
 
