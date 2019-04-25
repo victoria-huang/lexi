@@ -2,7 +2,7 @@ import React from 'react'
 
 const Error = (props) => {
     return (        
-        <span>{ props.message }</span>
+        <div style={{ padding: '2px'}}>{ props.message }</div>
     )
 }
 

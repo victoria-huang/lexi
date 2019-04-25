@@ -14,7 +14,7 @@ class TileContainer extends Component {
 
     render() {
         return (
-            <div style={{ display: 'flex', marginTop: '20px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 { this.props.playerTiles.length > 0 && this.renderPlayerTiles() }
             </div>
         )

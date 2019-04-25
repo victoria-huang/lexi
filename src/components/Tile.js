@@ -40,6 +40,12 @@ class Tile extends Component {
     handleSubmit = (e) => {
         e.preventDefault()
         const newSelectedId = parseInt(this.state.selectedTile)
+
+        if (!newSelectedId) {
+            this.handleCancel()
+            return 
+        }
+
         const foundBlankTile = this.props.playerTiles.find(t => t.id === this.props.selected)
         const foundTile = this.props.unusedTiles.find(t => t.id === newSelectedId)
         const unusedTiles = this.props.unusedTiles.filter(t => t.id !== newSelectedId)
@@ -91,12 +97,13 @@ class Tile extends Component {
             <span 
                 onClick={ () => this.handleSelectTile( this.props.id ) }
                 style={ this.props.selected === this.props.id ? 
-                    { backgroundColor: 'pink', paddingRight: '5px', border: '1px solid black', margin: '2px', padding: '2px', cursor: 'pointer' }
+                    { height: '3%', width: '4.5%', backgroundColor: 'pink', border: '1px solid gray', borderRadius: '4px', margin: '5px', padding: '5px', cursor: 'pointer', display: 'grid', gridTemplateColumns: '0.8fr 0.2fr', gridTemplateRows: '0.2fr 1fr' }
                     :
-                    { paddingRight: '5px', border: '1px solid black', margin: '2px', padding: '2px', cursor: 'pointer' }
+                    { height: '3%', width: '4.5%', backgroundColor: 'lightblue', border: 'none', borderRadius: '4px', margin: '5px', padding: '5px', cursor: 'pointer', display: 'grid', gridTemplateColumns: '0.8fr 0.2fr', gridTemplateRows: '0.2fr 1fr' }
                 }
             >
-                <h3 style={{ margin: '1px' }}>{ this.props.letter } ({ this.props.points })</h3>
+                <h3 style={{ margin: '1px', textAlign: 'center', gridColumn: 1, gridRow: 2 }}>{ this.props.letter !== '' ? this.props.letter : <div style={{ color: 'lightblue' }}>*</div> }</h3>
+                <span style={{ gridColumn: 2, gridRow: 1, textAlign: 'center', fontSize: '10px' }}>{ this.props.points }</span>
             </span>
 
             <Modal
@@ -108,6 +115,7 @@ class Tile extends Component {
                 <h2>select a tile</h2>
                 <form onSubmit={ this.handleSubmit }>
                     <select onChange={ this.handleChange } value={ this.state.selectedTile }>
+                        <option value='' disabled />
                         { this.getOptionsForSelectTile().map( t => 
                             <option 
                                 key= { v4() }
@@ -118,11 +126,11 @@ class Tile extends Component {
                             )
                         }
                     </select>
-                    <br />
+                    <br /><br />
                     <input type='submit' value='submit' />
                 </form>
                 <div>
-                    <button onClick={ this.handleCancel }>cancel</button>
+                    <button className='cancel-modal' onClick={ this.handleCancel }>cancel</button>
                 </div>
             </Modal>
             </>

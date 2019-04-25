@@ -20,12 +20,6 @@ class GameContainer extends Component {
             </div>
             <ErrorContainer />
             <Board />
-
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', paddingTop: '5px'}}>
-                
-                
-            </div>
-
             <TileContainer />
             <ControlPanel />
             </div>

@@ -53,7 +53,7 @@ const Submit = (props) => {
         const maxDistance = wordCells.length * 10
     
         if (distance > maxDistance) {
-            const error = { message: "New tiles must be placed adjacent to one another." }
+            const error = { message: "new tiles must be placed adjacent to one another." }
     
             return error
         }
@@ -108,7 +108,7 @@ const Submit = (props) => {
 
         // test input length
         if (tryCells.length < 1) {
-            const error = { message: "You must place down at least 1 tile." }
+            const error = { message: "you must place down at least 1 tile." }
             
             props.addErrors(error)
             
@@ -117,7 +117,7 @@ const Submit = (props) => {
 
         // test adjancency of tiles in both directions
         if (distinctX.length > 1 && distinctY.length > 1) {
-            const error = { message: "New tiles must be placed adjacent to one another in one direction." }
+            const error = { message: "new tiles must be placed adjacent to one another in one direction." }
             
             props.addErrors(error)
             
@@ -160,7 +160,7 @@ const Submit = (props) => {
                     tryWords.push(wordCells)
                 } else {
                     // 3. Need to also determine adjancency to existing tiles
-                    const error = { message: "New tiles must be placed adjacent to existing tiles." }
+                    const error = { message: "new tiles must be placed adjacent to existing tiles." }
 
                     props.addErrors(error)
 
@@ -201,7 +201,7 @@ const Submit = (props) => {
                     tryWords.push(wordCells)
                 } else {
                     // 3. Need to also determine adjancency to existing tiles
-                    const error = { message: "New tiles must be placed adjacent to existing tiles." }
+                    const error = { message: "new tiles must be placed adjacent to existing tiles." }
 
                     props.addErrors(error)
 
@@ -276,12 +276,12 @@ const Submit = (props) => {
 
                 if (props.usedCells.length > 0) {
                     errors = [
-                        { message: "Words must be at least 2 letters long." },
-                        { message: "New tiles must be placed adjacent to existing tiles." }
+                        { message: "words must be at least 2 letters long." },
+                        { message: "new tiles must be placed adjacent to existing tiles." }
                     ]
                 } else {
                     errors = [
-                        { message: "Words must be at least 2 letters long." },
+                        { message: "words must be at least 2 letters long." },
                     ]
                 }
 

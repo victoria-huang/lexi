@@ -11,7 +11,7 @@ const ErrorContainer = (props) => {
     return (
         <div style={
             props.errors.length > 0 ?
-            { border: '1px solid black', display: 'flex', justifyContent: 'center', margin: '5px' }
+            { color: 'red', display: 'flex', justifyContent: 'center', margin: '3px', fontSize: '0.8em' }
             :
             { display: 'none' }
         }>
