@@ -329,7 +329,7 @@ const Submit = (props) => {
                         letterMultiplier = 2
                         break
                     case 'DW':
-                        wordMultiplier = 3
+                        wordMultiplier = 2
                         break
                     case 'TL':
                         letterMultiplier = 3
