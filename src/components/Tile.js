@@ -54,12 +54,13 @@ class Tile extends Component {
     handleCancel = () => {
         this.closeModal()
         this.props.deselectTile()
+        this.setState({ selectedTile: '' })
     }
 
     handleSelectTile = (selected) => {
         if (selected === this.props.selected) this.props.deselectTile()
         else this.props.selectTile(selected)
-  
+        this.openModal()
         // if blank tile
         if (selected === 99 || selected === 100) this.openModal()
     }
