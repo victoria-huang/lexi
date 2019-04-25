@@ -11,7 +11,8 @@ import {
     resetExchanged,
     deselectTile,
     switchTurn,
-    updateCells
+    updateCells,
+    startGame
 } from '../actions'
 
 const Submit = (props) => {
@@ -106,6 +107,15 @@ const Submit = (props) => {
         const distinctY = [...new Set(tryCells.map(c => c.y))]
     
         props.clearErrors()
+        
+        // test first move input on starting pos 
+        if (!props.gameStart && !tryCells.find(cell => cell.bonus === '✴')) {
+            const error = { message: "the first tile must be placed on the ✴ position" }
+            
+            props.addErrors(error)
+            
+            return
+        }
 
         // test input length
         if (tryCells.length < 1) {
@@ -363,6 +373,7 @@ const Submit = (props) => {
         props.resetExchanged()
         props.deselectTile()
 
+        if (!props.gameStart) props.startGame()
         // 9. switch turn
         props.switchTurn()
     }
@@ -376,7 +387,8 @@ const mapStateToProps = (state) => ({
     cells: state.cell.allCells,
     usedCells: state.cell.usedCells,
     tryTiles: state.tile.tryTiles,
-    whoseTurn: state.game.whoseTurn
+    whoseTurn: state.game.whoseTurn,
+    gameStart: state.game.gameStart
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -389,7 +401,8 @@ const mapDispatchToProps = (dispatch) => ({
     resetExchanged: () => dispatch(resetExchanged()),
     deselectTile: () => dispatch(deselectTile()),
     switchTurn: () => dispatch(switchTurn()),
-    updateCells: (cells) => dispatch(updateCells(cells))
+    updateCells: (cells) => dispatch(updateCells(cells)),
+    startGame: () => dispatch(startGame())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Submit)

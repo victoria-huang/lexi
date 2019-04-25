@@ -92,6 +92,10 @@ export const updateUsedTiles = (tiles) => ({
 
 /************ GAME ************/
 
+export const startGame = () => ({
+    type: types.START_GAME
+})
+
 export const addPoints = (points) => ({
     type: types.ADD_POINTS,
     payload: points

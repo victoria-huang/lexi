@@ -1,4 +1,5 @@
 import {
+    START_GAME,
     ADD_POINTS,
     SET_EXCHANGED,
     RESET_EXCHANGED,
@@ -13,11 +14,17 @@ const initialState = {
     playerOne: null,
     playerTwo: null,
     whoseTurn: 1,
-    gameOver: false
+    gameOver: false,
+    gameStart: false
 }
 
 export default (state = initialState, action) => {
     switch(action.type) {
+        case START_GAME:
+            return {
+                ...state,
+                gameStart: true
+            }
         case ADD_POINTS:
             const key = ( state.whoseTurn === 1 ? "p1Points" : "p2Points" )
 
