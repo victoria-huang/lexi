@@ -49,7 +49,7 @@ class Cell extends Component {
 
         return (
             <g>
-                <text x={ this.props.x + 2.7 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="blue">
+                <text x={ this.props.x + 2.7 } y={ this.props.y + 7 } fontFamily="Verdana" fontSize="5" fill="black">
                     { this.props.value }
                 </text>
                 <text x={ this.props.x + 6.5 } y={ this.props.y + 3 } fontFamily="Verdana" fontSize="2.5" fill="red">{ this.props.points }</text>
@@ -60,11 +60,11 @@ class Cell extends Component {
                     y={this.props.y}
                     width='10'
                     height='10'
-                    stroke={ isUsedCell ? "green" : "black" }
-                    strokeWidth='0.5'
+                    stroke={ isUsedCell ? "rgb(157, 107, 250)" : "black" }
+                    strokeWidth='0.2'
                     fill={ 
                         this.props.value ? 
-                            isUsedCell ? "green" : "purple"
+                            isUsedCell ? "rgb(157, 107, 250)" : "rgb(255, 101, 229)"
                             : 
                             "white" 
                         }
