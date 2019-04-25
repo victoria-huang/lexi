@@ -12,11 +12,17 @@ class GameContainer extends Component {
         return (
             <div className='container'>
                 <div className='top-wrapper'>
-                    <h1 className='game-header'>{ this.props.playerOne }: { this.props.p1Points }</h1> 
-                    <h1 className='game-header'>
-                        it's <span className='turn'>{ this.props.whoseTurn === 1 ? this.props.playerOne : this.props.playerTwo }'s</span> turn
+                    <h1 className={ this.props.whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
+                        { this.props.playerOne }: { this.props.p1Points }
                     </h1>
-                    <h1 className='game-header'>{ this.props.playerTwo }: { this.props.p2Points }</h1>
+
+                    <h1 className='game-header'>
+                        l e x i .
+                    </h1>
+
+                    <h1 className={ this.props.whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
+                        { this.props.playerTwo }: { this.props.p2Points }
+                    </h1>
                 </div>
                 
                 <ErrorContainer />

@@ -55,19 +55,21 @@ input[type=submit] {
 }
 
 .game-header {
-  margin: 10px;
+  margin: 5px;
   letter-spacing: 3px;
   font-family: 'Tangerine', cursive;
   font-size: 2em;
 }
 
 .top-wrapper {
+  margin: 2px;
   display: flex;
   justify-content: space-between;
 }
 
 .turn {
   color: rgb(157, 107, 250);
+  border-bottom: 0.5px dashed rgb(157, 107, 250);
 }
 
 .container {
