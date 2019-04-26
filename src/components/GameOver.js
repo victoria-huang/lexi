@@ -25,7 +25,7 @@ const GameOver = (props) => {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 { 
                     props.p1Points === props.p2Points ? 
-                    <h2>"it's a tie!"</h2>
+                    <h2>it's a tie!</h2>
                     :
                     <h2>the winner is { props.p1Points > props.p2Points ? props.playerOne : props.playerTwo }!</h2>
                 }
