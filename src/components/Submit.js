@@ -16,12 +16,6 @@ import {
 } from '../actions'
 
 const Submit = (props) => {
-    const testWord = (word) => {
-        return fetch(`https://googledictionaryapi.eu-gb.mybluemix.net/?define=${word}`) 
-        .then(resp => resp.json())
-        .catch(err => console.log(err))
-    }
-
     const findFilledCells = () => props.cells.filter(c => c.value)
 
     const findTryCells = () => findFilledCells().filter(c => props.tryTiles.find(t => t.id === c.tileId))
@@ -396,6 +390,12 @@ const Submit = (props) => {
         if (!props.gameStart) props.startGame()
         // 9. switch turn
         props.switchTurn()
+    }
+
+    const testWord = (word) => {
+        return fetch(`https://googledictionaryapi.eu-gb.mybluemix.net/?define=${word}`) 
+        .then(resp => resp.json())
+        .catch(err => console.log(err))
     }
 
     return (
