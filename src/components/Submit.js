@@ -16,6 +16,12 @@ import {
 } from '../actions'
 
 const Submit = (props) => {
+    const testWord = (word) => {
+        return fetch(`https://googledictionaryapi.eu-gb.mybluemix.net/?define=${word}`) 
+        .then(resp => resp.json())
+        .catch(err => console.log(err))
+    }
+
     const findFilledCells = () => props.cells.filter(c => c.value)
 
     const findTryCells = () => findFilledCells().filter(c => props.tryTiles.find(t => t.id === c.tileId))
@@ -99,7 +105,7 @@ const Submit = (props) => {
         return null
     }
 
-    const handleTrySubmit = () => {
+    const handleTrySubmit = async () => {
         const tryWords = []
         const filledCells = findFilledCells()
         const tryCells = findTryCells()
@@ -312,12 +318,26 @@ const Submit = (props) => {
             }
         }
 
-        let pointTotal = 0
+        const wordErrors = []
         // 2. loop through tryWords 
-        tryWords.forEach(wordCells => {
+        await Promise.all(tryWords.map(async (wordCells) => {
             // 3. test validity
-                // const tryWord = wordCells.map(cell => cell.value).join('')
-                // assume anything is valid for now
+            const tryWord = wordCells.map(cell => cell.value).join('')
+            const result = await testWord(tryWord)
+
+            if (!result) wordErrors.push({ message: `${tryWord} is not a valid word.`})
+
+            return { word: tryWord, result }
+        }))
+        
+        if (wordErrors.length > 0) {
+            props.addErrors(wordErrors)
+            return
+        }
+
+        let pointTotal = 0
+
+        tryWords.forEach(async (wordCells) => {
             // 4. get points
             let wordMultiplier = 1
 
@@ -346,7 +366,7 @@ const Submit = (props) => {
             // 5. add points to user's score
             pointTotal += (points * wordMultiplier)
         })
-        
+
         props.addPoints(pointTotal)
         // console.log(tryWords)
         // console.log('points', pointTotal)
@@ -388,7 +408,8 @@ const mapStateToProps = (state) => ({
     usedCells: state.cell.usedCells,
     tryTiles: state.tile.tryTiles,
     whoseTurn: state.game.whoseTurn,
-    gameStart: state.game.gameStart
+    gameStart: state.game.gameStart,
+    errors: state.errors
 })
 
 const mapDispatchToProps = (dispatch) => ({

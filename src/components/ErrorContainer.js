@@ -7,7 +7,7 @@ import Error from './Error'
 
 const ErrorContainer = (props) => {
     const renderErrors = () => props.errors.map(e => <Error key={v4()} {...e} />)
- 
+    
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div style={
