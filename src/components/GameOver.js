@@ -36,7 +36,7 @@ const GameOver = (props) => {
                         </>
                     }
                 </h2>
-                
+
                 <p>thank you for playing.</p>
                 <p>press the button below to return to the homepage.</p>
                 <button className='endgame-button' onClick={ props.clearGame }>return</button>
