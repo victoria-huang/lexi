@@ -322,7 +322,6 @@ const Submit = (props) => {
 
             if (!result) wordErrors.push({ message: `${tryWord} is not a valid word.`})
             else return wordCells.map(cell => ({ ...cell, words: [...cell.words, result]}))
-            // return { word: tryWord, result }
         }))
         
         if (wordErrors.length > 0) {
@@ -334,7 +333,7 @@ const Submit = (props) => {
 
         let pointTotal = 0
 
-        tryWords.forEach(async (wordCells) => {
+        tryWords.forEach(wordCells => {
             // 4. get points
             let wordMultiplier = 1
 
@@ -373,10 +372,9 @@ const Submit = (props) => {
         
         // 7. disable cells & bonuses
         const newCells = [...props.cells].map(cell => {
-            if (tryCells.includes(cell)) {
-                const cellWithNewWords = testWordCells.find(wc => wc.id === cell.id)
-                return { ...cellWithNewWords, bonus: null }
-            } else return cell
+            const cellWithNewWords = testWordCells.find(wc => wc.id === cell.id)
+            if (cellWithNewWords) return { ...cellWithNewWords, bonus: null }
+            else return cell
         })
 
         props.updateCells(newCells)

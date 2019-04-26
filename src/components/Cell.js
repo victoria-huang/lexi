@@ -62,7 +62,6 @@ class Cell extends Component {
             }
         } else {
             const foundCell = this.props.cells.find(cell => cell.id === cellId)
-            console.log(foundCell)
             this.openModal(foundCell.words)
         }
     }
