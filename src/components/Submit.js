@@ -321,7 +321,12 @@ const Submit = (props) => {
             const result = await testWord(tryWord)
 
             if (!result) wordErrors.push({ message: `${tryWord} is not a valid word.`})
-            else return wordCells.map(cell => ({ ...cell, words: [...cell.words, result]}))
+            else 
+                return wordCells.map(cell => {
+                    // only add unique words to cell
+                    if (cell.words.find(w => w.word === result.word)) return cell
+                    else return { ...cell, words: [...cell.words, result] }
+                })
         }))
         
         if (wordErrors.length > 0) {

@@ -23,7 +23,6 @@ const GameOver = (props) => {
             contentLabel="game over"
         >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-
                 { 
                     props.p1Points === props.p2Points ? 
                     <h2>"it's a tie!"</h2>

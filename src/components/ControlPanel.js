@@ -5,7 +5,9 @@ import {
     updateUnusedTiles,
     dealPlayerTiles,
     switchTurn,
-    endGame
+    endGame,
+    resetExchanged,
+    deselectTile
 } from '../actions'
 
 import Submit from './Submit'
@@ -42,6 +44,12 @@ class ControlPanel extends Component {
         }
     }
 
+    handlePass = () => {
+        this.props.switchTurn()
+        this.props.resetExchanged()
+        this.props.deselectTile()
+    }
+
     render() {
         return (
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -49,7 +57,7 @@ class ControlPanel extends Component {
                 <Shuffle />
                 { (this.props.selected && !this.props.exchanged) && <Exchange /> }
                 <TileBag />
-                <button onClick={ this.props.switchTurn }>pass</button>
+                <button onClick={ this.handlePass }>pass</button>
                 <EndGame />
             </div>
         )
@@ -66,6 +74,8 @@ const mapDispatchToProps = (dispatch) => ({
     dealPlayerTiles: (tiles, player) => dispatch(dealPlayerTiles(tiles, player)),
     updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
     switchTurn: () => dispatch(switchTurn()),
+    resetExchanged: () => dispatch(resetExchanged()),
+    deselectTile: () => dispatch(deselectTile()),
     endGame: () => dispatch(endGame())
 })
 

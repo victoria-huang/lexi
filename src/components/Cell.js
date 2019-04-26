@@ -131,8 +131,9 @@ class Cell extends Component {
                 contentLabel="definitions"
             >
                 { this.state.showWords.map(word => <Definition key={ v4() } { ...word } /> ) }
-
-                <button className='modal-button' onClick={ this.closeModal }>close</button>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                    <button className='modal-button' onClick={ this.closeModal }>close</button>
+                </div>
             </Modal>
             </>
         )
