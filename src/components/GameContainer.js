@@ -6,6 +6,7 @@ import Board from './Board'
 import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
 import ControlPanel from './ControlPanel'
+import GameOver from './GameOver'
 
 class GameContainer extends Component {
     render() {
@@ -29,6 +30,8 @@ class GameContainer extends Component {
                 <Board />
                 <TileContainer />
                 <ControlPanel />
+
+                { this.props.gameOver && <GameOver /> }
             </div>
         )
     }
@@ -39,7 +42,8 @@ const mapStateToProps = (state) => ({
     p2Points: state.game.p2Points,
     whoseTurn: state.game.whoseTurn,
     playerOne: state.game.playerOne,
-    playerTwo: state.game.playerTwo
+    playerTwo: state.game.playerTwo,
+    gameOver: state.game.gameOver
 })
 
 export default connect(mapStateToProps)(GameContainer)

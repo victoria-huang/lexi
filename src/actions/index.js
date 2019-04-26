@@ -96,6 +96,10 @@ export const startGame = () => ({
     type: types.START_GAME
 })
 
+export const endGame = () => ({
+    type: types.END_GAME
+})
+
 export const addPoints = (points) => ({
     type: types.ADD_POINTS,
     payload: points
@@ -119,4 +123,10 @@ export const login = (playerOne, playerTwo) => ({
 
 export const switchTurn = () => ({
     type: types.SWITCH_TURN
+})
+
+/************ ALL ************/
+
+export const clearGame = () => ({
+    type: types.CLEAR_GAME
 })

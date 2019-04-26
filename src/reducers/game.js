@@ -1,5 +1,7 @@
 import {
     START_GAME,
+    END_GAME,
+    CLEAR_GAME,
     ADD_POINTS,
     SET_EXCHANGED,
     RESET_EXCHANGED,
@@ -25,6 +27,13 @@ export default (state = initialState, action) => {
                 ...state,
                 gameStart: true
             }
+        case END_GAME:
+            return {
+                ...state,
+                gameOver: true
+            }
+        case CLEAR_GAME:
+            return initialState
         case ADD_POINTS:
             const key = ( state.whoseTurn === 1 ? "p1Points" : "p2Points" )
 

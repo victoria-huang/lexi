@@ -1,7 +1,8 @@
 import { ALL_CELLS } from '../constants'
 import {
     UPDATE_CELLS,
-    SET_USED_CELLS
+    SET_USED_CELLS,
+    CLEAR_GAME
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -21,6 +22,8 @@ export default (state = initialState, action) => {
                 ...state,
                 usedCells: state.usedCells.concat(action.payload)
             }
+        case CLEAR_GAME:
+            return initialState
         default:
             return state
     }

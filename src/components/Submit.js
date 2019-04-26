@@ -119,7 +119,7 @@ const Submit = (props) => {
 
          // test first move input on starting pos 
          if (!props.gameStart && !tryCells.find(cell => cell.bonus === '✴')) {
-            const error = { message: "the first tile must be placed on the ✴ position" }
+            const error = { message: "the first tile must be placed on the ✴ position." }
             
             props.addErrors(error)
             

@@ -17,6 +17,8 @@ export const UPDATE_UNUSED_TILES = 'UPDATE_UNUSED_TILES'
 export const UPDATE_USED_TILES = 'UPDATE_USED_TILES'
 
 export const START_GAME = 'START_GAME'
+export const END_GAME = 'END_GAME'
+export const CLEAR_GAME = 'CLEAR_GAME'
 export const ADD_POINTS = 'ADD_POINTS'
 export const SET_EXCHANGED = 'SET_EXCHANGED'
 export const RESET_EXCHANGED = 'RESET_EXCHANGED'

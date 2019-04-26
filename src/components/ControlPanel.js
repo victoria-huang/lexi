@@ -11,6 +11,7 @@ import Submit from './Submit'
 import Shuffle from './Shuffle'
 import Exchange from './Exchange'
 import TileBag from './TileBag'
+import EndGame from './EndGame'
 
 class ControlPanel extends Component {
     componentDidMount() {
@@ -46,7 +47,7 @@ class ControlPanel extends Component {
                 { (this.props.selected && !this.props.exchanged) && <Exchange /> }
                 <TileBag />
                 <button onClick={ this.props.switchTurn }>pass</button>
-                <button>end game</button>
+                <EndGame />
             </div>
         )
     }
