@@ -44,7 +44,7 @@ const TileBag = (props) => {
             style={ customStyles }
             contentLabel="tile bag"
         >
-            <h2>tiles remaining</h2>
+            <h2>{ props.unusedTiles.length } tiles remaining</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', justifyContent: 'center', gridGap: '3px' }}>
             { getTiles().map( t => 
                 <div key= { v4() } style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
