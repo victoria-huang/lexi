@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
     updateUnusedTiles,
     dealPlayerTiles,
-    switchTurn
+    switchTurn,
+    endGame
 } from '../actions'
 
 import Submit from './Submit'
@@ -36,7 +37,9 @@ class ControlPanel extends Component {
             
             this.props.updateUnusedTiles(unusedTiles)
             this.props.dealPlayerTiles(playerTiles, player)
-        }  
+        } else {
+            this.props.endGame()
+        }
     }
 
     render() {
@@ -62,7 +65,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     dealPlayerTiles: (tiles, player) => dispatch(dealPlayerTiles(tiles, player)),
     updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
-    switchTurn: () => dispatch(switchTurn())
+    switchTurn: () => dispatch(switchTurn()),
+    endGame: () => dispatch(endGame())
 })
 
 
