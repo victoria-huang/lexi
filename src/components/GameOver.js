@@ -23,19 +23,13 @@ const GameOver = (props) => {
             contentLabel="game over"
         >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <h2>
-                    { props.p1Points === props.p2Points ? 
-                        "it's a tie!" 
-                        :
-                        <>
-                        the winner is { props.p1Points > props.p2Points ?
-                            props.playerOne
-                            :
-                            props.playerTwo
-                        }!
-                        </>
-                    }
-                </h2>
+
+                { 
+                    props.p1Points === props.p2Points ? 
+                    <h2>"it's a tie!"</h2>
+                    :
+                    <h2>the winner is { props.p1Points > props.p2Points ? props.playerOne : props.playerTwo }!</h2>
+                }
 
                 <p>thank you for playing.</p>
                 <p>press the button below to return to the homepage.</p>
