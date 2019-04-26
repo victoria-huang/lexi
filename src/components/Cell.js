@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import Modal from 'react-modal'
+import v4 from 'uuid'
 
 import { connect } from 'react-redux'
 import { 
@@ -11,7 +13,24 @@ import {
     removeTryTile
 } from '../actions'
 
+import Definition from './Definition'
+
+const customStyles = {
+    content: {
+        margin: '5% 20% 5% 20%'
+    }
+}
+
 class Cell extends Component {
+    state = { 
+        modal: false, 
+        showWords: [] 
+    }
+
+    openModal = (showWords) => this.setState({ modal: true, showWords })
+
+    closeModal = () => this.setState({ modal: false, showWords: [] })
+
     handleClickCell = (cellId) => {
         if (!this.props.usedCells.includes(cellId)) {
             const cells = [...this.props.cells]
@@ -41,7 +60,11 @@ class Cell extends Component {
                 this.props.addToHand(tile, this.props.whoseTurn)
                 this.props.removeTryTile(tile)
             }
-        }  
+        } else {
+            const foundCell = this.props.cells.find(cell => cell.id === cellId)
+            console.log(foundCell)
+            this.openModal(foundCell.words)
+        }
     }
 
     render() {
@@ -69,8 +92,10 @@ class Cell extends Component {
         }
         
         return (
+            <>
             <g>
-                { (this.props.bonus && !this.props.value) 
+                { 
+                    (this.props.bonus && !this.props.value) 
                     && 
                     <text x={ this.props.x + 3 } y={ this.props.bonus === '✴' ? this.props.y + 7 : this.props.y + 6 } fontSize={ this.props.bonus === '✴' ? '5' : '3' } fill="black">
                         { this.props.bonus }
@@ -99,6 +124,18 @@ class Cell extends Component {
                     opacity={ isUsedCell ? "0.45" : "0.3" }
                 />
             </g>
+
+            <Modal
+                isOpen={ this.state.modal }
+                onRequestClose={ this.closeModal }
+                style={ customStyles }
+                contentLabel="definitions"
+            >
+                { this.state.showWords.map(word => <Definition key={ v4() } { ...word } /> ) }
+
+                <button className='modal-button' onClick={ this.closeModal }>close</button>
+            </Modal>
+            </>
         )
     }
 }

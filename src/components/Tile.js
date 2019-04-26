@@ -101,7 +101,7 @@ class Tile extends Component {
 
             <Modal
                 isOpen={ this.state.modal }
-                onRequestClose={ this.closeModal }
+                onRequestClose={ this.handleCancel }
                 style={ customStyles }
                 contentLabel="select a tile"
             >

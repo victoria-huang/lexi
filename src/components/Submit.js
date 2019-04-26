@@ -313,21 +313,24 @@ const Submit = (props) => {
         }
 
         const wordErrors = []
+        
         // 2. loop through tryWords 
-        await Promise.all(tryWords.map(async (wordCells) => {
+        let testWordCells = await Promise.all(tryWords.map(async (wordCells) => {
             // 3. test validity
             const tryWord = wordCells.map(cell => cell.value).join('')
             const result = await testWord(tryWord)
 
             if (!result) wordErrors.push({ message: `${tryWord} is not a valid word.`})
-
-            return { word: tryWord, result }
+            else return wordCells.map(cell => ({ ...cell, words: [...cell.words, result]}))
+            // return { word: tryWord, result }
         }))
         
         if (wordErrors.length > 0) {
             props.addErrors(wordErrors)
             return
         }
+
+        testWordCells = [].concat.apply([], testWordCells);
 
         let pointTotal = 0
 
@@ -370,8 +373,10 @@ const Submit = (props) => {
         
         // 7. disable cells & bonuses
         const newCells = [...props.cells].map(cell => {
-            if (tryCells.includes(cell)) return { ...cell, bonus: null }
-            else return cell
+            if (tryCells.includes(cell)) {
+                const cellWithNewWords = testWordCells.find(wc => wc.id === cell.id)
+                return { ...cellWithNewWords, bonus: null }
+            } else return cell
         })
 
         props.updateCells(newCells)
