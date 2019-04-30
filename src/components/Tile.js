@@ -12,8 +12,6 @@ import {
     updateUnusedTiles
 } from '../actions'
 
-Modal.setAppElement('#root')
-
 const customStyles = {
     content: {
         margin: '5% 20% 5% 20%'

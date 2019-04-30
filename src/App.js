@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Modal from 'react-modal'
 
 import { connect } from 'react-redux'
 
@@ -7,11 +8,14 @@ import GameContainer from './components/GameContainer'
 
 import './App.css'
 
+Modal.setAppElement('#root')
+
 class App extends Component {
   render() {
     return (
       <>
-        { this.props.playerOne && this.props.playerTwo ?
+        { 
+          this.props.playerOne && this.props.playerTwo ?
           <GameContainer />
           :
           <Login />

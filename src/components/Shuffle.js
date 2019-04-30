@@ -3,9 +3,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { shufflePlayerTiles } from '../actions'
 
-const Shuffle = (props) => {
+const Shuffle = ({ 
+    p1Tiles, 
+    p2Tiles, 
+    whoseTurn, 
+    shufflePlayerTiles 
+}) => {
     const shuffleHand = () => {
-        const playerTiles = ( props.whoseTurn === 1 ? props.p1Tiles : props.p2Tiles )
+        const playerTiles = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
         const tiles = [...playerTiles]
 
         let i, j, temp
@@ -17,7 +22,7 @@ const Shuffle = (props) => {
             tiles[j] = temp
         }
 
-        props.shufflePlayerTiles(tiles, props.whoseTurn)
+        shufflePlayerTiles(tiles, whoseTurn)
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import { connect } from 'react-redux'
 
@@ -8,33 +8,38 @@ import ErrorContainer from './ErrorContainer'
 import ControlPanel from './ControlPanel'
 import GameOver from './GameOver'
 
-class GameContainer extends Component {
-    render() {
-        return (
-            <div className='container'>
-                <div className='top-wrapper'>
-                    <h1 className={ this.props.whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
-                        { this.props.playerOne }: { this.props.p1Points }
-                    </h1>
+const GameContainer = ({
+    p1Points,
+    p2Points,
+    whoseTurn,
+    playerOne,
+    playerTwo,
+    gameOver 
+}) => {
+    return (
+        <div className='container'>
+            <div className='top-wrapper'>
+                <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
+                    { playerOne }: { p1Points }
+                </h1>
 
-                    <h1 className='game-header'>
-                        l e x i .
-                    </h1>
+                <h1 className='game-header'>
+                    l e x i .
+                </h1>
 
-                    <h1 className={ this.props.whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
-                        { this.props.playerTwo }: { this.props.p2Points }
-                    </h1>
-                </div>
-                
-                <ErrorContainer />
-                <Board />
-                <TileContainer />
-                <ControlPanel />
-
-                { this.props.gameOver && <GameOver /> }
+                <h1 className={ whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
+                    { playerTwo }: { p2Points }
+                </h1>
             </div>
-        )
-    }
+            
+            <ErrorContainer />
+            <Board />
+            <TileContainer />
+            <ControlPanel />
+
+            { gameOver && <GameOver /> }
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => ({

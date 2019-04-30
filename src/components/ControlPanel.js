@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+// import React, { Component } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { connect } from 'react-redux'
 import {
@@ -7,7 +8,8 @@ import {
     switchTurn,
     endGame,
     resetExchanged,
-    deselectTile
+    deselectTile,
+    dealFirstHand
 } from '../actions'
 
 import Submit from './Submit'
@@ -16,58 +18,127 @@ import Exchange from './Exchange'
 import TileBag from './TileBag'
 import EndGame from './EndGame'
 
-class ControlPanel extends Component {
-    componentDidMount() {
-        Promise.resolve()
-        .then(() => this.createHand(7, 1))
-        .then(() => this.createHand(7, 2))
-    }
+const ControlPanel = ({ 
+    unusedTiles, 
+    dealPlayerTiles, 
+    updateUnusedTiles, 
+    endGame,  
+    switchTurn, 
+    resetExchanged, 
+    deselectTile,
+    selected, 
+    exchanged,
+    firstHandDealt,
+    dealFirstHand
+})  => {
+    const firstHand = useRef(false)
 
-    createHand = (num, player) => {
-        if (this.props.unusedTiles.length >= num) {
+    useEffect(() => {
+        createHand(7, 1)
+    }, [])
+
+    useEffect(() => {
+        if (firstHand.current) createHand(7, 2)
+        else firstHand.current = true
+        
+    }, [firstHandDealt])
+
+    const createHand = (num, player) => {
+        if (unusedTiles.length >= num) {
             let playerTiles = []
-            let unusedTiles = [...this.props.unusedTiles]
+            let copyUnusedTiles = [...unusedTiles]
     
             for (let i = 0; i < num; i++) {
-                const max = unusedTiles.length - 1
+                const max = copyUnusedTiles.length - 1
                 const min = 0
                 const randomIndex = Math.floor(Math.random() * (max - min) + min)
-                const foundTile = unusedTiles[randomIndex]
+                const foundTile = copyUnusedTiles[randomIndex]
                 playerTiles.push(foundTile)
-                unusedTiles = unusedTiles.filter(t => t !== foundTile)
+                copyUnusedTiles = copyUnusedTiles.filter(t => t !== foundTile)
             }
-            
-            this.props.updateUnusedTiles(unusedTiles)
-            this.props.dealPlayerTiles(playerTiles, player)
-        } else {
-            this.props.endGame()
-        }
+
+            if (!firstHandDealt) dealFirstHand()
+
+            updateUnusedTiles(copyUnusedTiles)
+            dealPlayerTiles(playerTiles, player)
+        } else endGame()
     }
 
-    handlePass = () => {
-        this.props.switchTurn()
-        this.props.resetExchanged()
-        this.props.deselectTile()
+    const handlePass = () => {
+        switchTurn()
+        resetExchanged()
+        deselectTile()
     }
 
-    render() {
-        return (
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Submit createHand={ this.createHand } />
-                <Shuffle />
-                { (this.props.selected && !this.props.exchanged) && <Exchange /> }
-                <TileBag />
-                <button onClick={ this.handlePass }>pass</button>
-                <EndGame />
-            </div>
-        )
-    }
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Submit createHand={ createHand } />
+            <Shuffle />
+            { (selected && !exchanged) && <Exchange /> }
+            <TileBag />
+            <button onClick={ handlePass }>pass</button>
+            <EndGame />
+        </div>
+    ) 
 }
+
+// class ControlPanel extends Component {
+//     componentDidMount() {
+//         Promise.resolve()
+//         .then(() => this.createHand(7, 1))
+//         .then(() => this.createHand(7, 2))
+//     }
+
+//     createHand = (num, player) => {
+//         const { unusedTiles, dealPlayerTiles, updateUnusedTiles, endGame } = this.props
+
+//         if (unusedTiles.length >= num) {
+//             let playerTiles = []
+//             let copyUnusedTiles = [...unusedTiles]
+    
+//             for (let i = 0; i < num; i++) {
+//                 const max = copyUnusedTiles.length - 1
+//                 const min = 0
+//                 const randomIndex = Math.floor(Math.random() * (max - min) + min)
+//                 const foundTile = copyUnusedTiles[randomIndex]
+//                 playerTiles.push(foundTile)
+//                 copyUnusedTiles = copyUnusedTiles.filter(t => t !== foundTile)
+//             }
+            
+//             updateUnusedTiles(copyUnusedTiles)
+//             dealPlayerTiles(playerTiles, player)
+//         } else endGame()
+//     }
+
+//     handlePass = () => {
+//         const { switchTurn, resetExchanged, deselectTile } = this.props
+
+//         switchTurn()
+//         resetExchanged()
+//         deselectTile()
+//     }
+
+//     render() {
+//         const { selected, exchanged } = this.props
+
+//         return (
+//             <div style={{ display: 'flex', justifyContent: 'center' }}>
+//                 <Submit createHand={ this.createHand } />
+//                 <Shuffle />
+//                 { (selected && !exchanged) && <Exchange /> }
+//                 <TileBag />
+//                 <button onClick={ this.handlePass }>pass</button>
+//                 <EndGame />
+//             </div>
+//         )
+//     }
+// }
 
 const mapStateToProps = (state) => ({
     unusedTiles: state.tile.unusedTiles,
     selected: state.tile.selected,
-    exchanged: state.game.exchanged
+    exchanged: state.game.exchanged,
+    firstHandDealt: state.game.firstHandDealt
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -76,8 +147,8 @@ const mapDispatchToProps = (dispatch) => ({
     switchTurn: () => dispatch(switchTurn()),
     resetExchanged: () => dispatch(resetExchanged()),
     deselectTile: () => dispatch(deselectTile()),
-    endGame: () => dispatch(endGame())
+    endGame: () => dispatch(endGame()),
+    dealFirstHand: () => dispatch(dealFirstHand())
 })
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel)

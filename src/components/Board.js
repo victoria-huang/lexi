@@ -1,29 +1,27 @@
-import React, { Component } from 'react'
+import React from 'react'
 import v4 from 'uuid'
 
 import { connect } from 'react-redux'
 
 import Cell from './Cell'
 
-class Board extends Component {
-    renderCells = () => this.props.cells.map( cell => <Cell key={ v4() } { ...cell } /> )
+const Board = ({ cells }) => {
+    const renderCells = () => cells.map( cell => <Cell key={ v4() } { ...cell } /> )
 
-    render() {
-        return(
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                <div style={{ width: '70%'}}>
-                    <svg
-                        viewBox={`0 0 150 150`}
-                        overflow="visible"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{ cursor: "pointer" }}
-                    >
-                        <g>{ this.renderCells() }</g>
-                    </svg>
-                </div>
+    return(
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <div style={{ width: '70%'}}>
+                <svg
+                    viewBox={`0 0 150 150`}
+                    overflow="visible"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ cursor: "pointer" }}
+                >
+                    <g>{ renderCells() }</g>
+                </svg>
             </div>
-        )
-    }
+        </div>
+    )
 } 
 
 const mapStateToProps = (state) => ({

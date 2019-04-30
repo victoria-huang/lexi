@@ -125,6 +125,10 @@ export const switchTurn = () => ({
     type: types.SWITCH_TURN
 })
 
+export const dealFirstHand = () => ({
+    type: types.DEAL_FIRST_HAND
+})
+
 /************ ALL ************/
 
 export const clearGame = () => ({

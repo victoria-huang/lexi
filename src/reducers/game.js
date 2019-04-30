@@ -6,7 +6,8 @@ import {
     SET_EXCHANGED,
     RESET_EXCHANGED,
     LOGIN,
-    SWITCH_TURN
+    SWITCH_TURN,
+    DEAL_FIRST_HAND
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -17,7 +18,8 @@ const initialState = {
     playerTwo: null,
     whoseTurn: 1,
     gameOver: false,
-    gameStart: false
+    gameStart: false,
+    firstHandDealt: false
 }
 
 export default (state = initialState, action) => {
@@ -63,6 +65,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 whoseTurn
+            }
+        case DEAL_FIRST_HAND:
+            return {
+                ...state,
+                firstHandDealt: true
             }
         default:
             return state

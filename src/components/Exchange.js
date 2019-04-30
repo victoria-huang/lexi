@@ -9,21 +9,31 @@ import {
     setExchanged
  } from '../actions'
 
-const Exchange = (props) => {
+const Exchange = ({
+    unusedTiles,
+    playerTiles,
+    selected,
+    whoseTurn,
+    addToHand,
+    removeFromHand,
+    updateUnusedTiles,
+    deselectTile,
+    setExchanged
+}) => {
     const exchangeTile = () => {
-        const selectedTile = props.playerTiles.find(pt => pt.id === props.selected)
-        const unusedTiles = [...props.unusedTiles]
-        const max = unusedTiles.length - 1
+        const selectedTile = playerTiles.find(pt => pt.id === selected)
+        const copyUnusedTiles = [...unusedTiles]
+        const max = copyUnusedTiles.length - 1
         const min = 0
         const randomIndex = Math.floor(Math.random() * (max - min) + min)
-        const randomTile = unusedTiles[randomIndex]
-        unusedTiles[randomIndex] = selectedTile
+        const randomTile = copyUnusedTiles[randomIndex]
+        copyUnusedTiles[randomIndex] = selectedTile
 
-        props.deselectTile()
-        props.removeFromHand(selectedTile, props.whoseTurn)
-        props.addToHand(randomTile, props.whoseTurn)
-        props.updateUnusedTiles(unusedTiles)
-        props.setExchanged()
+        deselectTile()
+        removeFromHand(selectedTile, whoseTurn)
+        addToHand(randomTile, whoseTurn)
+        updateUnusedTiles(copyUnusedTiles)
+        setExchanged()
     }
 
     return (

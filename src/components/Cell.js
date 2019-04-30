@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Modal from 'react-modal'
 import v4 from 'uuid'
 
 import { connect } from 'react-redux'
 import { 
     updateCells,
-    selectTile,
     deselectTile,
     addToHand,
     removeFromHand,
@@ -21,123 +20,166 @@ const customStyles = {
     }
 }
 
-class Cell extends Component {
-    state = { 
-        modal: false, 
-        showWords: [] 
+const Cell = ({ 
+    cells, 
+    usedCells, 
+    selected, 
+    playerTiles, 
+    tryTiles, 
+    whoseTurn,
+    updateCells,
+    deselectTile,
+    addToHand,
+    removeFromHand,
+    addTryTile,
+    removeTryTile,
+    id,
+    x,
+    y,
+    value,
+    points,
+    bonus 
+}) => {
+    const isUsedCell = usedCells.includes(id)
+
+    let color
+
+    switch(bonus) {
+        case 'DL':
+            color = 'green'
+            break
+        case 'TL':
+            color = 'blue'
+            break
+        case 'DW':
+            color = 'red'
+            break
+        case 'TW':
+            color = 'orange'
+            break
+        case '✴':
+            color = 'gold'
+            break
+        default:
+            color = 'white'
     }
 
-    openModal = (showWords) => this.setState({ modal: true, showWords })
+    const [modal, setModal] = useState(false)
+    const [showWords, setShowWords] = useState([])
 
-    closeModal = () => this.setState({ modal: false, showWords: [] })
+    const openModal = (showWords) => {
+        setModal(true)
+        setShowWords(showWords)
+    }
 
-    handleClickCell = (cellId) => {
-        if (!this.props.usedCells.includes(cellId)) {
-            const cells = [...this.props.cells]
+    const closeModal = () => {
+        setModal(false)
+        setShowWords([])
+    }
+
+    const handleClickCell = (cellId) => {
+        if (!usedCells.includes(cellId)) {
+            const copyCells = [...cells]
             const cellIdx = cells.findIndex(c => c.id === cellId)
-            const foundCell = { ...this.props.cells[cellIdx] }
+            const foundCell = { ...cells[cellIdx] }
 
-            if (this.props.selected && !foundCell.value) {
-                const tile = this.props.playerTiles.find(t => t.id === this.props.selected)
+            if (selected && !foundCell.value) {
+                const tile = playerTiles.find(t => t.id === selected)
                 foundCell.tileId = tile.id
                 foundCell.value = tile.letter 
                 foundCell.points = tile.points 
-                cells[cellIdx] = foundCell
+                copyCells[cellIdx] = foundCell
 
-                this.props.updateCells(cells)
-                this.props.deselectTile()
-                this.props.removeFromHand(tile, this.props.whoseTurn)
-                this.props.addTryTile(tile)
+                updateCells(copyCells)
+                deselectTile()
+                removeFromHand(tile, whoseTurn)
+                addTryTile(tile)
             }
 
-            if (!this.props.selected && foundCell.value) {
-                const tile = this.props.tryTiles.find(t => t.id === foundCell.tileId)
+            if (!selected && foundCell.value) {
+                const tile = tryTiles.find(t => t.id === foundCell.tileId)
                 foundCell.value = null
                 foundCell.points = null
-                cells[cellIdx] = foundCell
+                copyCells[cellIdx] = foundCell
 
-                this.props.updateCells(cells)
-                this.props.addToHand(tile, this.props.whoseTurn)
-                this.props.removeTryTile(tile)
+                updateCells(copyCells)
+                addToHand(tile, whoseTurn)
+                removeTryTile(tile)
             }
         } else {
-            const foundCell = this.props.cells.find(cell => cell.id === cellId)
-            this.openModal(foundCell.words)
+            const foundCell = cells.find(cell => cell.id === cellId)
+            openModal(foundCell.words)
         }
     }
 
-    render() {
-        const isUsedCell = this.props.usedCells.includes(this.props.id)
-        let color
-
-        switch(this.props.bonus) {
-            case 'DL':
-                color = 'green'
-                break
-            case 'TL':
-                color = 'blue'
-                break
-            case 'DW':
-                color = 'red'
-                break
-            case 'TW':
-                color = 'orange'
-                break
-            case '✴':
-                color = 'gold'
-                break
-            default:
-                color = 'white'
-        }
-        
-        return (
-            <>
-            <g>
-                { 
-                    (this.props.bonus && !this.props.value) 
-                    && 
-                    <text x={ this.props.x + 3 } y={ this.props.bonus === '✴' ? this.props.y + 7 : this.props.y + 6 } fontSize={ this.props.bonus === '✴' ? '5' : '3' } fill="black">
-                        { this.props.bonus }
-                    </text>
-                }
-                
-                <text x={ this.props.x + 2.7 } y={ this.props.y + 7 } fontSize="5" fill="black">
-                    { this.props.value }
+    return (
+        <>
+        <g>
+            { 
+                (bonus && !value) 
+                && 
+                <text 
+                    x={ x + 3 } 
+                    y={ bonus === '✴' ? y + 7 : y + 6 } 
+                    fontSize={ bonus === '✴' ? '5' : '3' } 
+                    fill="black"
+                >
+                    { bonus }
                 </text>
-                <text x={ this.props.x + 6.5 } y={ this.props.y + 3 } fontSize="2.5" fill="red">{ this.props.points }</text>
-                <rect
-                    onClick={ () => this.handleClickCell(this.props.id, this.props.x, this.props.y) }
-                    className="rect-svg"
-                    x={ this.props.x }
-                    y={ this.props.y }
-                    width='10'
-                    height='10'
-                    stroke={ isUsedCell ? "rgb(157, 107, 250)" : "black" }
-                    strokeWidth='0.2'
-                    fill={ 
-                        this.props.value ? 
-                            isUsedCell ? "rgb(157, 107, 250)" : "rgb(255, 101, 229)"
-                            : 
-                            color 
-                        }
-                    opacity={ isUsedCell ? "0.45" : "0.3" }
-                />
-            </g>
-
-            <Modal
-                isOpen={ this.state.modal }
-                onRequestClose={ this.closeModal }
-                style={ customStyles }
-                contentLabel="definitions"
+            }
+            
+            <text 
+                x={ x + 2.7 } 
+                y={ y + 7 } 
+                fontSize="5" 
+                fill="black"
             >
-                { this.state.showWords.map(word => <Definition key={ v4() } { ...word } /> ) }
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                    <button className='modal-button' onClick={ this.closeModal }>close</button>
-                </div>
-            </Modal>
-            </>
-        )
-    }
+                { value }
+            </text>
+
+            <text 
+                x={ x + 6.5 } 
+                y={ y + 3 } 
+                fontSize="2.5" 
+                fill="red"
+            >
+                { points }
+            </text>
+
+            <rect
+                onClick={ () => handleClickCell(id, x, y) }
+                className="rect-svg"
+                x={ x }
+                y={ y }
+                width='10'
+                height='10'
+                stroke={ isUsedCell ? "rgb(157, 107, 250)" : "black" }
+                strokeWidth='0.2'
+                fill={ 
+                    value ? 
+                        isUsedCell ? "rgb(157, 107, 250)" : "rgb(255, 101, 229)"
+                        : 
+                        color 
+                    }
+                opacity={ isUsedCell ? "0.45" : "0.3" }
+            />
+        </g>
+
+        <Modal
+            isOpen={ modal }
+            onRequestClose={ closeModal }
+            style={ customStyles }
+            contentLabel="definitions"
+        >
+            { showWords.map(word => <Definition key={ v4() } { ...word } /> ) }
+            
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                <button className='modal-button' onClick={ closeModal }>close</button>
+            </div>
+        </Modal>
+        </>
+    )
+    
 }
 
 const mapStateToProps = (state) => ({
@@ -151,7 +193,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     updateCells: (cells) => dispatch(updateCells(cells)),
-    selectTile: (tile) => dispatch(selectTile(tile)),
     deselectTile: () => dispatch(deselectTile()),
     addToHand: (tile, player) => dispatch(addToHand(tile, player)),
     removeFromHand: (tile, player) => dispatch(removeFromHand(tile, player)),

@@ -1,24 +1,27 @@
-import React, { Component } from 'react'
+import React from 'react'
 import v4 from 'uuid'
 
 import { connect } from 'react-redux'
 
 import Tile from './Tile'
 
-class TileContainer extends Component {
-    renderPlayerTiles = () => {
-        const tileIds = ( this.props.whoseTurn === 1 ? this.props.p1Tiles : this.props.p2Tiles )
-        const playerTiles = tileIds.map( tId => this.props.playerTiles.find(t => t.id === tId) )
-        return playerTiles.map( t => <Tile key={ v4() } { ...t } /> )
+const TileContainer = ({
+    playerTiles,
+    p1Tiles,
+    p2Tiles,
+    whoseTurn
+}) => {
+    const renderPlayerTiles = () => {
+        const tileIds = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
+        const foundPlayerTiles = tileIds.map( tId => playerTiles.find(t => t.id === tId) )
+        return foundPlayerTiles.map( t => <Tile key={ v4() } { ...t } /> )
     }
 
-    render() {
-        return (
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                { this.props.playerTiles.length > 0 && this.renderPlayerTiles() }
-            </div>
-        )
-    }
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+            { playerTiles.length > 0 && renderPlayerTiles() }
+        </div>
+    )
 }  
 
 const mapStateToProps = (state) => ({

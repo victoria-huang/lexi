@@ -15,7 +15,13 @@ const customStyles = {
     }
 }
 
-const GameOver = (props) => {
+const GameOver = ({ 
+    playerOne, 
+    playerTwo, 
+    p1Points, 
+    p2Points, 
+    clearGame 
+}) => {
     return (
         <Modal
             isOpen={ true }
@@ -24,15 +30,15 @@ const GameOver = (props) => {
         >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 { 
-                    props.p1Points === props.p2Points ? 
+                    p1Points === p2Points ? 
                     <h2>it's a tie!</h2>
                     :
-                    <h2>the winner is { props.p1Points > props.p2Points ? props.playerOne : props.playerTwo }!</h2>
+                    <h2>the winner is { p1Points > p2Points ? playerOne : playerTwo }!</h2>
                 }
 
                 <p>thank you for playing.</p>
                 <p>press the button below to return to the homepage.</p>
-                <button className='endgame-button' onClick={ props.clearGame }>return</button>
+                <button className='endgame-button' onClick={ clearGame }>return</button>
             </div>
         </Modal>
     )

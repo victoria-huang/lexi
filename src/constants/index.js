@@ -329,85 +329,84 @@ export const ALL_CELLS = [
     { id: 225, x: 140, y: 140, bonus: 'TW', words: [] }
 ]
 
-/*
-    generating tiles & cells:
 
-    const TILES = [
-        { letter: 'a', amount: 9, points: 1 },
-        { letter: 'b', amount: 2, points: 3 },
-        { letter: 'c', amount: 2, points: 3 },
-        { letter: 'd', amount: 4, points: 2 },
-        { letter: 'e', amount: 12, points: 1 },
-        { letter: 'f', amount: 2, points: 4 },
-        { letter: 'g', amount: 3, points: 2 },
-        { letter: 'h', amount: 2, points: 4 },
-        { letter: 'i', amount: 9, points: 1 },
-        { letter: 'j', amount: 1, points: 8 },
-        { letter: 'k', amount: 1, points: 5 },
-        { letter: 'l', amount: 4, points: 1 },
-        { letter: 'm', amount: 2, points: 3 },
-        { letter: 'n', amount: 6, points: 1 },
-        { letter: 'o', amount: 8, points: 1 },
-        { letter: 'p', amount: 2, points: 3 },
-        { letter: 'q', amount: 1, points: 10 },
-        { letter: 'r', amount: 6, points: 1 },
-        { letter: 's', amount: 4, points: 1 },
-        { letter: 't', amount: 6, points: 1 },
-        { letter: 'u', amount: 4, points: 1 },
-        { letter: 'v', amount: 2, points: 4 },
-        { letter: 'w', amount: 2, points: 4 },
-        { letter: 'x', amount: 1, points: 8 },
-        { letter: 'y', amount: 2, points: 4 },
-        { letter: 'z', amount: 1, points: 10 },
-        { letter: '', amount: 2, points: 0 },
-    ]
+/* generating tiles & cells: */
 
-    // in GameContainer component:
+// const TILES = [
+//     { letter: 'a', amount: 9, points: 1 },
+//     { letter: 'b', amount: 2, points: 3 },
+//     { letter: 'c', amount: 2, points: 3 },
+//     { letter: 'd', amount: 4, points: 2 },
+//     { letter: 'e', amount: 12, points: 1 },
+//     { letter: 'f', amount: 2, points: 4 },
+//     { letter: 'g', amount: 3, points: 2 },
+//     { letter: 'h', amount: 2, points: 4 },
+//     { letter: 'i', amount: 9, points: 1 },
+//     { letter: 'j', amount: 1, points: 8 },
+//     { letter: 'k', amount: 1, points: 5 },
+//     { letter: 'l', amount: 4, points: 1 },
+//     { letter: 'm', amount: 2, points: 3 },
+//     { letter: 'n', amount: 6, points: 1 },
+//     { letter: 'o', amount: 8, points: 1 },
+//     { letter: 'p', amount: 2, points: 3 },
+//     { letter: 'q', amount: 1, points: 10 },
+//     { letter: 'r', amount: 6, points: 1 },
+//     { letter: 's', amount: 4, points: 1 },
+//     { letter: 't', amount: 6, points: 1 },
+//     { letter: 'u', amount: 4, points: 1 },
+//     { letter: 'v', amount: 2, points: 4 },
+//     { letter: 'w', amount: 2, points: 4 },
+//     { letter: 'x', amount: 1, points: 8 },
+//     { letter: 'y', amount: 2, points: 4 },
+//     { letter: 'z', amount: 1, points: 10 },
+//     { letter: '', amount: 2, points: 0 },
+// ]
 
-    componentDidMount() {
-        this.generateCells()
+// // in GameContainer component:
 
-        this.setState({
-            unusedTiles: this.createTileBag()
-        }, () => { this.createHand(7) })
-    }
+// componentDidMount() {
+//     this.generateCells()
 
-    generateCells = () => {
-        let cells = []
-        let id = 1
+//     this.setState({
+//         unusedTiles: this.createTileBag()
+//     }, () => { this.createHand(7) })
+// }
 
-        for (let x = 0; x < 150; x += 10) {
-            for (let y = 0; y < 150; y += 10) {
-                const newCell = { id, x, y }
-                cells.push(newCell)
-                id++
-            }
-        }
+// generateCells = () => {
+//     let cells = []
+//     let id = 1
 
-        this.setState({ cells })
-    }
+//     for (let x = 0; x < 150; x += 10) {
+//         for (let y = 0; y < 150; y += 10) {
+//             const newCell = { id, x, y }
+//             cells.push(newCell)
+//             id++
+//         }
+//     }
 
-    createTileBag = () => {
-        let id = 1
+//     this.setState({ cells })
+// }
 
-        const tiles = TILES.map( t => {
-            let newTiles = []
+// createTileBag = () => {
+//     let id = 1
 
-            for (let i = 0; i < t.amount; i++) {
-                const newTile = {
-                    id,
-                    letter: t.letter,
-                    points: t.points
-                }
-                newTiles.push(newTile)
-                id++
-            }
+//     const tiles = TILES.map( t => {
+//         let newTiles = []
 
-            return newTiles
-        })
+//         for (let i = 0; i < t.amount; i++) {
+//             const newTile = {
+//                 id,
+//                 letter: t.letter,
+//                 points: t.points
+//             }
+//             newTiles.push(newTile)
+//             id++
+//         }
 
-        const flattened = [].concat.apply([], tiles);
+//         return newTiles
+//     })
 
-        return flattened
-    }
-*/
+//     const flattened = [].concat.apply([], tiles);
+
+//     return flattened
+// }

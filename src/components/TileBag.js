@@ -10,14 +10,14 @@ const customStyles = {
     }
 }
 
-const TileBag = (props) => {
+const TileBag = ({ unusedTiles }) => {
     const [modal, setModal] = useState(false)
 
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
 
     const getTiles = () => {
-        const noBlankTiles = props.unusedTiles.filter( t => t.letter !== '' )
+        const noBlankTiles = unusedTiles.filter( t => t.letter !== '' )
         const uniqueLetters = []
         const uniqueArr = []
 
@@ -44,23 +44,40 @@ const TileBag = (props) => {
             style={ customStyles }
             contentLabel="tile bag"
         >
-            <h2>{ props.unusedTiles.length } tiles remaining</h2>
+            <h2>{ unusedTiles.length } tiles remaining</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', justifyContent: 'center', gridGap: '3px' }}>
             { getTiles().map( t => 
-                <div key= { v4() } style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span 
-                        style={{ height: '50%', width: '30%', backgroundColor: 'lightblue', border: 'none', borderRadius: '4px', margin: '5px', padding: '5px', display: 'grid', gridTemplateColumns: '0.8fr 0.2fr', gridTemplateRows: '0.2fr 1fr' }}
-                    >
-                        <h3 style={{ margin: '1px', textAlign: 'center', fontSize: '1em', gridColumn: 1, gridRow: 2 }}>{ t.letter !== '' ? t.letter : <div style={{ color: 'lightblue' }}>*</div> }</h3>
-                        <span style={{ gridColumn: 2, gridRow: 1, textAlign: 'center', fontSize: '0.5em' }}>{ t.points }</span>
+                <div 
+                    key= { v4() } 
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+                >
+                    <span style={{ height: '50%', width: '30%', backgroundColor: 'lightblue', border: 'none', borderRadius: '4px', margin: '5px', padding: '5px', display: 'grid', gridTemplateColumns: '0.8fr 0.2fr', gridTemplateRows: '0.2fr 1fr' }}>
+                        <h3 style={{ margin: '1px', textAlign: 'center', fontSize: '1em', gridColumn: 1, gridRow: 2 }}>
+                            { 
+                                t.letter !== '' ? 
+                                t.letter 
+                                : 
+                                <div style={{ color: 'lightblue' }}>*</div> 
+                            }
+                        </h3>
+                        <span style={{ gridColumn: 2, gridRow: 1, textAlign: 'center', fontSize: '0.5em' }}>
+                            { t.points }
+                        </span>
                     </span>
-                    <span style={{ fontSize: '0.8em' }}>{ t.numLeft } remaining</span>
+                    <span style={{ fontSize: '0.8em' }}>
+                        { t.numLeft } remaining
+                    </span>
                 </div>
                 )
             }
             </div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <button className='modal-button' onClick={ closeModal }>close</button>
+                <button 
+                    className='modal-button' 
+                    onClick={ closeModal }
+                >
+                    close
+                </button>
             </div>
         </Modal>
         </>

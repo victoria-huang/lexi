@@ -15,10 +15,29 @@ import {
     startGame
 } from '../actions'
 
-const Submit = (props) => {
-    const findFilledCells = () => props.cells.filter(c => c.value)
+const Submit = ({
+    cells,
+    usedCells,
+    tryTiles,
+    whoseTurn,
+    gameStart,
+    updateUsedTiles,
+    addErrors,
+    clearErrors,
+    addPoints,
+    clearTryTiles,
+    setUsedCells,
+    resetExchanged,
+    deselectTile,
+    switchTurn,
+    updateCells,
+    startGame,
+    createHand
+}) => {
 
-    const findTryCells = () => findFilledCells().filter(c => props.tryTiles.find(t => t.id === c.tileId))
+    const findFilledCells = () => cells.filter(c => c.value)
+
+    const findTryCells = () => findFilledCells().filter(c => tryTiles.find(t => t.id === c.tileId))
 
     const scanPlacedWord = (direction, firstPlacedPos, lastPlacedPos, tryCells, filledCells) => {           
         let firstLetterIdx = filledCells.indexOf(tryCells[0])
@@ -106,22 +125,22 @@ const Submit = (props) => {
         const distinctX = [...new Set(tryCells.map(c => c.x))]
         const distinctY = [...new Set(tryCells.map(c => c.y))]
     
-        props.clearErrors()
+        clearErrors()
 
         // test input length
         if (tryCells.length < 1) {
             const error = { message: "you must place down at least 1 tile." }
             
-            props.addErrors(error)
+            addErrors(error)
             
             return
         }
 
          // test first move input on starting pos 
-         if (!props.gameStart && !tryCells.find(cell => cell.bonus === '✴')) {
+         if (!gameStart && !tryCells.find(cell => cell.bonus === '✴')) {
             const error = { message: "the first tile must be placed on the ✴ position." }
             
-            props.addErrors(error)
+            addErrors(error)
             
             return
         }
@@ -130,7 +149,7 @@ const Submit = (props) => {
         if (distinctX.length > 1 && distinctY.length > 1) {
             const error = { message: "new tiles must be placed adjacent to one another in one direction." }
             
-            props.addErrors(error)
+            addErrors(error)
             
             return
         }
@@ -151,7 +170,7 @@ const Submit = (props) => {
             if (Array.isArray(result)) {
                 wordCells = result
             } else {
-                props.addErrors(result)
+                addErrors(result)
                 
                 return
             }
@@ -167,13 +186,13 @@ const Submit = (props) => {
             })
 
             if (tryWords.length < 1) {
-                if (props.usedCells.length === 0 || wordCells.length > tryCells.length) {
+                if (usedCells.length === 0 || wordCells.length > tryCells.length) {
                     tryWords.push(wordCells)
                 } else {
                     // 3. Need to also determine adjancency to existing tiles
                     const error = { message: "new tiles must be placed adjacent to existing tiles." }
 
-                    props.addErrors(error)
+                    addErrors(error)
 
                     return
                 }
@@ -192,7 +211,7 @@ const Submit = (props) => {
             if (Array.isArray(result)) {
                 wordCells = result
             } else {
-                props.addErrors(result)
+                addErrors(result)
                 
                 return
             }
@@ -208,13 +227,13 @@ const Submit = (props) => {
             })
 
             if (tryWords.length < 1) {
-                if (props.usedCells.length === 0 || wordCells.length > tryCells.length) {
+                if (usedCells.length === 0 || wordCells.length > tryCells.length) {
                     tryWords.push(wordCells)
                 } else {
                     // 3. Need to also determine adjancency to existing tiles
                     const error = { message: "new tiles must be placed adjacent to existing tiles." }
 
-                    props.addErrors(error)
+                    addErrors(error)
 
                     return
                 }
@@ -285,7 +304,7 @@ const Submit = (props) => {
             if (firstColLetterIdx === lastColLetterIdx && firstRowLetterIdx === lastRowLetterIdx) {
                 let errors
 
-                if (props.usedCells.length > 0) {
+                if (usedCells.length > 0) {
                     errors = [
                         { message: "words must be at least 2 letters long." },
                         { message: "new tiles must be placed adjacent to existing tiles." }
@@ -296,7 +315,7 @@ const Submit = (props) => {
                     ]
                 }
 
-                props.addErrors(errors)
+                addErrors(errors)
 
                 return
             }
@@ -330,7 +349,7 @@ const Submit = (props) => {
         }))
         
         if (wordErrors.length > 0) {
-            props.addErrors(wordErrors)
+            addErrors(wordErrors)
             return
         }
 
@@ -368,36 +387,36 @@ const Submit = (props) => {
             pointTotal += (points * wordMultiplier)
         })
 
-        props.addPoints(pointTotal)
+        addPoints(pointTotal)
         // console.log(tryWords)
         // console.log('points', pointTotal)
 
         // 6. add try tiles to used tiles & try cells to used cells
-        props.clearTryTiles()
+        clearTryTiles()
         
         // 7. disable cells & bonuses
-        const newCells = [...props.cells].map(cell => {
+        const newCells = [...cells].map(cell => {
             const cellWithNewWords = testWordCells.find(wc => wc.id === cell.id)
             if (cellWithNewWords) return { ...cellWithNewWords, bonus: null }
             else return cell
         })
 
-        props.updateCells(newCells)
+        updateCells(newCells)
 
         const tryCellIds = tryCells.map(cell => cell.id)
         
-        props.setUsedCells(tryCellIds)
-        props.updateUsedTiles(props.tryTiles)
+        setUsedCells(tryCellIds)
+        updateUsedTiles(tryTiles)
 
         // 8. create new hand
         const tilesNeeded = tryCells.length
-        props.createHand(tilesNeeded, props.whoseTurn)
-        props.resetExchanged()
-        props.deselectTile()
+        createHand(tilesNeeded, whoseTurn)
+        resetExchanged()
+        deselectTile()
 
-        if (!props.gameStart) props.startGame()
+        if (!gameStart) startGame()
         // 9. switch turn
-        props.switchTurn()
+        switchTurn()
     }
 
     const testWord = (word) => {
@@ -416,8 +435,7 @@ const mapStateToProps = (state) => ({
     usedCells: state.cell.usedCells,
     tryTiles: state.tile.tryTiles,
     whoseTurn: state.game.whoseTurn,
-    gameStart: state.game.gameStart,
-    errors: state.errors
+    gameStart: state.game.gameStart
 })
 
 const mapDispatchToProps = (dispatch) => ({

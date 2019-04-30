@@ -3,13 +3,13 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { login } from '../actions'
 
-const Login = (props) => {
+const Login = ({ login }) => {
     const [playerOne, setPlayerOne] = useState('')
     const [playerTwo, setPlayerTwo] = useState('')
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.login(playerOne, playerTwo)
+        login(playerOne, playerTwo)
     }
 
     return (

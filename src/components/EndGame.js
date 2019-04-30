@@ -15,7 +15,7 @@ const customStyles = {
     }
 }
 
-const EndGame = (props) => {
+const EndGame = ({ endGame }) => {
     const [modal, setModal] = useState(false)
 
     const openModal = () => setModal(true)
@@ -23,7 +23,7 @@ const EndGame = (props) => {
 
     const end = () => {
         closeModal()
-        props.endGame()
+        endGame()
     }
 
     return (
