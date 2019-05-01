@@ -13,8 +13,7 @@ const Login = ({ login }) => {
     }
 
     return (
-        <>
-        <div className='wrapper'>
+        <div className='wrapper flex center column'>
             <h1 className='app-header'>l e x i .</h1>
             <p>test the depth of your vocabulary</p>
             <form onSubmit={ handleSubmit }>
@@ -35,7 +34,6 @@ const Login = ({ login }) => {
                 <input type='submit' value='start game' />
             </form>
         </div>
-        </>
     )
 }
 

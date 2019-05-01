@@ -12,7 +12,7 @@ const customStyles = {
 
 const TileBag = ({ unusedTiles }) => {
     const [modal, setModal] = useState(false)
-
+    
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
 

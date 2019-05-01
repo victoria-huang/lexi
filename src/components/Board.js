@@ -10,7 +10,7 @@ const Board = ({ cells }) => {
 
     return(
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <div style={{ width: '70%'}}>
+            <div className='board'>
                 <svg
                     viewBox={`0 0 150 150`}
                     overflow="visible"

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Tile from './Tile'
 
 const TileContainer = ({
+    unusedTiles,
     playerTiles,
     p1Tiles,
     p2Tiles,
@@ -18,13 +19,19 @@ const TileContainer = ({
     }
 
     return (
+        <>
+        <div style={{ display: 'flex', justifyContent: 'center', fontSize: '0.8em' }}>
+            { unusedTiles.length } tiles remaning
+        </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             { playerTiles.length > 0 && renderPlayerTiles() }
         </div>
+        </>
     )
 }  
 
 const mapStateToProps = (state) => ({
+    unusedTiles: state.tile.unusedTiles,
     playerTiles: state.tile.playerTiles,
     p1Tiles: state.tile.p1Tiles,
     p2Tiles: state.tile.p2Tiles,

@@ -18,7 +18,7 @@ const GameContainer = ({
 }) => {
     return (
         <div className='container'>
-            <div className='top-wrapper'>
+            <div className='top-wrapper flex'>
                 <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
                     { playerOne }: { p1Points }
                 </h1>
