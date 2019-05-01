@@ -44,34 +44,32 @@ const TileBag = ({ unusedTiles }) => {
             style={ customStyles }
             contentLabel="tile bag"
         >
-            <h2>{ unusedTiles.length } tiles remaining</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', justifyContent: 'center', gridGap: '3px' }}>
+            <h3>{ unusedTiles.length } tiles remaining</h3>
+            <div className='select-tile-container'>
             { getTiles().map( t => 
-                <div 
-                    key= { v4() } 
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
-                >
-                    <span style={{ height: '50%', width: '30%', backgroundColor: 'lightblue', border: 'none', borderRadius: '4px', margin: '5px', padding: '5px', display: 'grid', gridTemplateColumns: '0.8fr 0.2fr', gridTemplateRows: '0.2fr 1fr' }}>
-                        <h3 style={{ margin: '1px', textAlign: 'center', fontSize: '1em', gridColumn: 1, gridRow: 2 }}>
+                <div key= { v4() } className='flex column center'>
+                    <span 
+                        className='tile select-tile bag-tile'>
+                        <h3 className='letter'>
                             { 
                                 t.letter !== '' ? 
                                 t.letter 
                                 : 
-                                <div style={{ color: 'lightblue' }}>*</div> 
+                                <div className='blank-tile'>*</div> 
                             }
                         </h3>
-                        <span style={{ gridColumn: 2, gridRow: 1, textAlign: 'center', fontSize: '0.5em' }}>
+                        <span className='points'>
                             { t.points }
                         </span>
                     </span>
-                    <span style={{ fontSize: '0.8em' }}>
+                    <span className='num-remaining-letter'>
                         { t.numLeft } remaining
                     </span>
                 </div>
                 )
             }
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className='flex center'>
                 <button 
                     className='modal-button' 
                     onClick={ closeModal }

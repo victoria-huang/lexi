@@ -9,13 +9,8 @@ const ErrorContainer = ({ errors }) => {
     const renderErrors = () => errors.map(e => <Error key={v4()} {...e} />)
     
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={
-                errors.length > 0 ?
-                { width: '70%', border: 'none', borderRadius: '4px', backgroundColor: 'rgb(252, 187, 187)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '3px', fontSize: '0.8em' }
-                :
-                { display: 'none' }
-            }>
+        <div className='flex center'>
+            <div className={ errors.length > 0 ? "error-message flex column center" : "display-none" }>
                 { renderErrors() }
             </div>
         </div>

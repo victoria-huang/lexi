@@ -20,10 +20,10 @@ const TileContainer = ({
 
     return (
         <>
-        <div style={{ display: 'flex', justifyContent: 'center', fontSize: '0.8em' }}>
+        <div className='num-remaining-tiles flex center'>
             { unusedTiles.length } tiles remaning
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className='flex center'>
             { playerTiles.length > 0 && renderPlayerTiles() }
         </div>
         </>

@@ -9,7 +9,7 @@ const Board = ({ cells }) => {
     const renderCells = () => cells.map( cell => <Cell key={ v4() } { ...cell } /> )
 
     return(
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <div className='board-container flex center'>
             <div className='board'>
                 <svg
                     viewBox={`0 0 150 150`}

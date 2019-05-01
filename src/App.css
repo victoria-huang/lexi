@@ -42,19 +42,27 @@ input[type=submit] {
   display: flex; 
 }
 
+.column {
+  flex-direction: column;
+}
+
 .center {
   align-items: center; 
   justify-content: center;
 }
 
-.column {
-  flex-direction: column;
+.end {
+  justify-content: end;
 }
 
 /************ END FLEX STYLES ************/
 
 #root {
   height: 100vh;
+}
+
+.display-none {
+  display: none;
 }
 
 .app-header {
@@ -69,7 +77,7 @@ input[type=submit] {
 }
 
 .game-header {
-  margin: 5px;
+  margin: 5px 5px 10px 5px;
   letter-spacing: 3px;
   font-family: 'Tangerine', cursive;
   font-size: 2em;
@@ -109,6 +117,10 @@ input[type=submit] {
   cursor: pointer;
 }
 
+.board-container {
+  width: 100%;
+}
+
 .board {
   width: 68.5%;
 }
@@ -121,6 +133,12 @@ input[type=submit] {
   display: grid; 
   grid-template-columns: 0.8fr 0.2fr;
   grid-template-rows: 0.2fr 1fr;
+}
+
+.bag-tile {
+  background-color: lightblue;
+  border: none;
+  cursor: default;
 }
 
 .hand-tile {
@@ -159,15 +177,57 @@ input[type=submit] {
   grid-gap: 3px;
 }
 
+.num-remaining-tiles {
+  font-size: 0.8em;
+}
+
 .num-remaining-letter {
+  font-size: 0.8em;
+}
+
+.definition-word {
+  margin-bottom: 10px;
+}
+
+.definition-phonetic {
+  margin-left: 5px;
+}
+
+.definition-type {
+  font-style: italic;
+}
+
+.error {
+  height: 12px;
+  width: 12px; 
+  padding-top: 2px;
+  margin-right: 2px;
+}
+
+.error-message {
+  width: 70%;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(252, 187, 187);
+  margin: 3px;
   font-size: 0.8em;
 }
 
 /************ MEDIA QUERIES ************/
 
+@media only screen and (max-width: 1300px) {
+  .container {
+    margin: 2% 10% 2% 10%;
+  }
+}
+
 @media only screen and (max-width: 1000px) {
   .board {
     width: 80%;
+  }
+
+  .container {
+    margin: 2% 5% 2% 5%;
   }
 }
 
@@ -189,6 +249,10 @@ input[type=submit] {
 @media only screen and (max-width: 800px) {
   .board {
     width: 95%;
+  }
+
+  .container {
+    margin: 5% 5% 5% 5%;
   }
 
   .game-header {

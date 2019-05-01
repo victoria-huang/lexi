@@ -28,7 +28,7 @@ const GameOver = ({
             style={ customStyles }
             contentLabel="game over"
         >
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className='flex column center'>
                 { 
                     p1Points === p2Points ? 
                     <h2>it's a tie!</h2>
@@ -38,7 +38,12 @@ const GameOver = ({
 
                 <p>thank you for playing.</p>
                 <p>press the button below to return to the homepage.</p>
-                <button className='endgame-button' onClick={ clearGame }>return</button>
+                <button 
+                    className='endgame-button' 
+                    onClick={ clearGame 
+                }>
+                    return
+                </button>
             </div>
         </Modal>
     )

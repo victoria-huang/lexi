@@ -28,17 +28,31 @@ const EndGame = ({ endGame }) => {
 
     return (
         <>
-        <button onClick={ openModal }>end game</button>
+        <button onClick={ openModal }>
+            end game
+        </button>
         <Modal
             isOpen={ modal }
             onRequestClose={ closeModal }
             style={ customStyles }
             contentLabel="end game"
         >
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className='flex column center'>
                 <h1>are you sure?</h1>
-                <button className='endgame-button' onClick={ end }>yes</button>
-                <button className='endgame-button' onClick={ closeModal }>no</button>
+                
+                <button 
+                    className='endgame-button' 
+                    onClick={ end }
+                >
+                    yes
+                </button>
+
+                <button 
+                    className='endgame-button' 
+                    onClick={ closeModal }
+                >
+                    no
+                </button>
             </div>
         </Modal>
         </>

@@ -173,8 +173,13 @@ const Cell = ({
         >
             { showWords.map(word => <Definition key={ v4() } { ...word } /> ) }
             
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <button className='modal-button' onClick={ closeModal }>close</button>
+            <div className='flex column end'>
+                <button 
+                    className='modal-button' 
+                    onClick={ closeModal }
+                >
+                    close
+                </button>
             </div>
         </Modal>
         </>

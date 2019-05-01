@@ -71,7 +71,7 @@ const ControlPanel = ({
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className='flex center'>
             <Submit createHand={ createHand } />
             <Shuffle />
             { (selected && !exchanged) && <Exchange /> }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { connect } from 'react-redux'
 
@@ -16,6 +16,10 @@ const GameContainer = ({
     playerTwo,
     gameOver 
 }) => {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    
     return (
         <div className='container'>
             <div className='top-wrapper flex'>

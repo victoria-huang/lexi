@@ -5,9 +5,7 @@ const Error = ({ message }) => {
         <div>       
             <img 
                 alt='error' 
-                height='12px' 
-                width='12px' 
-                style={{ paddingTop: '2px', marginRight: '2px' }} 
+                className='error'
                 src='ban-sign.png' 
             />
             { message }
