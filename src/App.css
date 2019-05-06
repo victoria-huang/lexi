@@ -52,7 +52,7 @@ input[type=submit] {
 }
 
 .end {
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 /************ END FLEX STYLES ************/
@@ -229,6 +229,10 @@ input[type=submit] {
   .container {
     margin: 2% 5% 2% 5%;
   }
+
+  .select-tile-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -253,6 +257,10 @@ input[type=submit] {
 
   .container {
     margin: 5% 5% 5% 5%;
+  }
+
+  .select-tile-container {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .game-header {
@@ -289,6 +297,10 @@ input[type=submit] {
 }
 
 @media only screen and (max-width: 600px) {
+  .select-tile-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .game-header {
     font-size: 1.5em;
   }
@@ -299,6 +311,15 @@ input[type=submit] {
 }
 
 @media only screen and (max-width: 500px) {
+  .select-tile-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .select-tile {
+    height: 50%; 
+    width: 20%; 
+  }
+  
   .game-header {
     font-size: 1.5em;
   }

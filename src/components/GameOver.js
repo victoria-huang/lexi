@@ -40,8 +40,8 @@ const GameOver = ({
                 <p>press the button below to return to the homepage.</p>
                 <button 
                     className='endgame-button' 
-                    onClick={ clearGame 
-                }>
+                    onClick={ clearGame }
+                >
                     return
                 </button>
             </div>
