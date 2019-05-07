@@ -13,9 +13,9 @@ router.get('/', function (req, res) {
 const usersController = require('./controllers/usersController')
 
 // user routes
-router.route('/users')
-    .get(usersController.index)
-    .post(usersController.new)
+router.route('/users').get(usersController.index)
+router.route('/register').post(usersController.new)
+router.route('/login').post(usersController.login)
 
 router.route('/users/:user_id')
     .get(usersController.view)

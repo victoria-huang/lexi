@@ -1,8 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-// auth
-const session = require('express-session')
+const passport = require('passport')
 
 const routes = require("./routes")
 
@@ -12,6 +11,11 @@ const app = express()
 // configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+// passport middleware
+app.use(passport.initialize())
+// passport config
+require('./config/passport')(passport)
 
 // connect to mongoose and set connection variable
 mongoose.connect('mongodb://localhost/lexi')
