@@ -1,40 +1,33 @@
-// Import express
-let express = require('express')
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+// auth
+const session = require('express-session')
 
-// Import Body parser
-let bodyParser = require('body-parser')
+const routes = require("./routes")
 
-// Import Mongoose
-let mongoose = require('mongoose')
+// initialize the app
+const app = express()
 
-// Initialize the app
-let app = express()
-
-// Import routes
-let routes = require("./routes")
-
-// Configure bodyparser to handle post requests
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
-
+// configure bodyparser to handle post requests
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-// Connect to Mongoose and set connection variable
+// connect to mongoose and set connection variable
 mongoose.connect('mongodb://localhost/lexi')
 
-let db = mongoose.connection
+const db = mongoose.connection
 
-// Setup server port
-let port = process.env.PORT || 8080
+// setup server port
+const port = process.env.PORT || 8080
 
-// Send message for default URL
+// send message for default URL
 app.get('/', (req, res) => res.send('Hello World with Express'))
 
-// Use Api routes in the App
+// use api routes in the app
 app.use('/api/v1', routes)
 
-// Launch app to listen to specified port
+// launch app to listen to specified port
 app.listen(port, function () {
-    console.log("Running app on port " + port);
+    console.log("App listening on port " + port);
 })

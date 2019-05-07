@@ -1,5 +1,5 @@
 // initialize express router
-let router = require('express').Router()
+const router = require('express').Router()
 
 // set default API response
 router.get('/', function (req, res) {
@@ -10,18 +10,18 @@ router.get('/', function (req, res) {
 })
 
 // import user controller 
-let userController = require('./controller/userController')
+const usersController = require('./controllers/usersController')
 
 // user routes
 router.route('/users')
-    .get(userController.index)
-    .post(userController.new)
+    .get(usersController.index)
+    .post(usersController.new)
 
 router.route('/users/:user_id')
-    .get(userController.view)
-    .patch(userController.update)
-    .put(userController.update)
-    .delete(userController.delete)
+    .get(usersController.view)
+    .patch(usersController.update)
+    .put(usersController.update)
+    .delete(usersController.delete)
 
 // export API routes
 module.exports = router

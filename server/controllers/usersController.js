@@ -1,5 +1,5 @@
 // import User model
-User = require('../model/user')
+const User = require('../models/user')
 
 // index 
 exports.index = function (req, res) {
@@ -28,7 +28,7 @@ exports.view = function (req, res) {
 
 // create
 exports.new = function (req, res) {
-    let user = new User()
+    const user = new User()
     user.user_name = req.body.user_name
     user.name = req.body.name
     user.email  = req.body.email
