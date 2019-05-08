@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import { login } from '../actions'
 
 const Login = ({ login }) => {
-    const [playerOne, setPlayerOne] = useState('')
-    const [playerTwo, setPlayerTwo] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        login(playerOne, playerTwo)
+        login({ username, password })
     }
 
     return (
@@ -19,26 +19,26 @@ const Login = ({ login }) => {
             <form onSubmit={ handleSubmit }>
                 <input 
                     type='text'
-                    placeholder='player one'
-                    value={ playerOne } 
-                    onChange={ (e) => setPlayerOne(e.target.value) }
+                    placeholder='username'
+                    value={ username } 
+                    onChange={ (e) => setUsername(e.target.value) }
                 />
                 <br />
                 <input 
-                    type='text'
-                    placeholder='player two'
-                    value={ playerTwo } 
-                    onChange={ (e) => setPlayerTwo(e.target.value) }
+                    type='password'
+                    placeholder='password'
+                    value={ password } 
+                    onChange={ (e) => setPassword(e.target.value) }
                 />
                 <br />
-                <input type='submit' value='start game' />
+                <input type='submit' value='login' />
             </form>
         </div>
     )
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    login: (pOne, pTwo) => dispatch(login(pOne, pTwo))
+    login: (user) => dispatch(login(user))
 })
 
 export default connect(null, mapDispatchToProps)(Login)

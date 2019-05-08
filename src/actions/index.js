@@ -1,8 +1,13 @@
 import * as types from '../constants/ActionTypes'
 
+import axios from 'axios'
+import jwt_decode from 'jwt-decode'
+
+import setAuthToken from '../utils/setAuthToken'
+
 /************ ERROR ************/
 
-export const addErrors = (error) => ({
+export const addErrors = error => ({
     type: types.ADD_ERRORS,
     payload: error
 })
@@ -13,19 +18,19 @@ export const clearErrors = () => ({
 
 /************ CELL ************/
 
-export const updateCells = (cells) => ({
+export const updateCells = cells => ({
     type: types.UPDATE_CELLS,
     payload: cells
 })
 
-export const setUsedCells = (cellIds) => ({
+export const setUsedCells = cellIds => ({
     type: types.SET_USED_CELLS,
     payload: cellIds
 })
 
 /************ TILE ************/
 
-export const selectTile = (tile) => ({
+export const selectTile = tile => ({
     type: types.SELECT_TILE,
     payload: tile
 })
@@ -50,12 +55,12 @@ export const removeFromHand = (tile, player) => ({
     }
 })
 
-export const addTryTile = (tile) => ({
+export const addTryTile = tile => ({
     type: types.ADD_TRY_TILE,
     payload: tile
 })
 
-export const removeTryTile = (tile) => ({
+export const removeTryTile = tile => ({
     type: types.REMOVE_TRY_TILE,
     payload: tile
 })
@@ -80,12 +85,12 @@ export const shufflePlayerTiles = (tiles, player) => ({
     }
 })
 
-export const updateUnusedTiles = (tiles) => ({
+export const updateUnusedTiles = tiles => ({
     type: types.UPDATE_UNUSED_TILES,
     payload: tiles
 })
 
-export const updateUsedTiles = (tiles) => ({
+export const updateUsedTiles = tiles => ({
     type: types.UPDATE_USED_TILES,
     payload: tiles
 })
@@ -100,7 +105,7 @@ export const endGame = () => ({
     type: types.END_GAME
 })
 
-export const addPoints = (points) => ({
+export const addPoints = points => ({
     type: types.ADD_POINTS,
     payload: points
 })
@@ -113,14 +118,6 @@ export const resetExchanged = () => ({
     type: types.RESET_EXCHANGED
 })
 
-export const login = (playerOne, playerTwo) => ({
-    type: types.LOGIN,
-    payload: {
-        playerOne,
-        playerTwo
-    }
-})
-
 export const switchTurn = () => ({
     type: types.SWITCH_TURN
 })
@@ -129,8 +126,53 @@ export const dealFirstHand = () => ({
     type: types.DEAL_FIRST_HAND
 })
 
+/************ USER ************/
+
+export const login = userData => dispatch => {
+    axios.post('/api/v1/login', userData)
+    .then(res => {
+        const { token } = res.data
+        localStorage.setItem('token', token)
+        setAuthToken(token)
+        const decodedUser = jwt_decode(token)
+        dispatch(setCurrentUser(decodedUser))
+    })
+    .catch(err => {
+        dispatch({
+            type: types.ADD_ERRORS,
+            payload: err.response.data
+        })
+    })
+
+}
+
+export const register = (userData, history) => dispatch => {
+    axios.post('/api/v1/register', userData)
+    .then(res => history.push('/'))
+    .catch(err => {
+        dispatch({
+            type: types.ADD_ERRORS,
+            payload: err.response.data
+        })
+    })
+}
+
+export const logoutUser = () => dispatch => {
+    localStorage.removeItem('token')
+    // remove auth header for future requests
+    setAuthToken(false)
+    // set current user to null which will set isAuthenticated to false
+    dispatch(setCurrentUser(null))
+}
+
+export const setCurrentUser = decodedUser => ({
+    type: types.SET_CURRENT_USER,
+    payload: decodedUser
+})
+
 /************ ALL ************/
 
 export const clearGame = () => ({
     type: types.CLEAR_GAME
 })
+

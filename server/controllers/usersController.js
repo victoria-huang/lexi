@@ -3,15 +3,24 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const keys = require('../config/keys')
+const secretOrKey = keys.secretOrKey
 
 // load input validation
 const validateRegistration = require('../validation/register')
 const validateLogin = require('../validation/login')
 
+const currentUser = (req) => {
+    const token = req.headers['authorization'].split(' ')[1] 
+
+    return jwt.verify(token, secretOrKey, function(err, decoded) {
+        return decoded
+    })
+}
+
 // index 
 exports.index = function (req, res) {
     User.get(function (err, users) {
-        if (err) res.json({ status: 'error', message: err })
+        if (err) return res.json({ status: 'error', message: err })
         
         res.json({
             status: 'success',
@@ -24,7 +33,7 @@ exports.index = function (req, res) {
 // show/view
 exports.view = function (req, res) {
     User.findById(req.params.user_id, function (err, user) {
-        if (err) res.json({ status: 'error', message: err })
+        if (err) return res.json({ status: 'error', message: err })
 
         res.json({
             message: 'user details retrieved!',
@@ -37,49 +46,49 @@ exports.view = function (req, res) {
 exports.new = function (req, res) {
     const { errors, isValid } = validateRegistration(req.body)
 
-    if (!isValid) res.status(400).json(errors)
+    if (!isValid) return res.status(400).json(errors)
 
     User.findOne({ email: req.body.email })
     .then(user => {
         if (user) return res.status(400).json({ email: 'email already exists' })
-    })
-    .catch(err => console.log(err))
 
-    User.findOne({ username: req.body.username })
-    .then(user => {
-        if (user) return res.status(400).json({ username: 'username already exists' })
-    })
-    .catch(err => console.log(err))
-
-    const user = new User({
-        username: req.body.username,
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    })
-
-    // hash pw & save user & check for errors 
-    bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(user.password, salt, (err, hash) => {
-            if (err) return res.json(err)
+        User.findOne({ username: req.body.username })
+        .then(user => {
+            if (user) return res.status(400).json({ username: 'username already exists' })
             
-            user.password = hash;
-            user.save()
-            .then(user => res.json({
-                status: 'success',
-                message: 'new user created!',
-                data: user
-            }))
-            .catch(err => console.log(err)) 
+            const newUser = new User({
+                username: req.body.username,
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            })
+        
+            // hash pw & save user & check for errors 
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) return res.json(err)
+                    
+                    newUser.password = hash;
+                    newUser.save()
+                    .then(user => res.json({
+                        status: 'success',
+                        message: 'new user created!',
+                        data: user
+                    }))
+                    .catch(err => console.log(err)) 
+                })
+            })
         })
+        .catch(err => console.log(err))
     })
+    .catch(err => console.log(err))
 }
 
 // login 
 exports.login = function (req, res) {
     const { errors, isValid } = validateLogin(req.body)
 
-    if (!isValid) res.status(400).json(errors)
+    if (!isValid) return res.status(400).json(errors)
 
     const username = req.body.username
     const password = req.body.password
@@ -87,7 +96,7 @@ exports.login = function (req, res) {
     // find user by username
     User.findOne({ username })
     .then(user => {
-        if (!user) return res.status(404).json({ error: 'incorrect username or password' })   
+        if (!user) return res.status(404).json({ message: 'incorrect username or password' })   
         
         // check password
         bcrypt.compare(password, user.password)
@@ -97,7 +106,9 @@ exports.login = function (req, res) {
             // create JWT Payload
                 const payload = {
                     id: user.id,
-                    name: user.name
+                    name: user.name,
+                    email: user.email,
+                    username: user.username
                 }
             // sign token
                 jwt.sign(
@@ -114,7 +125,7 @@ exports.login = function (req, res) {
                     }
                 )
             } else {
-                return res.status(400).json({ error: 'incorrect username or password' })
+                return res.status(400).json({ message: 'incorrect username or password' })
             }
         })
         .catch(err => console.log(err))
@@ -125,14 +136,17 @@ exports.login = function (req, res) {
 // update 
 exports.update = function (req, res) {
     User.findById(req.params.user_id, function (err, user) {
-        if (err) res.json({ status: 'error', message: err })
+        if (err) return res.json({ status: 'error', message: err })
+
+        if (currentUser(req).id !== req.params.user_id) 
+            return res.status(401).send('unauthorized')
 
         user.username = req.body.username ? req.body.username : user.username
         user.name = req.body.name ? req.body.name : user.name
         user.email = req.body.email ? req.body.email : user.email
 
         user.save(function (err) {
-            if (err) res.json({ status: 'error', message: err })
+            if (err) return res.json({ status: 'error', message: err })
 
             res.json({
                 status: 'success',
@@ -145,10 +159,13 @@ exports.update = function (req, res) {
 
 // delete
 exports.delete = function (req, res) {
+    if (currentUser(req).id !== req.params.user_id) 
+        return res.status(401).send('unauthorized')
+
     User.deleteOne({ 
         _id: req.params.user_id 
     }, function (err, user) {
-        if (err) res.json({ status: 'error', message: err })
+        if (err) return res.json({ status: 'error', message: err })
 
         res.json({
             status: 'success',

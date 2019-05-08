@@ -2,8 +2,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const passport = require('passport')
-
+require('./config/passport')(passport)
+const cors = require('cors')
 const routes = require("./routes")
+const secretOrKey = require('./config/keys').secretOrKey
+const jwt = require('jsonwebtoken')
 
 // initialize the app
 const app = express()
@@ -12,13 +15,14 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.use(cors())
+
 // passport middleware
 app.use(passport.initialize())
-// passport config
-require('./config/passport')(passport)
 
 // connect to mongoose and set connection variable
-mongoose.connect('mongodb://localhost/lexi')
+mongoose.set('useCreateIndex', true)
+mongoose.connect('mongodb://localhost/lexi', { useNewUrlParser: true })
 
 const db = mongoose.connection
 
