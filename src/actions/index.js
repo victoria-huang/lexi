@@ -148,7 +148,9 @@ export const login = userData => dispatch => {
 
 export const register = (userData, history) => dispatch => {
     axios.post('/api/v1/register', userData)
-    .then(res => history.push('/'))
+    .then(res => {
+        history.push('/', { newAccount: 'success! login below.' })
+    })
     .catch(err => {
         dispatch({
             type: types.ADD_ERRORS,
