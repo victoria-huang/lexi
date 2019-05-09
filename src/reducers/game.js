@@ -5,7 +5,7 @@ import {
     ADD_POINTS,
     SET_EXCHANGED,
     RESET_EXCHANGED,
-    LOGIN,
+    SET_PLAYERS,
     SWITCH_TURN,
     DEAL_FIRST_HAND
 } from '../constants/ActionTypes'
@@ -53,7 +53,7 @@ export default (state = initialState, action) => {
                 ...state,
                 exchanged: false
             }
-        case LOGIN:
+        case SET_PLAYERS:
             return {
                 ...state,
                 playerOne: action.payload.playerOne,

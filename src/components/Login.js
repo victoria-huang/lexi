@@ -6,12 +6,14 @@ import { connect } from 'react-redux'
 import { login } from '../actions'
 
 const Login = ({ login, history }) => {
+    if (localStorage.getItem('token')) history.push('/')
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        login({ username, password })
+        login({ username, password }, history)
     }
 
     return (

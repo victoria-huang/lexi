@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 import { register } from '../actions'
 
 const Register = ({ register, history }) => {
+    if (localStorage.getItem('token')) history.push('/')
+
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')

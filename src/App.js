@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import Login from './components/Login'
 import Register from './components/Register'
+import Home from './components/Home'
 import GameContainer from './components/GameContainer'
 
 import './App.css'
@@ -16,7 +17,8 @@ class App extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path='/' render={ (routeProps) => <Login {...routeProps} /> } />
+        <Route exact path='/' component={ Home } />
+        <Route path='/login' render={ (routeProps) => <Login {...routeProps} /> } />
         <Route path='/register' component={ Register } />
         <Route path='/game' component={ GameContainer } />
 

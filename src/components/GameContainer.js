@@ -7,6 +7,7 @@ import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
 import ControlPanel from './ControlPanel'
 import GameOver from './GameOver'
+import NoPlayers from './NoPlayers'
 
 const GameContainer = ({
     p1Points,
@@ -14,7 +15,7 @@ const GameContainer = ({
     whoseTurn,
     playerOne,
     playerTwo,
-    gameOver 
+    gameOver
 }) => {
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -22,24 +23,32 @@ const GameContainer = ({
     
     return (
         <div className='container'>
-            <div className='top-wrapper flex'>
-                <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
-                    { playerOne }: { p1Points }
-                </h1>
+            { 
+                (playerOne && playerTwo)
+                ?
+                <>
+                <div className='top-wrapper flex'>
+                    <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
+                        { playerOne }: { p1Points }
+                    </h1>
 
-                <h1 className='game-header'>
-                    l e x i .
-                </h1>
+                    <h1 className='game-header'>
+                        l e x i .
+                    </h1>
 
-                <h1 className={ whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
-                    { playerTwo }: { p2Points }
-                </h1>
-            </div>
-            
-            <ErrorContainer />
-            <Board />
-            <TileContainer />
-            <ControlPanel />
+                    <h1 className={ whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
+                        { playerTwo }: { p2Points }
+                    </h1>
+                </div>
+                
+                <ErrorContainer />
+                <Board />
+                <TileContainer />
+                <ControlPanel />
+                </>
+                :
+                <NoPlayers />
+            }
 
             { gameOver && <GameOver /> }
         </div>

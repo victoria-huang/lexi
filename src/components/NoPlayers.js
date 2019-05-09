@@ -2,8 +2,6 @@ import React from 'react'
 
 import Modal from 'react-modal'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { clearGame } from '../actions'
 
 const customStyles = {
     content: {
@@ -16,11 +14,7 @@ const customStyles = {
     }
 }
 
-const GameOver = ({ 
-    playerOne, 
-    playerTwo, 
-    p1Points, 
-    p2Points, 
+const NoPlayers = ({ 
     clearGame 
 }) => {
     return (
@@ -30,14 +24,9 @@ const GameOver = ({
             contentLabel="game over"
         >
             <div className='flex column center'>
-                { 
-                    p1Points === p2Points ? 
-                    <h2>it's a tie!</h2>
-                    :
-                    <h2>the winner is { p1Points > p2Points ? playerOne : playerTwo }!</h2>
-                }
+                <h2>we're sorry.</h2>
 
-                <p>thank you for playing.</p>
+                <p>looks like there are not enough players here.</p>
                 <p>press the button below to return to the homepage.</p>
                 
                 <Link to='/' className='endgame-link flex center'>
@@ -53,15 +42,4 @@ const GameOver = ({
     )
 }
 
-const mapStateToProps = (state) => ({
-    playerOne: state.game.playerOne,
-    playerTwo: state.game.playerTwo,
-    p1Points: state.game.p1Points,
-    p2Points: state.game.p2Points
-})
-
-const mapDispatchToProps = (dispatch) => ({
-    clearGame: () => dispatch(clearGame())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(GameOver)
+export default NoPlayers

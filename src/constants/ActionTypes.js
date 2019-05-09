@@ -24,6 +24,7 @@ export const SET_EXCHANGED = 'SET_EXCHANGED'
 export const RESET_EXCHANGED = 'RESET_EXCHANGED'
 export const SWITCH_TURN = 'SWITCH_TURN'
 export const DEAL_FIRST_HAND = 'DEAL_FIRST_HAND'
+export const SET_PLAYERS = 'SET_PLAYERS'
 
 export const LOGIN = 'LOGIN'
 export const REGISTER = 'REGISTER'

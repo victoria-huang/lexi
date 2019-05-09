@@ -126,9 +126,17 @@ export const dealFirstHand = () => ({
     type: types.DEAL_FIRST_HAND
 })
 
+export const setPlayers = (playerOne, playerTwo) => ({
+    type: types.SET_PLAYERS,
+    payload: {
+        playerOne, 
+        playerTwo
+    }
+})
+
 /************ USER ************/
 
-export const login = userData => dispatch => {
+export const login = (userData, history) => dispatch => {
     axios.post('/api/v1/login', userData)
     .then(res => {
         const { token } = res.data
@@ -136,6 +144,7 @@ export const login = userData => dispatch => {
         setAuthToken(token)
         const decodedUser = jwt_decode(token)
         dispatch(setCurrentUser(decodedUser))
+        history.push('/')
     })
     .catch(err => {
         dispatch({
@@ -149,7 +158,7 @@ export const login = userData => dispatch => {
 export const register = (userData, history) => dispatch => {
     axios.post('/api/v1/register', userData)
     .then(res => {
-        history.push('/', { newAccount: 'success! login below.' })
+        history.push('/login', { newAccount: 'success! login below.' })
     })
     .catch(err => {
         dispatch({
@@ -159,12 +168,13 @@ export const register = (userData, history) => dispatch => {
     })
 }
 
-export const logoutUser = () => dispatch => {
+export const logoutUser = history => dispatch => {
     localStorage.removeItem('token')
     // remove auth header for future requests
     setAuthToken(false)
     // set current user to null which will set isAuthenticated to false
     dispatch(setCurrentUser(null))
+    history.push('/login')
 }
 
 export const setCurrentUser = decodedUser => ({
