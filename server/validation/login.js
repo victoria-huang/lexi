@@ -19,5 +19,5 @@ module.exports = function validateLogin(data) {
     return {
         errors,
         isValid: isEmpty(errors)
-    };
-};
+    }
+}

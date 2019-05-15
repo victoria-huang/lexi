@@ -144,6 +144,7 @@ export const login = (userData, history) => dispatch => {
         setAuthToken(token)
         const decodedUser = jwt_decode(token)
         dispatch(setCurrentUser(decodedUser))
+        dispatch(clearErrors())
         history.push('/')
     })
     .catch(err => {

@@ -11,11 +11,11 @@ import {
 } from '../constants/ActionTypes'
 
 const initialState = {
+    playerOne: null,
+    playerTwo: null,
     p1Points: 0,
     p2Points: 0,
     exchanged: false,
-    playerOne: null,
-    playerTwo: null,
     whoseTurn: 1,
     gameOver: false,
     gameStart: false,

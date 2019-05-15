@@ -9,13 +9,7 @@ const secretOrKey = keys.secretOrKey
 const validateRegistration = require('../validation/register')
 const validateLogin = require('../validation/login')
 
-const currentUser = (req) => {
-    const token = req.headers['authorization'].split(' ')[1] 
-
-    return jwt.verify(token, secretOrKey, function(err, decoded) {
-        return decoded
-    })
-}
+const currentUser = User.currentUser
 
 // index 
 exports.index = function (req, res) {
@@ -75,13 +69,13 @@ exports.new = function (req, res) {
                         message: 'new user created!',
                         data: user
                     }))
-                    .catch(err => console.log(err)) 
+                    .catch(err => res.json({ status: 'error', message: err }))
                 })
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => res.json({ status: 'error', message: err }))
     })
-    .catch(err => console.log(err))
+    .catch(err => res.json({ status: 'error', message: err }))
 }
 
 // login 
@@ -113,7 +107,7 @@ exports.login = function (req, res) {
             // sign token
                 jwt.sign(
                     payload,
-                    keys.secretOrKey,
+                    secretOrKey,
                     {
                         expiresIn: 31556926 // 1 year in seconds
                     },
@@ -128,9 +122,9 @@ exports.login = function (req, res) {
                 return res.status(400).json({ message: 'incorrect username or password' })
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => res.json({ status: 'error', message: err }))
     })
-    .catch(err => console.log(err))
+    .catch(err => res.json({ status: 'error', message: err }))
 }
 
 // update 

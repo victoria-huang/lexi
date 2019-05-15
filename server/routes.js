@@ -9,9 +9,6 @@ router.get('/', function (req, res) {
     })
 })
 
-// import user controller 
-const usersController = require('./controllers/usersController')
-
 // with auth check
 const secretOrKey = require('./config/keys').secretOrKey
 const jwt = require('jsonwebtoken')
@@ -44,16 +41,33 @@ const withAuth = (req, res, next) => {
     }
 }
 
+// import user controller 
+const usersController = require('./controllers/usersController')
+
 // user routes
 router.route('/users').get(withAuth, usersController.index)
 router.route('/register').post(usersController.new)
 router.route('/login').post(usersController.login)
 
 router.route('/users/:user_id')
-    .get(withAuth, usersController.view)
-    .patch(withAuth, usersController.update)
-    .put(withAuth, usersController.update)
-    .delete(withAuth, usersController.delete)
+    .all(withAuth)
+    .get(usersController.view)
+    .patch(usersController.update)
+    .put(usersController.update)
+    .delete(usersController.delete)
+
+// import game controller
+const gamesController = require('./controllers/gamesController')
+
+// game routes
+router.route('/games')
+    .get(gamesController.index)
+    .post(withAuth, gamesController.new)
+
+router.route('/games/:game_id')
+    .get(withAuth, gamesController.view)
+    .patch(withAuth, gamesController.update)
+    .put(withAuth, gamesController.update)
 
 // export API routes
 module.exports = router
