@@ -102,6 +102,7 @@ module.exports.dealFirstHand = function (res, game) {
 
 
 
+// /******** GAMES ********/
 
 // exports.startGame = function (req, res) {
 //     Game.findById(req.params.game_id, function (err, game) {

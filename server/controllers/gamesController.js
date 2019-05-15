@@ -341,6 +341,7 @@ const ALL_CELLS = [
 
 const currentUser = User.currentUser
 
+// NOTE: index route only for dev purposes, remove later
 exports.index = function (req, res) {
     Game.get(function (err, games) {
         if (err) return res.json({ status: 'error', message: err })
