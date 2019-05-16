@@ -1,4 +1,4 @@
-import { ALL_CELLS } from '../constants'
+// import { ALL_CELLS } from '../constants'
 import {
     UPDATE_CELLS,
     SET_USED_CELLS,
@@ -6,7 +6,7 @@ import {
 } from '../constants/ActionTypes'
 
 const initialState = {
-    allCells: ALL_CELLS,
+    allCells: [],
     usedCells: []
 }
 

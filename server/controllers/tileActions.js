@@ -128,15 +128,15 @@ module.exports.updateUnusedTiles = function (res, game, tiles) {
 }
 
 module.exports.updateUsedTiles = function (res, game, tiles) {
-        game.tiles.usedTiles.push(tiles)
+    game.tiles.usedTiles.push(tiles)
 
-        game.save()
-        .then(game => res.json({
-            status: 'success',
-            message: 'updated used tiles',
-            data: game
-        }))
-        .catch(err => res.json({ status: 'error', message: err }))
+    game.save()
+    .then(game => res.json({
+        status: 'success',
+        message: 'updated used tiles',
+        data: game
+    }))
+    .catch(err => res.json({ status: 'error', message: err }))
 }
 
 module.exports.shufflePlayerTiles = function (res, game, tiles) {

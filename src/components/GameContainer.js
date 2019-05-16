@@ -29,7 +29,7 @@ const GameContainer = ({
                 <>
                 <div className='top-wrapper flex'>
                     <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
-                        { playerOne }: { p1Points }
+                        { playerOne.name }: { p1Points }
                     </h1>
 
                     <h1 className='game-header'>
@@ -37,7 +37,7 @@ const GameContainer = ({
                     </h1>
 
                     <h1 className={ whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
-                        { playerTwo }: { p2Points }
+                        { playerTwo.name }: { p2Points }
                     </h1>
                 </div>
                 

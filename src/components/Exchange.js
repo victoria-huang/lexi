@@ -21,7 +21,7 @@ const Exchange = ({
     setExchanged
 }) => {
     const exchangeTile = () => {
-        const selectedTile = playerTiles.find(pt => pt.id === selected)
+        const selectedTile = playerTiles.find(pt => pt._id === selected)
         const copyUnusedTiles = [...unusedTiles]
         const max = copyUnusedTiles.length - 1
         const min = 0

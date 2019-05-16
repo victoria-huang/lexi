@@ -19,7 +19,7 @@ exports.index = function (req, res) {
         res.json({
             status: 'success',
             message: 'users retrieved!',
-            data: users
+            users: users
         })
     })
 }
@@ -31,7 +31,7 @@ exports.view = function (req, res) {
 
         res.json({
             message: 'user details retrieved!',
-            data: user
+            user
         });
     });
 }
@@ -100,8 +100,6 @@ exports.login = function (req, res) {
             // create JWT Payload
                 const payload = {
                     id: user.id,
-                    name: user.name,
-                    email: user.email,
                     username: user.username
                 }
             // sign token

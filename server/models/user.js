@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const ObjectId = mongoose.Schema.Types.ObjectId
 const GamesSchema = require('./game').schema
 const jwt = require('jsonwebtoken')
 const keys = require('../config/keys')
@@ -28,27 +29,49 @@ const UsersSchema = new Schema({
     currentGames: [GamesSchema],
     wonGames: [{
         gameId: {
-            
+            type: ObjectId,
+            required: true
+        },
+        points: {
+            type: Number,
+            required: true
         },
         otherPlayer: {
             playerId: {
-
+                type: ObjectId,
+                required: true
             },
             playerName: {
-
+                type: String,
+                required: true
+            },
+            points: {
+                type: Number,
+                required: true
             }
         }
     }],
     lostGames: [{
         gameId: {
-
+            type: ObjectId,
+            required: true
+        },
+        points: {
+            type: Number,
+            required: true
         },
         otherPlayer: {
             playerId: {
-
+                type: ObjectId,
+                required: true
             },
             playerName: {
-                
+                type: String,
+                required: true
+            },
+            points: {
+                type: Number,
+                required: true
             }
         }
     }]

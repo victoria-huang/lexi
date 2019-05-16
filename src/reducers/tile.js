@@ -1,4 +1,4 @@
-import { ALL_TILES } from '../constants'
+// import { ALL_TILES } from '../constants'
 import {
     SELECT_TILE,
     DESELECT_TILE,
@@ -15,7 +15,7 @@ import {
 } from '../constants/ActionTypes'
 
 const initialState = {
-    unusedTiles: ALL_TILES,
+    unusedTiles: [],
     tryTiles: [],
     playerTiles: [],
     p1Tiles: [],
@@ -44,15 +44,15 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 playerTiles: state.playerTiles.concat(action.payload.tile),
-                [key]: state[key].concat(action.payload.tile.id)
+                [key]: state[key].concat(action.payload.tile._id)
             }
         case REMOVE_FROM_HAND:
             key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
 
             return {
                 ...state, 
-                playerTiles: state.playerTiles.filter(pt => pt.id !== action.payload.tile.id),
-                [key]: state[key].filter(tileId => tileId !== action.payload.tile.id )
+                playerTiles: state.playerTiles.filter(pt => pt._id !== action.payload.tile._id),
+                [key]: state[key].filter(tileId => tileId !== action.payload.tile._id )
             }
         case ADD_TRY_TILE:
             return {
@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
         case REMOVE_TRY_TILE:
             return {
                 ...state,
-                tryTiles: state.tryTiles.filter(t => t.id !== action.payload.id)
+                tryTiles: state.tryTiles.filter(t => t._id !== action.payload._id)
             }
         case CLEAR_TRY_TILES:
             return {
@@ -71,7 +71,7 @@ export default (state = initialState, action) => {
             }
         case DEAL_PLAYER_TILES:
             key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
-            const tileIds = action.payload.tiles.map( t => t.id )
+            const tileIds = action.payload.tiles.map( t => t._id )
 
             return {
                 ...state,

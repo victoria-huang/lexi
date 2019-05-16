@@ -29,7 +29,11 @@ const ControlPanel = ({
     selected, 
     exchanged,
     firstHandDealt,
-    dealFirstHand
+    dealFirstHand,
+    whoseTurn,
+    playerOne,
+    playerTwo,
+    user
 })  => {
     const firstHand = useRef(false)
 
@@ -70,14 +74,22 @@ const ControlPanel = ({
         deselectTile()
     }
 
+    let player = user._id === playerOne.userId ? 1 : 2
+    
     return (
         <div className='flex center'>
-            <Submit createHand={ createHand } />
-            <Shuffle />
-            { (selected && !exchanged) && <Exchange /> }
-            <TileBag />
-            <button onClick={ handlePass }>pass</button>
-            <EndGame />
+            { 
+                (whoseTurn === player || playerOne.userId === playerTwo.userId)
+                &&
+                <>
+                <Submit createHand={ createHand } />
+                <Shuffle />
+                { (selected && !exchanged) && <Exchange /> }
+                <TileBag />
+                <button onClick={ handlePass }>pass</button>
+                <EndGame />
+                </>
+            }
         </div>
     ) 
 }
@@ -138,7 +150,11 @@ const mapStateToProps = (state) => ({
     unusedTiles: state.tile.unusedTiles,
     selected: state.tile.selected,
     exchanged: state.game.exchanged,
-    firstHandDealt: state.game.firstHandDealt
+    firstHandDealt: state.game.firstHandDealt,
+    whoseTurn: state.game.whoseTurn,
+    playerOne: state.game.playerOne,
+    playerTwo: state.game.playerTwo,
+    user: state.user.currUser
 })
 
 const mapDispatchToProps = (dispatch) => ({

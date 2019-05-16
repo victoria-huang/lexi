@@ -33,14 +33,14 @@ const Cell = ({
     removeFromHand,
     addTryTile,
     removeTryTile,
-    id,
+    _id,
     x,
     y,
     value,
     points,
     bonus 
 }) => {
-    const isUsedCell = usedCells.includes(id)
+    const isUsedCell = usedCells.includes(_id)
 
     let color
 
@@ -80,12 +80,12 @@ const Cell = ({
     const handleClickCell = (cellId) => {
         if (!usedCells.includes(cellId)) {
             const copyCells = [...cells]
-            const cellIdx = cells.findIndex(c => c.id === cellId)
+            const cellIdx = cells.findIndex(c => c._id === cellId)
             const foundCell = { ...cells[cellIdx] }
 
             if (selected && !foundCell.value) {
-                const tile = playerTiles.find(t => t.id === selected)
-                foundCell.tileId = tile.id
+                const tile = playerTiles.find(t => t._id === selected)
+                foundCell.tileId = tile._id
                 foundCell.value = tile.letter 
                 foundCell.points = tile.points 
                 copyCells[cellIdx] = foundCell
@@ -97,7 +97,7 @@ const Cell = ({
             }
 
             if (!selected && foundCell.value) {
-                const tile = tryTiles.find(t => t.id === foundCell.tileId)
+                const tile = tryTiles.find(t => t._id === foundCell.tileId)
                 foundCell.value = null
                 foundCell.points = null
                 copyCells[cellIdx] = foundCell
@@ -107,7 +107,7 @@ const Cell = ({
                 removeTryTile(tile)
             }
         } else {
-            const foundCell = cells.find(cell => cell.id === cellId)
+            const foundCell = cells.find(cell => cell._id === cellId)
             openModal(foundCell.words)
         }
     }
@@ -147,7 +147,7 @@ const Cell = ({
             </text>
 
             <rect
-                onClick={ () => handleClickCell(id, x, y) }
+                onClick={ () => handleClickCell(_id, x, y) }
                 className="rect-svg"
                 x={ x }
                 y={ y }

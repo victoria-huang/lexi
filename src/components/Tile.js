@@ -36,9 +36,9 @@ class Tile extends Component {
             return 
         }
 
-        const foundBlankTile = this.props.playerTiles.find(t => t.id === this.props.selected)
-        const foundTile = this.props.unusedTiles.find(t => t.id === this.state.selectedTile)
-        const unusedTiles = this.props.unusedTiles.filter(t => t.id !== this.state.selectedTile)
+        const foundBlankTile = this.props.playerTiles.find(t => t._id === this.props.selected)
+        const foundTile = this.props.unusedTiles.find(t => t._id === this.state.selectedTile)
+        const unusedTiles = this.props.unusedTiles.filter(t => t._id !== this.state.selectedTile)
 
         this.closeModal()
         this.props.deselectTile()
@@ -56,6 +56,9 @@ class Tile extends Component {
     }
 
     handleSelectTile = (selected) => {
+        let player = ( this.props.user._id === this.props.playerOne.userId ? 1 : 2 )
+        if (this.props.whoseTurn !== player && this.props.playerOne.userId !== this.props.playerTwo.userId) return
+        
         if (selected === this.props.selected) this.props.deselectTile()
         else this.props.selectTile(selected)
 
@@ -86,10 +89,10 @@ class Tile extends Component {
         return (   
             <>
             <span 
-                onClick={ () => this.handleSelectTile( this.props.id ) }
+                onClick={ () => this.handleSelectTile( this.props._id ) }
                 className='tile hand-tile'
                 style={ 
-                    this.props.selected === this.props.id ? 
+                    this.props.selected === this.props._id ? 
                     { backgroundColor: 'rgb(244, 204, 237)', border: '1px solid gray' }
                     :
                     { backgroundColor: 'lightblue', border: 'none' }
@@ -119,10 +122,10 @@ class Tile extends Component {
                     { this.getOptionsForSelectTile().map( t => 
                         <div key= { v4() } className='flex column center'>
                             <span 
-                                onClick={ () => this.handleChange( t.id ) }
+                                onClick={ () => this.handleChange( t._id ) }
                                 className='tile select-tile'
                                 style={ 
-                                    this.state.selectedTile === t.id ? 
+                                    this.state.selectedTile === t._id ? 
                                     { backgroundColor: 'rgb(244, 204, 237)', border: '1px solid gray' }
                                     :
                                     { backgroundColor: 'lightblue', border: 'none' }
@@ -172,7 +175,10 @@ const mapStateToProps = (state) => ({
     playerTiles: state.tile.playerTiles,
     unusedTiles: state.tile.unusedTiles,
     selected: state.tile.selected,
-    whoseTurn: state.game.whoseTurn
+    whoseTurn: state.game.whoseTurn,
+    user: state.user.currUser,
+    playerOne: state.game.playerOne,
+    playerTwo: state.game.playerTwo
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import setAuthToken from '../utils/setAuthToken'
 import { setCurrentUser } from '../actions'
+import axios from 'axios'
 
 const withAuth = (ComponentToWrap) => {
     return connect(null, { setCurrentUser })(class extends Component {        
@@ -18,8 +19,12 @@ const withAuth = (ComponentToWrap) => {
             } else {
                 setAuthToken(token)
                 const decodedUser = jwt_decode(token)
-                this.props.setCurrentUser(decodedUser)
-                this.setState({ tokenSet: true })
+
+                axios.get(`/api/v1/users/${decodedUser.id}`)
+                .then(res => {
+                    this.props.setCurrentUser(res.data.user)
+                    this.setState({ tokenSet: true })
+                })
             }
         }
 

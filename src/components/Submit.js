@@ -37,7 +37,7 @@ const Submit = ({
 
     const findFilledCells = () => cells.filter(c => c.value)
 
-    const findTryCells = () => findFilledCells().filter(c => tryTiles.find(t => t.id === c.tileId))
+    const findTryCells = () => findFilledCells().filter(c => tryTiles.find(t => t._id === c.tileId))
 
     const scanPlacedWord = (direction, firstPlacedPos, lastPlacedPos, tryCells, filledCells) => {           
         let firstLetterIdx = filledCells.indexOf(tryCells[0])
@@ -396,14 +396,14 @@ const Submit = ({
         
         // 7. disable cells & bonuses
         const newCells = [...cells].map(cell => {
-            const cellWithNewWords = testWordCells.find(wc => wc.id === cell.id)
+            const cellWithNewWords = testWordCells.find(wc => wc._id === cell._id)
             if (cellWithNewWords) return { ...cellWithNewWords, bonus: null }
             else return cell
         })
 
         updateCells(newCells)
 
-        const tryCellIds = tryCells.map(cell => cell.id)
+        const tryCellIds = tryCells.map(cell => cell._id)
         
         setUsedCells(tryCellIds)
         updateUsedTiles(tryTiles)

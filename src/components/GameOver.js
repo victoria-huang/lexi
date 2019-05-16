@@ -34,7 +34,7 @@ const GameOver = ({
                     p1Points === p2Points ? 
                     <h2>it's a tie!</h2>
                     :
-                    <h2>the winner is { p1Points > p2Points ? playerOne : playerTwo }!</h2>
+                    <h2>the winner is { p1Points > p2Points ? playerOne.name : playerTwo.name }!</h2>
                 }
 
                 <p>thank you for playing.</p>

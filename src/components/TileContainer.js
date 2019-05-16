@@ -10,14 +10,21 @@ const TileContainer = ({
     playerTiles,
     p1Tiles,
     p2Tiles,
-    whoseTurn
+    whoseTurn,
+    user,
+    playerOne,
+    playerTwo
 }) => {
     const renderPlayerTiles = () => {
-        const tileIds = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
-        const foundPlayerTiles = tileIds.map( tId => playerTiles.find(t => t.id === tId) )
+        let tileIds = ( user._id === playerOne.userId ? p1Tiles : p2Tiles )
+        // self practice game
+        if (playerOne.userId === playerTwo.userId) 
+            tileIds = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
+        
+        const foundPlayerTiles = tileIds.map( tId => playerTiles.find(t => t._id === tId) )
         return foundPlayerTiles.map( t => <Tile key={ v4() } { ...t } /> )
     }
-
+    
     return (
         <>
         <div className='num-remaining-tiles flex center'>
@@ -35,7 +42,10 @@ const mapStateToProps = (state) => ({
     playerTiles: state.tile.playerTiles,
     p1Tiles: state.tile.p1Tiles,
     p2Tiles: state.tile.p2Tiles,
-    whoseTurn: state.game.whoseTurn
+    whoseTurn: state.game.whoseTurn,
+    user: state.user.currUser,
+    playerOne: state.game.playerOne,
+    playerTwo: state.game.playerTwo
 })
 
 export default connect(mapStateToProps)(TileContainer)

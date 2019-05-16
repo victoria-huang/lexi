@@ -23,10 +23,14 @@ export const updateCells = cells => ({
     payload: cells
 })
 
-export const setUsedCells = cellIds => ({
-    type: types.SET_USED_CELLS,
-    payload: cellIds
-})
+export const setUsedCells = cellIds => dispatch => {
+    // axios.patch(`/api/v1/games/${gameId}`, { cellIds })
+
+    dispatch({
+        type: types.SET_USED_CELLS,
+        payload: cellIds
+    })
+}
 
 /************ TILE ************/
 
@@ -126,13 +130,27 @@ export const dealFirstHand = () => ({
     type: types.DEAL_FIRST_HAND
 })
 
-export const setPlayers = (playerOne, playerTwo) => ({
-    type: types.SET_PLAYERS,
-    payload: {
-        playerOne, 
-        playerTwo
-    }
-})
+export const setPlayers = (playerOne, playerTwo) => dispatch => {
+    axios.post('/api/v1/games', {
+        playerOne: playerOne.userId,
+        playerTwo: playerTwo.userId,
+        p1Name: playerOne.name,
+        p2Name: playerTwo.name
+    }).then(res => {
+        const game = res.data.game
+        
+        dispatch(updateCells(game.cells.allCells))
+        dispatch(updateUnusedTiles(game.tiles.unusedTiles))
+
+        dispatch({
+            type: types.SET_PLAYERS,
+            payload: {
+                playerOne, 
+                playerTwo
+            }
+        })
+    })
+}
 
 /************ USER ************/
 
@@ -140,12 +158,19 @@ export const login = (userData, history) => dispatch => {
     axios.post('/api/v1/login', userData)
     .then(res => {
         const { token } = res.data
+
         localStorage.setItem('token', token)
         setAuthToken(token)
+
         const decodedUser = jwt_decode(token)
-        dispatch(setCurrentUser(decodedUser))
-        dispatch(clearErrors())
-        history.push('/')
+        // localStorage.setItem('user_id', decodedUser.id)
+        axios.get(`/api/v1/users/${decodedUser.id}`)
+        .then(res => {
+            dispatch(setCurrentUser(res.data.user))
+            dispatch(clearErrors())
+
+            history.push('/')
+        })
     })
     .catch(err => {
         dispatch({
@@ -175,13 +200,24 @@ export const logoutUser = history => dispatch => {
     setAuthToken(false)
     // set current user to null which will set isAuthenticated to false
     dispatch(setCurrentUser(null))
+
     history.push('/login')
 }
 
-export const setCurrentUser = decodedUser => ({
+export const setCurrentUser = user => ({
     type: types.SET_CURRENT_USER,
-    payload: decodedUser
-})
+    payload: user
+})  
+
+export const setAllUsers = users => dispatch => {
+    axios.get('/api/v1/users')
+    .then(res => {
+        dispatch({
+            type: types.SET_ALL_USERS,
+            payload: res.data.users
+        })
+    })
+}
 
 /************ ALL ************/
 

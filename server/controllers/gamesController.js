@@ -400,11 +400,22 @@ exports.new = function (req, res) {
     })
 
     newGame.save()
-    .then(game => res.json({
-        status: 'success',
-        message: 'new game created',
-        data: game
-    }))
+    .then(game => {
+        User.findById(req.body.playerOne, function (err, user) {
+            user.currentGames.push(game)
+            user.save()
+        })
+
+        User.findById(req.body.playerTwo, function (err, user) {
+            user.currentGames.push(game)
+            user.save()
+        })
+        return res.json({
+            status: 'success',
+            message: 'new game created',
+            game: game
+        })
+    })
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
@@ -412,10 +423,7 @@ exports.update = function (req, res) {
     Game.findById(req.params.game_id, function (err, game) {
         if (err) return res.json({ status: 'error', message: err })
 
-        let playerId 
-
-        if (game.whoseTurn === 1) playerId = game.playerOne 
-        else playerId = game.playerTwo
+        let playerId = ( game.whoseTurn === 1 ? game.playerOne : game.playerTwo )
 
         // make sure only the player whose turn it is in the game is making requests
         if (currentUser(req).id !== playerId.toString())
