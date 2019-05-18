@@ -1,8 +1,6 @@
-// import { ALL_CELLS } from '../constants'
 import {
     RESUME_GAME,
     SET_CELLS,
-    // UPDATE_CELLS,
     SET_USED_CELLS,
     CLEAR_GAME
 } from '../constants/ActionTypes'
@@ -25,11 +23,6 @@ export default (state = initialState, action) => {
                 ...state,
                 allCells: action.payload
             }
-        // case UPDATE_CELLS:
-        //     return {
-        //         ...state,
-        //         allCells: action.payload
-        //     }
         case SET_USED_CELLS:
             return {
                 ...state,

@@ -54,12 +54,15 @@ const Register = ({ register, history }) => {
                 />
                 <br />
                 <input 
+                    data-tip
+                    data-for='password'
                     type='password'
                     placeholder='password'
                     value={ password } 
                     onChange={ (e) => setPassword(e.target.value) }
                 />
-                <ReactTooltip   
+                <ReactTooltip 
+                    id='password'  
                     place='right'
                     type='light' 
                     effect='solid'

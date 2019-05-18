@@ -1,4 +1,3 @@
-// import { ALL_TILES } from '../constants'
 import {
     RESUME_GAME,
     SET_UNUSED_TILES,
@@ -10,7 +9,6 @@ import {
     REMOVE_TRY_TILE,
     CLEAR_TRY_TILES,
     DEAL_PLAYER_TILES,
-    // UPDATE_UNUSED_TILES,
     UPDATE_USED_TILES,
     SHUFFLE_PLAYER_TILES,
     CLEAR_GAME
@@ -108,11 +106,6 @@ export default (state = initialState, action) => {
                 playerTiles: state.playerTiles.concat(action.payload.tiles),
                 [key]: state[key].concat(tileIds)
             }
-        // case UPDATE_UNUSED_TILES:
-        //     return {
-        //         ...state,
-        //         unusedTiles: action.payload
-        //     }
         case UPDATE_USED_TILES:
             return {
                 ...state,
