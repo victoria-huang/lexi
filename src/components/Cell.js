@@ -38,7 +38,8 @@ const Cell = ({
     y,
     value,
     points,
-    bonus 
+    bonus,
+    gameId 
 }) => {
     const isUsedCell = usedCells.includes(_id)
 
@@ -90,21 +91,22 @@ const Cell = ({
                 foundCell.points = tile.points 
                 copyCells[cellIdx] = foundCell
 
-                updateCells(copyCells)
-                deselectTile()
-                removeFromHand(tile, whoseTurn)
-                addTryTile(tile)
+                updateCells(gameId, copyCells)
+                deselectTile(gameId)
+                removeFromHand(gameId, tile, whoseTurn)
+                addTryTile(gameId, tile)
             }
 
             if (!selected && foundCell.value) {
                 const tile = tryTiles.find(t => t._id === foundCell.tileId)
+                foundCell.tileId = null
                 foundCell.value = null
                 foundCell.points = null
                 copyCells[cellIdx] = foundCell
 
-                updateCells(copyCells)
-                addToHand(tile, whoseTurn)
-                removeTryTile(tile)
+                updateCells(gameId, copyCells)
+                addToHand(gameId, tile, whoseTurn)
+                removeTryTile(gameId, tile)
             }
         } else {
             const foundCell = cells.find(cell => cell._id === cellId)
@@ -188,6 +190,7 @@ const Cell = ({
 }
 
 const mapStateToProps = (state) => ({
+    gameId: state.game.gameId,
     cells: state.cell.allCells,
     usedCells: state.cell.usedCells,
     selected: state.tile.selected,
@@ -197,12 +200,12 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updateCells: (cells) => dispatch(updateCells(cells)),
-    deselectTile: () => dispatch(deselectTile()),
-    addToHand: (tile, player) => dispatch(addToHand(tile, player)),
-    removeFromHand: (tile, player) => dispatch(removeFromHand(tile, player)),
-    addTryTile: (tile) => dispatch(addTryTile(tile)),
-    removeTryTile: (tile) => dispatch(removeTryTile(tile))
+    updateCells: (gameId, cells) => dispatch(updateCells(gameId, cells)),
+    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+    addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
+    removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
+    addTryTile: (gameId, tile) => dispatch(addTryTile(gameId, tile)),
+    removeTryTile: (gameId, tile) => dispatch(removeTryTile(gameId, tile))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cell)

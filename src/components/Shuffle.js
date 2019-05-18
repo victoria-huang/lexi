@@ -7,7 +7,8 @@ const Shuffle = ({
     p1Tiles, 
     p2Tiles, 
     whoseTurn, 
-    shufflePlayerTiles 
+    shufflePlayerTiles,
+    gameId 
 }) => {
     const shuffleHand = () => {
         const playerTiles = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
@@ -22,7 +23,7 @@ const Shuffle = ({
             tiles[j] = temp
         }
 
-        shufflePlayerTiles(tiles, whoseTurn)
+        shufflePlayerTiles(gameId, tiles, whoseTurn)
     }
 
     return (
@@ -31,13 +32,14 @@ const Shuffle = ({
 }
 
 const mapStateToProps = (state) => ({
+    gameId: state.game.gameId,
     p1Tiles: state.tile.p1Tiles,
     p2Tiles: state.tile.p2Tiles,
     whoseTurn: state.game.whoseTurn
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    shufflePlayerTiles: (tiles, player) => dispatch(shufflePlayerTiles(tiles, player))
+    shufflePlayerTiles: (gameId, tiles, player) => dispatch(shufflePlayerTiles(gameId, tiles, player))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shuffle)

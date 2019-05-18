@@ -1,5 +1,7 @@
 // import { ALL_TILES } from '../constants'
 import {
+    RESUME_GAME,
+    SET_UNUSED_TILES,
     SELECT_TILE,
     DESELECT_TILE,
     ADD_TO_HAND,
@@ -8,7 +10,7 @@ import {
     REMOVE_TRY_TILE,
     CLEAR_TRY_TILES,
     DEAL_PLAYER_TILES,
-    UPDATE_UNUSED_TILES,
+    // UPDATE_UNUSED_TILES,
     UPDATE_USED_TILES,
     SHUFFLE_PLAYER_TILES,
     CLEAR_GAME
@@ -28,6 +30,34 @@ export default (state = initialState, action) => {
     let key
 
     switch(action.type) {
+        case RESUME_GAME:
+            const {
+                unusedTiles,
+                tryTiles,
+                playerTiles,
+                p1Tiles,
+                p2Tiles,
+                usedTiles,
+                selected
+            } = action.payload.tiles
+
+            const p1TileIds = p1Tiles.map(tile => tile._id)
+            const p2TileIds = p2Tiles.map(tile => tile._id)
+
+            return {
+                unusedTiles,
+                tryTiles,
+                playerTiles,
+                p1Tiles: p1TileIds,
+                p2Tiles: p2TileIds,
+                usedTiles,
+                selected
+            }
+        case SET_UNUSED_TILES:
+            return {
+                ...state,
+                unusedTiles: action.payload
+            }
         case SELECT_TILE:
             return {
                 ...state,
@@ -40,7 +70,7 @@ export default (state = initialState, action) => {
             }
         case ADD_TO_HAND:
             key = ( action.payload.player === 1 ? 'p1Tiles' : 'p2Tiles' )
-
+            
             return {
                 ...state,
                 playerTiles: state.playerTiles.concat(action.payload.tile),
@@ -78,11 +108,11 @@ export default (state = initialState, action) => {
                 playerTiles: state.playerTiles.concat(action.payload.tiles),
                 [key]: state[key].concat(tileIds)
             }
-        case UPDATE_UNUSED_TILES:
-            return {
-                ...state,
-                unusedTiles: action.payload
-            }
+        // case UPDATE_UNUSED_TILES:
+        //     return {
+        //         ...state,
+        //         unusedTiles: action.payload
+        //     }
         case UPDATE_USED_TILES:
             return {
                 ...state,

@@ -32,17 +32,17 @@ const WordsSchema = new Schema({
         type: String,
         required: true 
     },
-    phonetic: {
+    phonetic: [{
         type: String
-    },
-    meaning: {
-        meaning_type: {
-            type: String,
-            definitions: [{
-                type: String
-            }]
-        }
-    }
+    }],
+    meaning: [{
+        meaningType: {
+            type: String
+        },
+        definitions: [{
+            type: String
+        }]
+    }]
 }, { timestamps: true })
 
 const CellSchema = new Schema({
@@ -141,4 +141,5 @@ module.exports.tiles = mongoose.model('tiles', TilesSchema)
 module.exports.cell = mongoose.model('cell', CellSchema)
 module.exports.cells = mongoose.model('cells', CellsSchema)
 
+GamesSchema.set('versionKey', false)
 module.exports.schema = GamesSchema

@@ -18,7 +18,8 @@ const Exchange = ({
     removeFromHand,
     updateUnusedTiles,
     deselectTile,
-    setExchanged
+    setExchanged,
+    gameId
 }) => {
     const exchangeTile = () => {
         const selectedTile = playerTiles.find(pt => pt._id === selected)
@@ -29,11 +30,11 @@ const Exchange = ({
         const randomTile = copyUnusedTiles[randomIndex]
         copyUnusedTiles[randomIndex] = selectedTile
 
-        deselectTile()
-        removeFromHand(selectedTile, whoseTurn)
-        addToHand(randomTile, whoseTurn)
-        updateUnusedTiles(copyUnusedTiles)
-        setExchanged()
+        deselectTile(gameId)
+        removeFromHand(gameId, selectedTile, whoseTurn)
+        addToHand(gameId, randomTile, whoseTurn)
+        updateUnusedTiles(gameId, copyUnusedTiles)
+        setExchanged(gameId)
     }
 
     return (
@@ -42,6 +43,7 @@ const Exchange = ({
 }
 
 const mapStateToProps = (state) => ({
+    gameId: state.game.gameId,
     unusedTiles: state.tile.unusedTiles,
     playerTiles: state.tile.playerTiles,
     selected: state.tile.selected,
@@ -49,11 +51,11 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addToHand: (tile, player) => dispatch(addToHand(tile, player)),
-    removeFromHand: (tile, player) => dispatch(removeFromHand(tile, player)),
-    updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
-    deselectTile: () => dispatch(deselectTile()),
-    setExchanged: () => dispatch(setExchanged())
+    addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
+    removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
+    updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
+    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+    setExchanged: (gameId) => dispatch(setExchanged(gameId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Exchange)

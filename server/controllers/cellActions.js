@@ -1,6 +1,6 @@
 module.exports.updateCells = function (res, game, cells) {
     game.cells.allCells = cells
-
+// check
     game.save()
     .then(game => res.json({
         status: 'success',
@@ -11,8 +11,8 @@ module.exports.updateCells = function (res, game, cells) {
 }
 
 module.exports.setUsedCells = function(res, game, cellIds) {
-    game.cells.usedCells.push(cellIds)
-
+    cellIds.forEach(cId => game.cells.usedCells.push(cId))
+// check
     game.save()
     .then(game => res.json({
         status: 'success',

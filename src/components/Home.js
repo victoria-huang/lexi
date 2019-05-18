@@ -4,7 +4,12 @@ import { connect } from 'react-redux'
 import { v4 } from 'uuid'
 
 import withAuth from '../hocs/withAuth'
-import { logoutUser, setPlayers, setAllUsers } from '../actions'
+import { 
+    logoutUser, 
+    setPlayers, 
+    setAllUsers, 
+    resumeGame 
+} from '../actions'
 
 const Home = ({ 
     user, 
@@ -12,7 +17,8 @@ const Home = ({
     logoutUser, 
     history,
     setPlayers,
-    setAllUsers
+    setAllUsers,
+    resumeGame
 }) => {
     useEffect(() => {
         setAllUsers()
@@ -42,8 +48,9 @@ const Home = ({
         history.push('/game')
     }
 
-    const handleResumeGame = () => {
-
+    const handleResumeGame = (gameId) => {
+        resumeGame(gameId)
+        history.push('/game')
     }
 
     const renderUsers = () => allUsers.map(u => {
@@ -60,23 +67,29 @@ const Home = ({
     })
 
     const renderCurrentGames = () => user.currentGames.map(game => {
-        if (user._id === game.playerOne) {
-            return <li key={ v4() }>
-                you ({ game.p1Points }) vs. { game.p2Name } ({ game.p2Points })
-                <button onClick={ () => handleResumeGame() }>
-                    resume game
-                </button>
-            </li>
-        } else {
-            return <li key={ v4() }>
-                you ({ game.p2Points }) vs. { game.p1Name } ({ game.p1Points })
-                <button onClick={ () => handleResumeGame() }>
-                    resume game
-                </button>
-            </li>
-        }
+        return <li key={ v4() }>
+            you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
+            <button onClick={ () => handleResumeGame(game.gameId) }>
+                resume game
+            </button>
+        </li>
+        // if (user._id === game.playerOne) {
+        //     return <li key={ v4() }>
+        //         you ({ game.p1Points }) vs. { game.p2Name } ({ game.p2Points })
+        //         <button onClick={ () => handleResumeGame(game._id) }>
+        //             resume game
+        //         </button>
+        //     </li>
+        // } else {
+        //     return <li key={ v4() }>
+        //         you ({ game.p2Points }) vs. { game.p1Name } ({ game.p1Points })
+        //         <button onClick={ () => handleResumeGame(game._id) }>
+        //             resume game
+        //         </button>
+        //     </li>
+        // }
     })
-
+    console.log(user.currentGames)
     return (
         <>
         <div className='flex column'>
@@ -116,5 +129,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { logoutUser, setPlayers, setAllUsers }
+    { logoutUser, setPlayers, setAllUsers, resumeGame }
 )(withAuth(Home))

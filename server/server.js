@@ -23,6 +23,7 @@ app.use(passport.initialize())
 // connect to mongoose and set connection variable
 mongoose.set('useCreateIndex', true)
 mongoose.connect('mongodb://localhost/lexi', { useNewUrlParser: true })
+mongoose.set('useFindAndModify', false)
 
 const db = mongoose.connection
 

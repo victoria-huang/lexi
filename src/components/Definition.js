@@ -14,13 +14,13 @@ const Definition = ({ word, phonetic, meaning }) => {
         </div>
 
         { 
-            Object.keys(meaning).map(type => {
+            meaning.map(m => {
                 return <div key={ v4() }>
                     <p className='definition-type'>
-                        { type }
+                        { m.meaningType }
                     </p>
                     <ol>
-                        { meaning[type].map(def => <li key={ v4() }>{ def.definition }</li>)}
+                        { m.definitions.map(def => <li key={ v4() }>{ def }</li>)}
                     </ol>
                 </div>
             }) 

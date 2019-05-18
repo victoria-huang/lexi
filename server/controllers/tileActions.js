@@ -1,11 +1,11 @@
 module.exports.selectTile = function (res, game, selected) {
     game.tiles.selected = selected 
-
+    
     game.save()
     .then(game => res.json({
         status: 'success',
         message: 'set selected tile',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
@@ -17,44 +17,43 @@ module.exports.deselectTile = function (res, game) {
     .then(game => res.json({
         status: 'success',
         message: 'deselected tile',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
-module.exports.addToHand = function (res, game, tile) {
-    
+module.exports.addToHand = function (res, game, tile, player) {
     game.tiles.playerTiles.push(tile)
 
-    if (game.whoseTurn === 1) {
-        game.tiles.p1Tiles.push(tile.id)
+    if (player === 1) {
+        game.tiles.p1Tiles.push(tile._id)
     } else {
-        game.tiles.p2Tiles.push(tile.id)
+        game.tiles.p2Tiles.push(tile._id)
     }
 
     game.save()
     .then(game => res.json({
         status: 'success',
-        message: `add tile to player ${game.whoseTurn}'s hand`,
-        data: game
+        message: `add tile to player ${player}'s hand`,
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
-module.exports.removeFromHand = function (res, game, tile) {
-    game.tiles.playerTiles = game.playerTiles.filter(pt => pt.id !== tile.id)
+module.exports.removeFromHand = function (res, game, tile, player) {
+    game.tiles.playerTiles.pull(tile._id)
 
-    if (game.whoseTurn === 1) {
-        game.p1Tiles = game.p1Tiles.filter(tileId => tileId !== tile.id)
+    if (player === 1){
+        game.tiles.p1Tiles.pull(tile._id)
     } else {
-        game.p2Tiles = game.p2Tiles.filter(tileId => tileId !== tile.id)
+        game.tiles.p2Tiles.pull(tile._id)
     }
 
     game.save()
     .then(game => res.json({
         status: 'success',
-        message: `removed tile from player ${game.whoseTurn}'s hand`,
-        data: game
+        message: `removed tile from player ${player}'s hand`,
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
@@ -66,19 +65,19 @@ module.exports.addTryTile = function (res, game, tile) {
     .then(game => res.json({
         status: 'success',
         message: 'added try tile',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
 module.exports.removeTryTile = function (res, game, tile) {
-    game.tiles.tryTiles = game.tryTiles.filter(t => t.id !== tile.id)
+    game.tiles.tryTiles.pull(tile._id)
 
     game.save()
     .then(game => res.json({
         status: 'success',
         message: 'removed try tile',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
@@ -90,57 +89,60 @@ module.exports.clearTryTiles = function (res, game) {
     .then(game => res.json({
         status: 'success',
         message: 'cleared try tiles',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
 module.exports.dealPlayerTiles = function (res, game, tiles, player) {
-    const tileIds = tiles.map( t => t.id )
+    const tileIds = tiles.map( t => t._id )
 
-    game.tiles.playerTiles = game.tiles.playerTiles.concat(tiles)
+    tiles.forEach(tile => game.tiles.playerTiles.push(tile))
     
     if (player === 1) {
-        game.tiles.p1Tiles.concat(tileIds)
+        tileIds.forEach(tId => game.tiles.p1Tiles.push(tId))
     } else if (player === 2) {
-        game.tiles.p2Tiles.concat(tileIds)
+        tileIds.forEach(tId => game.tiles.p2Tiles.push(tId))
     }
 
     game.save()
     .then(game => res.json({
         status: 'success',
-        message: `dealt tiles to player ${game.whoseTurn}`,
-        data: game
+        message: `dealt tiles to player ${player}`,
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
-module.exports.updateUnusedTiles = function (res, game, tiles) {
+module.exports.updateUnusedTiles = async function (res, game, tiles) {
     game.tiles.unusedTiles = tiles
-
-    game.save()
+ 
+    await game.save()
     .then(game => res.json({
         status: 'success',
         message: 'updated unused tiles',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
 module.exports.updateUsedTiles = function (res, game, tiles) {
-    game.tiles.usedTiles.push(tiles)
+    if (Array.isArray(tiles)) tiles.forEach(tile => game.tiles.usedTiles.push(tile))
+    else game.tiles.usedTiles.push(tiles)
 
     game.save()
     .then(game => res.json({
         status: 'success',
         message: 'updated used tiles',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
-module.exports.shufflePlayerTiles = function (res, game, tiles) {
-    if (game.whoseTurn === 1) {
+module.exports.shufflePlayerTiles = function (res, game, tiles, player) {
+    tiles = tiles.map(t => { _id: t })
+
+    if (player === 1) {
         game.tiles.p1Tiles = tiles
     } else {
         game.tiles.p2Tiles = tiles
@@ -149,8 +151,8 @@ module.exports.shufflePlayerTiles = function (res, game, tiles) {
     game.save()
     .then(game => res.json({
         status: 'success',
-        message: `shuffled player ${game.whoseTurn}'s tiles`,
-        data: game
+        message: `shuffled player ${player}'s tiles`,
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }

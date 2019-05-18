@@ -32,7 +32,8 @@ const Submit = ({
     switchTurn,
     updateCells,
     startGame,
-    createHand
+    createHand,
+    gameId
 }) => {
 
     const findFilledCells = () => cells.filter(c => c.value)
@@ -343,8 +344,28 @@ const Submit = ({
             else 
                 return wordCells.map(cell => {
                     // only add unique words to cell
+                    const formattedMeanings = []
+
+                    for (const meaningType in result.meaning) {
+                        const meaning = {
+                            meaningType,
+                            definitions: result.meaning[meaningType].map(def => def.definition)
+                        }
+
+                        formattedMeanings.push(meaning)
+                    }
+
+                    const formattedWord = {
+                        word: result.word,
+                        phonetic: result.phonetic,
+                        meaning: formattedMeanings
+                    }
+                    
                     if (cell.words.find(w => w.word === result.word)) return cell
-                    else return { ...cell, words: [...cell.words, result] }
+                    else return { ...cell, words: [
+                        ...cell.words, 
+                        formattedWord
+                    ] }
                 })
         }))
         
@@ -386,13 +407,13 @@ const Submit = ({
             // 5. add points to user's score
             pointTotal += (points * wordMultiplier)
         })
-
-        addPoints(pointTotal)
+        
+        addPoints(gameId, pointTotal)
         // console.log(tryWords)
         // console.log('points', pointTotal)
 
         // 6. add try tiles to used tiles & try cells to used cells
-        clearTryTiles()
+        clearTryTiles(gameId)
         
         // 7. disable cells & bonuses
         const newCells = [...cells].map(cell => {
@@ -401,22 +422,25 @@ const Submit = ({
             else return cell
         })
 
-        updateCells(newCells)
+        updateCells(gameId, newCells)
 
         const tryCellIds = tryCells.map(cell => cell._id)
         
-        setUsedCells(tryCellIds)
-        updateUsedTiles(tryTiles)
+        setUsedCells(gameId, tryCellIds)
+        updateUsedTiles(gameId, tryTiles)
+        resetExchanged(gameId)
+        deselectTile(gameId)
+
+        if (!gameStart) startGame(gameId)
 
         // 8. create new hand
         const tilesNeeded = tryCells.length
+        
         createHand(tilesNeeded, whoseTurn)
-        resetExchanged()
-        deselectTile()
-
-        if (!gameStart) startGame()
-        // 9. switch turn
-        switchTurn()
+        .then(() => {
+            // 9. switch turn
+            switchTurn(gameId)
+        })  
     }
 
     const testWord = (word) => {
@@ -431,6 +455,7 @@ const Submit = ({
 }
 
 const mapStateToProps = (state) => ({
+    gameId: state.game.gameId,
     cells: state.cell.allCells,
     usedCells: state.cell.usedCells,
     tryTiles: state.tile.tryTiles,
@@ -439,17 +464,17 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updateUsedTiles: (tiles) => dispatch(updateUsedTiles(tiles)),
+    updateUsedTiles: (gameId, tiles) => dispatch(updateUsedTiles(gameId, tiles)),
     addErrors: (error) => dispatch(addErrors(error)),
     clearErrors: () => dispatch(clearErrors()),
-    addPoints: (points) => dispatch(addPoints(points)),
-    clearTryTiles: () => dispatch(clearTryTiles()),
-    setUsedCells: (cellIds) => dispatch(setUsedCells(cellIds)),
-    resetExchanged: () => dispatch(resetExchanged()),
-    deselectTile: () => dispatch(deselectTile()),
-    switchTurn: () => dispatch(switchTurn()),
-    updateCells: (cells) => dispatch(updateCells(cells)),
-    startGame: () => dispatch(startGame())
+    addPoints: (gameId, points) => dispatch(addPoints(gameId, points)),
+    clearTryTiles: (gameId) => dispatch(clearTryTiles(gameId)),
+    setUsedCells: (gameId, cellIds) => dispatch(setUsedCells(gameId, cellIds)),
+    resetExchanged: (gameId) => dispatch(resetExchanged(gameId)),
+    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+    switchTurn: (gameId) => dispatch(switchTurn(gameId)),
+    updateCells: (gameId, cells) => dispatch(updateCells(gameId, cells)),
+    startGame: (gameId) => dispatch(startGame(gameId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Submit)

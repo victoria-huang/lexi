@@ -41,33 +41,33 @@ class Tile extends Component {
         const unusedTiles = this.props.unusedTiles.filter(t => t._id !== this.state.selectedTile)
 
         this.closeModal()
-        this.props.deselectTile()
-        this.props.addToHand(foundTile, this.props.whoseTurn)
-        this.props.removeFromHand(foundBlankTile, this.props.whoseTurn)
-        this.props.updateUsedTiles(foundBlankTile)
-        this.props.updateUnusedTiles(unusedTiles)
-        this.props.selectTile(this.state.selectedTile)
+        this.props.deselectTile(this.props.gameId)
+        this.props.addToHand(this.props.gameId, foundTile, this.props.whoseTurn)
+        this.props.removeFromHand(this.props.gameId, foundBlankTile, this.props.whoseTurn)
+        this.props.updateUsedTiles(this.props.gameId, foundBlankTile)
+        this.props.updateUnusedTiles(this.props.gameId, unusedTiles)
+        this.props.selectTile(this.props.gameId, this.state.selectedTile)
     }
 
     handleCancel = () => {
         this.closeModal()
-        this.props.deselectTile()
+        this.props.deselectTile(this.props.gameId)
         this.setState({ selectedTile: '' })
     }
 
-    handleSelectTile = (selected) => {
+    handleSelectTile = (selected, letter) => {
         let player = ( this.props.user._id === this.props.playerOne.userId ? 1 : 2 )
         if (this.props.whoseTurn !== player && this.props.playerOne.userId !== this.props.playerTwo.userId) return
         
-        if (selected === this.props.selected) this.props.deselectTile()
-        else this.props.selectTile(selected)
+        if (selected === this.props.selected) this.props.deselectTile(this.props.gameId)
+        else this.props.selectTile(this.props.gameId, selected)
 
         // if blank tile
-        if (selected === 99 || selected === 100) this.openModal()
+        if (letter === ' ') this.openModal()
     }
 
     getOptionsForSelectTile = () => {
-        const noBlankTiles = this.props.unusedTiles.filter( t => t.letter !== '' )
+        const noBlankTiles = this.props.unusedTiles.filter( t => t.letter !== ' ' )
         const uniqueLetters = []
         const uniqueArr = []
 
@@ -89,7 +89,7 @@ class Tile extends Component {
         return (   
             <>
             <span 
-                onClick={ () => this.handleSelectTile( this.props._id ) }
+                onClick={ () => this.handleSelectTile( this.props._id, this.props.letter ) }
                 className='tile hand-tile'
                 style={ 
                     this.props.selected === this.props._id ? 
@@ -100,7 +100,7 @@ class Tile extends Component {
             >
                 <h3 className='letter'>
                     { 
-                        this.props.letter !== '' ? 
+                        this.props.letter !== ' ' ? 
                         this.props.letter 
                         : 
                         <div className='blank-tile'>*</div> 
@@ -133,7 +133,7 @@ class Tile extends Component {
                             >
                                 <h3 className='letter'>
                                     { 
-                                        t.letter !== '' ? 
+                                        t.letter !== ' ' ? 
                                         t.letter 
                                         : 
                                         <div className='blank-tile'>*</div> 
@@ -172,6 +172,7 @@ class Tile extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    gameId: state.game.gameId,
     playerTiles: state.tile.playerTiles,
     unusedTiles: state.tile.unusedTiles,
     selected: state.tile.selected,
@@ -182,12 +183,12 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    selectTile: (tile) => dispatch(selectTile(tile)),
-    deselectTile: () => dispatch(deselectTile()),
-    addToHand: (tile, player) => dispatch(addToHand(tile, player)),
-    removeFromHand: (tile, player) => dispatch(removeFromHand(tile, player)),
-    updateUsedTiles: (tile) => dispatch(updateUsedTiles(tile)),
-    updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles))
+    selectTile: (gameId, tile) => dispatch(selectTile(gameId, tile)),
+    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+    addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
+    removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
+    updateUsedTiles: (gameId, tile) => dispatch(updateUsedTiles(gameId, tile)),
+    updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tile)

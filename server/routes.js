@@ -45,7 +45,7 @@ const withAuth = (req, res, next) => {
 const usersController = require('./controllers/usersController')
 
 // user routes
-router.route('/users').get(withAuth, usersController.index)
+router.route('/users').get(usersController.index)
 router.route('/register').post(usersController.new)
 router.route('/login').post(usersController.login)
 

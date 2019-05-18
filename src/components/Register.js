@@ -53,8 +53,7 @@ const Register = ({ register, history }) => {
                     onChange={ (e) => setEmail(e.target.value) }
                 />
                 <br />
-                <input
-                    data-tip="password" 
+                <input 
                     type='password'
                     placeholder='password'
                     value={ password } 

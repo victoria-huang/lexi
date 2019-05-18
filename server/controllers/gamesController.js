@@ -364,7 +364,7 @@ exports.view = function (req, res) {
 
         res.json({
             message: 'game details retrieved!',
-            data: game
+            game
         })
     })
 }
@@ -401,15 +401,38 @@ exports.new = function (req, res) {
 
     newGame.save()
     .then(game => {
+        let userGame
+        
         User.findById(req.body.playerOne, function (err, user) {
-            user.currentGames.push(game)
+            userGame = {
+                gameId: game._id,
+                points: game.p1Points,
+                otherPlayer: {
+                    playerId: game.playerTwo,
+                    playerName: game.p2Name,
+                    points: game.p2Points,
+                }
+            }
+
+            user.currentGames.push(userGame)
             user.save()
         })
 
         User.findById(req.body.playerTwo, function (err, user) {
-            user.currentGames.push(game)
+            userGame = {
+                gameId: game._id,
+                points: game.p2Points,
+                otherPlayer: {
+                    playerId: game.playerOne,
+                    playerName: game.p1Name,
+                    points: game.p1Points,
+                }
+            }
+
+            user.currentGames.push(userGame)
             user.save()
         })
+
         return res.json({
             status: 'success',
             message: 'new game created',
@@ -422,20 +445,22 @@ exports.new = function (req, res) {
 exports.update = function (req, res) {
     Game.findById(req.params.game_id, function (err, game) {
         if (err) return res.json({ status: 'error', message: err })
-
+        
         let playerId = ( game.whoseTurn === 1 ? game.playerOne : game.playerTwo )
-
+        
         // make sure only the player whose turn it is in the game is making requests
         if (currentUser(req).id !== playerId.toString())
             return res.status(401).send('unauthorized')
         
-        switch (req.body.actionType) {
+        const body = req.body
+        
+        switch (body.actionType) {
             case 'START_GAME':
                 return gameActions.startGame(res, game)
             case 'END_GAME':
                 return gameActions.endGame(res, game)
             case 'ADD_POINTS':
-                return gameActions.addPoints(res, game, req.body.points)
+                return gameActions.addPoints(res, game, body.points, game.playerOne, game.playerTwo)
             case 'SET_EXCHANGED':
                 return gameActions.setExchanged(res, game)
             case 'RESET_EXCHANGED':
@@ -445,31 +470,31 @@ exports.update = function (req, res) {
             case 'DEAL_FIRST_HAND':
                 return gameActions.dealFirstHand(res, game)
             case 'SELECT_TILE':
-                return tileActions.selectTile(res, game, req.body.selected)
+                return tileActions.selectTile(res, game, body.selected)
             case 'DESELECT_TILE':
                 return tileActions.deselectTile(res, game)
             case 'ADD_TO_HAND':
-                return tileActions.addToHand(res, game, req.body.tile)
+                return tileActions.addToHand(res, game, body.tile, body.player)
             case 'REMOVE_FROM_HAND':
-                return tileActions.removeFromHand(res, game, req.body.tile)
+                return tileActions.removeFromHand(res, game, body.tile, body.player)
             case 'ADD_TRY_TILE':
-                return tileActions.addTryTile(res, game, req.body.tile)
+                return tileActions.addTryTile(res, game, body.tile)
             case 'REMOVE_TRY_TILE':
-                return tileActions.removeTryTile(res, game, req.body.tile)
+                return tileActions.removeTryTile(res, game, body.tile)
             case 'CLEAR_TRY_TILES':
                 return tileActions.clearTryTiles(res, game)
             case 'DEAL_PLAYER_TILES':
-                return tileActions.dealPlayerTiles(res, game, req.body.tiles, req.body.player)
+                return tileActions.dealPlayerTiles(res, game, body.tiles, body.player)
             case 'UPDATE_UNUSED_TILES':
-                return tileActions.updateUnusedTiles(res, game, req.body.tiles)
+                return tileActions.updateUnusedTiles(res, game, body.tiles)
             case 'UPDATE_USED_TILES':
-                return tileActions.updateUsedTiles(res, game, req.body.tiles)
+                return tileActions.updateUsedTiles(res, game, body.tiles)
             case 'SHUFFLE_PLAYER_TILES':
-                return tileActions.shufflePlayerTiles(res, game, req.body.tiles)
+                return tileActions.shufflePlayerTiles(res, game, body.tiles, body.player)
             case 'UPDATE_CELLS':
-                return cellActions.updateCells(res, game, req.body.cells)
+                return cellActions.updateCells(res, game, body.cells)
             case 'SET_USED_CELLS':
-                return cellActions.setUsedCells(res, game, req.body.cellIds)
+                return cellActions.setUsedCells(res, game, body.cellIds)
             default:
                 return res.json({ status: 'error', message: 'request must supply action type' })
         }

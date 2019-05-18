@@ -1,4 +1,5 @@
 import {
+    RESUME_GAME,
     START_GAME,
     END_GAME,
     CLEAR_GAME,
@@ -7,10 +8,12 @@ import {
     RESET_EXCHANGED,
     SET_PLAYERS,
     SWITCH_TURN,
-    DEAL_FIRST_HAND
+    DEAL_FIRST_HAND,
+    RESET_GAME_RESUME
 } from '../constants/ActionTypes'
 
 const initialState = {
+    gameId: null,
     playerOne: null,
     playerTwo: null,
     p1Points: 0,
@@ -19,11 +22,52 @@ const initialState = {
     whoseTurn: 1,
     gameOver: false,
     gameStart: false,
-    firstHandDealt: false
+    firstHandDealt: false,
+    gameResume: false
 }
 
 export default (state = initialState, action) => {
     switch(action.type) {
+        case RESUME_GAME:
+            const { 
+                _id, 
+                playerOne, 
+                playerTwo, 
+                p1Name,
+                p2Name,
+                p1Points, 
+                p2Points, 
+                exchanged, 
+                whoseTurn,
+                gameOver,
+                gameStart,
+                firstHandDealt
+            } = action.payload
+
+            return {
+                gameId: _id,
+                playerOne: {
+                    userId: playerOne,
+                    name: p1Name
+                },
+                playerTwo: {
+                    userId: playerTwo,
+                    name: p2Name
+                },
+                p1Points, 
+                p2Points, 
+                exchanged, 
+                whoseTurn,
+                gameOver,
+                gameStart,
+                firstHandDealt,
+                gameResume: true
+            }
+        case RESET_GAME_RESUME:
+            return {
+                ...state,
+                gameResume: false
+            }
         case START_GAME:
             return {
                 ...state,
@@ -56,15 +100,16 @@ export default (state = initialState, action) => {
         case SET_PLAYERS:
             return {
                 ...state,
+                gameId: action.payload.gameId,
                 playerOne: action.payload.playerOne,
                 playerTwo: action.payload.playerTwo
             }
         case SWITCH_TURN:
-            const whoseTurn = ( state.whoseTurn === 1 ? 2 : 1 )
+            const playerTurn = ( state.whoseTurn === 1 ? 2 : 1 )
 
             return {
                 ...state,
-                whoseTurn
+                whoseTurn: playerTurn
             }
         case DEAL_FIRST_HAND:
             return {

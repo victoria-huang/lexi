@@ -17,7 +17,7 @@ const TileBag = ({ unusedTiles }) => {
     const closeModal = () => setModal(false)
 
     const getTiles = () => {
-        const noBlankTiles = unusedTiles.filter( t => t.letter !== '' )
+        const noBlankTiles = unusedTiles.filter( t => t.letter !== ' ' )
         const uniqueLetters = []
         const uniqueArr = []
 
@@ -52,7 +52,7 @@ const TileBag = ({ unusedTiles }) => {
                         className='tile select-tile bag-tile'>
                         <h3 className='letter'>
                             { 
-                                t.letter !== '' ? 
+                                t.letter !== ' ' ? 
                                 t.letter 
                                 : 
                                 <div className='blank-tile'>*</div> 

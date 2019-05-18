@@ -9,7 +9,8 @@ import {
     endGame,
     resetExchanged,
     deselectTile,
-    dealFirstHand
+    dealFirstHand,
+    resetGameResume
 } from '../actions'
 
 import Submit from './Submit'
@@ -33,7 +34,10 @@ const ControlPanel = ({
     whoseTurn,
     playerOne,
     playerTwo,
-    user
+    user,
+    gameId,
+    gameResume,
+    resetGameResume
 })  => {
     const firstHand = useRef(false)
 
@@ -48,6 +52,11 @@ const ControlPanel = ({
     }, [firstHandDealt])
 
     const createHand = (num, player) => {
+        if (gameResume) {
+            resetGameResume()
+            return 
+        }
+
         if (unusedTiles.length >= num) {
             let playerTiles = []
             let copyUnusedTiles = [...unusedTiles]
@@ -61,17 +70,20 @@ const ControlPanel = ({
                 copyUnusedTiles = copyUnusedTiles.filter(t => t !== foundTile)
             }
 
-            if (!firstHandDealt) dealFirstHand()
-
-            updateUnusedTiles(copyUnusedTiles)
-            dealPlayerTiles(playerTiles, player)
-        } else endGame()
+            return updateUnusedTiles(gameId, copyUnusedTiles)
+            .then(() => {
+                dealPlayerTiles(gameId, playerTiles, player)
+                .then(() => {
+                    if (!firstHandDealt) dealFirstHand(gameId)
+                })
+            })
+        } else endGame(gameId)
     }
 
     const handlePass = () => {
-        switchTurn()
-        resetExchanged()
-        deselectTile()
+        switchTurn(gameId)
+        resetExchanged(gameId)
+        deselectTile(gameId)
     }
 
     let player = user._id === playerOne.userId ? 1 : 2
@@ -147,6 +159,7 @@ const ControlPanel = ({
 // }
 
 const mapStateToProps = (state) => ({
+    gameId: state.game.gameId,
     unusedTiles: state.tile.unusedTiles,
     selected: state.tile.selected,
     exchanged: state.game.exchanged,
@@ -154,17 +167,19 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn,
     playerOne: state.game.playerOne,
     playerTwo: state.game.playerTwo,
-    user: state.user.currUser
+    user: state.user.currUser,
+    gameResume: state.game.gameResume
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    dealPlayerTiles: (tiles, player) => dispatch(dealPlayerTiles(tiles, player)),
-    updateUnusedTiles: (tiles) => dispatch(updateUnusedTiles(tiles)),
-    switchTurn: () => dispatch(switchTurn()),
-    resetExchanged: () => dispatch(resetExchanged()),
-    deselectTile: () => dispatch(deselectTile()),
-    endGame: () => dispatch(endGame()),
-    dealFirstHand: () => dispatch(dealFirstHand())
+    dealPlayerTiles: (gameId, tiles, player) => dispatch(dealPlayerTiles(gameId, tiles, player)),
+    updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
+    switchTurn: (gameId) => dispatch(switchTurn(gameId)),
+    resetExchanged: (gameId) => dispatch(resetExchanged(gameId)),
+    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+    endGame: (gameId) => dispatch(endGame(gameId)),
+    dealFirstHand: (gameId) => dispatch(dealFirstHand(gameId)),
+    resetGameResume: () => dispatch(resetGameResume())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel)

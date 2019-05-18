@@ -22,11 +22,59 @@ module.exports.endGame = function (res, game) {
     .catch(err => res.json({ status: 'error', message: err }))
 }
 
-module.exports.addPoints = function (res, game, points) {
+module.exports.addPoints = function (res, game, points, p1, p2) {
     if (game.whoseTurn === 1) {
         game.p1Points += points
+
+        User.updateOne(
+            { '_id': p1, 'currentGames.gameId': game._id },
+            { 
+                '$set': {
+                    'currentGames.$.points': game.p1Points
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
+
+        User.updateOne(
+            { '_id': p2, 'currentGames.gameId': game._id },
+            { 
+                '$set': {
+                    'currentGames.$.otherPlayer.points': game.p1Points
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
     } else {
         game.p2Points += points
+
+        User.updateOne(
+            { '_id': p1, 'currentGames.gameId': game._id },
+            { 
+                '$set': {
+                    'currentGames.$.otherPlayer.points': game.p2Points
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
+
+        User.updateOne(
+            { '_id': p2, 'currentGames.gameId': game._id },
+            { 
+                '$set': {
+                    'currentGames.$.points': game.p2Points
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
     }
 
     game.save()

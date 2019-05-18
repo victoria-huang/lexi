@@ -26,7 +26,54 @@ const UsersSchema = new Schema({
         type: String,
         required: true
     },
-    currentGames: [GamesSchema],
+    currentGames: [{
+        gameId: {
+            type: ObjectId,
+            required: true
+        },
+        points: {
+            type: Number,
+            required: true
+        },
+        otherPlayer: {
+            playerId: {
+                type: ObjectId,
+                required: true
+            },
+            playerName: {
+                type: String,
+                required: true
+            },
+            points: {
+                type: Number,
+                required: true
+            }
+        }
+    }],
+    pendingGames: [{
+        gameId: {
+            type: ObjectId,
+            required: true
+        },
+        points: {
+            type: Number,
+            required: true
+        },
+        otherPlayer: {
+            playerId: {
+                type: ObjectId,
+                required: true
+            },
+            playerName: {
+                type: String,
+                required: true
+            },
+            points: {
+                type: Number,
+                required: true
+            }
+        }
+    }],
     wonGames: [{
         gameId: {
             type: ObjectId,

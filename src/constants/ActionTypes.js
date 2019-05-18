@@ -1,9 +1,11 @@
 export const ADD_ERRORS = 'ADD_ERROR'
 export const CLEAR_ERRORS = 'CLEAR_ERRORS'
 
+export const SET_CELLS = 'SET_CELLS'
 export const UPDATE_CELLS = 'UPDATE_CELLS'
 export const SET_USED_CELLS = 'SET_USED_CELLS'
 
+export const SET_UNUSED_TILES = 'SET_TILES'
 export const SELECT_TILE = 'SELECT_TILE'
 export const DESELECT_TILE = 'DESELECT_TILE'
 export const REMOVE_FROM_HAND = 'REMOVE_FROM_HAND'
@@ -16,6 +18,8 @@ export const SHUFFLE_PLAYER_TILES = 'SHUFFLE_PLAYER_TILES'
 export const UPDATE_UNUSED_TILES = 'UPDATE_UNUSED_TILES'
 export const UPDATE_USED_TILES = 'UPDATE_USED_TILES'
 
+export const RESUME_GAME = 'RESUME_GAME'
+export const RESET_GAME_RESUME = 'RESET_GAME_RESUME'
 export const START_GAME = 'START_GAME'
 export const END_GAME = 'END_GAME'
 export const CLEAR_GAME = 'CLEAR_GAME'
