@@ -101,7 +101,14 @@ const Home = ({
                             game.pendingRequest ?
                             'awaiting response'
                             :
-                            'resume game'
+                            <>
+                            {
+                                game.whoseTurn === user._id ?
+                                'your move'
+                                :
+                                'their move'
+                            }
+                            </>
                         }
                     </button>
                 }
@@ -140,12 +147,12 @@ const Home = ({
                     _id: game.otherPlayer.playerId,
                     name: game.otherPlayer.playerName
                 }) }>
-                    challenge again
+                    rechallenge
                 </button>
             </li>
         } else return null 
     })
-
+    console.log(user.games)
     return (
         <>
         <div className='flex column'>

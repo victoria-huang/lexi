@@ -137,8 +137,56 @@ module.exports.resetExchanged = function (res, game) {
 module.exports.switchTurn = function (res, game) {
     if (game.whoseTurn === 1) {
         game.whoseTurn = 2
+
+        User.updateOne(
+            { '_id': game.playerOne, 'games.gameId': game._id },
+            { 
+                '$set': {
+                    'games.$.whoseTurn': game.playerTwo
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
+    
+        User.updateOne(
+            { '_id': game.playerTwo, 'games.gameId': game._id },
+            { 
+                '$set': {
+                    'games.$.whoseTurn': game.playerTwo
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
     } else {
         game.whoseTurn = 1
+
+        User.updateOne(
+            { '_id': game.playerOne, 'games.gameId': game._id },
+            { 
+                '$set': {
+                    'games.$.whoseTurn': game.playerOne
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
+    
+        User.updateOne(
+            { '_id': game.playerTwo, 'games.gameId': game._id },
+            { 
+                '$set': {
+                    'games.$.whoseTurn': game.playerOne
+                }
+            }, 
+            function (err, numAffected) {
+                if (err) return res.json({ status: 'error', message: err })
+            }
+        )
     }
 
     game.save()

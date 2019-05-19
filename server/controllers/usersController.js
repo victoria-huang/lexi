@@ -186,6 +186,7 @@ exports.accept = function (req, res) {
 
 // decline challenge
 exports.decline = function (req, res) {
+    console.log('in here')
     if (currentUser(req).id !== req.params.user_id) 
         return res.status(401).send('unauthorized')
 
@@ -199,7 +200,7 @@ exports.decline = function (req, res) {
         }, 
         function (err, numAffected) {
             if (err) return res.json({ status: 'error', message: err })
-            console.log(numAffected)
+
             User.updateOne(
                 { '_id': req.body.p1, 'games.gameId': req.body.gameId },
                 { 
@@ -210,7 +211,7 @@ exports.decline = function (req, res) {
                 }, 
                 function (err, numAffected) {
                     if (err) return res.json({ status: 'error', message: err })
-                    console.log(numAffected)
+
                     return res.json({
                         status: 'success',
                         message: 'declined challenge'

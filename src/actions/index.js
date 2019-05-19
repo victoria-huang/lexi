@@ -316,7 +316,7 @@ export const acceptChallenge = (gameId, p1, p2) => dispatch => {
         payload: gameId
     })
 
-    return axios.patch(`/api/v1/users/${p2}/decline`, {
+    return axios.patch(`/api/v1/users/${p2}/accept`, {
         gameId, 
         p1
     }).then(console.log)

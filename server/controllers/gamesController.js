@@ -403,10 +403,11 @@ exports.new = function (req, res) {
     .then(game => {
         let userGame
         
-        User.findById(req.body.playerOne, function (err, user) {
+        User.findById(game.playerOne, function (err, user) {
             userGame = {
                 gameId: game._id,
                 points: game.p1Points,
+                whoseTurn: game.playerOne,
                 otherPlayer: {
                     playerId: game.playerTwo,
                     playerName: game.p2Name,
@@ -420,10 +421,11 @@ exports.new = function (req, res) {
             user.save()
         })
 
-        User.findById(req.body.playerTwo, function (err, user) {
+        User.findById(game.playerTwo, function (err, user) {
             userGame = {
                 gameId: game._id,
                 points: game.p2Points,
+                whoseTurn: game.playerOne,
                 otherPlayer: {
                     playerId: game.playerOne,
                     playerName: game.p1Name,

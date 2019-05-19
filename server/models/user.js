@@ -35,6 +35,10 @@ const UsersSchema = new Schema({
             type: Number,
             required: true
         },
+        whoseTurn: {
+            type: ObjectId,
+            required: true
+        },
         otherPlayer: {
             playerId: {
                 type: ObjectId,
