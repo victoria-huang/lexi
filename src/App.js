@@ -20,7 +20,7 @@ class App extends Component {
         <Route exact path='/' component={ Home } />
         <Route path='/login' render={ (routeProps) => <Login {...routeProps} /> } />
         <Route path='/register' component={ Register } />
-        <Route path='/game' component={ GameContainer } />
+        <Route path='/game' render={ (routeProps) => <GameContainer {...routeProps} /> } />
 
       {/*<>
         { 

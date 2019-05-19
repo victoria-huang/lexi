@@ -201,6 +201,8 @@ export const resumeGame = gameId => dispatch => {
         console.log(res)
         const game = res.data.game
         
+        localStorage.setItem('gameId', game._id)
+
         dispatch({
             type: types.RESUME_GAME,
             payload: game
@@ -294,6 +296,8 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
         console.log(res)
         const game = res.data.game
         
+        localStorage.setItem('gameId', game._id)
+
         dispatch(setCells(game.cells.allCells))
         dispatch(setUnusedTiles(game.tiles.unusedTiles))
 

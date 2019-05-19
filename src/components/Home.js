@@ -25,6 +25,7 @@ const Home = ({
     declineChallenge
 }) => {
     useEffect(() => {
+        localStorage.removeItem('gameId')
         setAllUsers()
     }, [])
 
@@ -49,6 +50,7 @@ const Home = ({
             name: p2.name,
             userId: p2._id
         })
+        
         history.push('/game')
     }
 
@@ -152,7 +154,7 @@ const Home = ({
             </li>
         } else return null 
     })
-    console.log(user.games)
+
     return (
         <>
         <div className='flex column'>

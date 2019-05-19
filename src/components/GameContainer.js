@@ -7,7 +7,8 @@ import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
 import ControlPanel from './ControlPanel'
 import GameOver from './GameOver'
-import NoPlayers from './NoPlayers'
+import withAuth from '../hocs/withAuth'
+import { resumeGame } from '../actions'
 
 const GameContainer = ({
     p1Points,
@@ -15,16 +16,24 @@ const GameContainer = ({
     whoseTurn,
     playerOne,
     playerTwo,
-    gameOver
+    gameOver,
+    resumeGame,
+    gameId,
+    history
 }) => {
     useEffect(() => {
         window.scrollTo(0, 0)
+
+        const gameId = localStorage.getItem('gameId')
+
+        if (gameId) resumeGame(gameId)
+        else history.push('/')
     }, [])
     
     return (
         <div className='container'>
             { 
-                (playerOne && playerTwo)
+                gameId
                 ?
                 <>
                 <div className='top-wrapper flex'>
@@ -32,7 +41,11 @@ const GameContainer = ({
                         { playerOne.name }: { p1Points }
                     </h1>
 
-                    <h1 className='game-header'>
+                    <h1 
+                        onClick={ () => history.push('/') }
+                        style={{ cursor: 'pointer' }}
+                        className='game-header'
+                    >
                         l e x i .
                     </h1>
 
@@ -47,7 +60,7 @@ const GameContainer = ({
                 <ControlPanel />
                 </>
                 :
-                <NoPlayers />
+                <div>loading...</div>
             }
 
             { gameOver && <GameOver /> }
@@ -61,7 +74,8 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn,
     playerOne: state.game.playerOne,
     playerTwo: state.game.playerTwo,
-    gameOver: state.game.gameOver
+    gameOver: state.game.gameOver,
+    gameId: state.game.gameId
 })
 
-export default connect(mapStateToProps)(GameContainer)
+export default connect(mapStateToProps, { resumeGame })(withAuth(GameContainer))

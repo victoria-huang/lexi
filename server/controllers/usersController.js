@@ -186,7 +186,6 @@ exports.accept = function (req, res) {
 
 // decline challenge
 exports.decline = function (req, res) {
-    console.log('in here')
     if (currentUser(req).id !== req.params.user_id) 
         return res.status(401).send('unauthorized')
 
