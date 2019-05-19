@@ -50,13 +50,12 @@ const Home = ({
             name: p2.name,
             userId: p2._id
         })
-        
-        history.push('/game')
+        .then(() => history.push('/game'))
     }
 
     const handleResumeGame = (gameId) => {
         resumeGame(gameId)
-        history.push('/game')
+        .then(() => history.push('/game'))
     }
 
     const handleAccept = (gameId, p1, p2) => {

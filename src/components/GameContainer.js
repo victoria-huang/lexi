@@ -24,10 +24,13 @@ const GameContainer = ({
     useEffect(() => {
         window.scrollTo(0, 0)
 
-        const gameId = localStorage.getItem('gameId')
-
-        if (gameId) resumeGame(gameId)
-        else history.push('/')
+        const persistGameId = localStorage.getItem('gameId')
+        // load game on page refresh
+        if (persistGameId && !gameId) {
+            resumeGame(persistGameId)
+        }
+        // go back to home page if no game stored
+        if (!persistGameId) history.push('/')
     }, [])
     
     return (

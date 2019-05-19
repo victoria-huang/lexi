@@ -196,7 +196,7 @@ export const updateUsedTiles = (gameId, tiles) => dispatch => {
 /************ GAME ************/
 
 export const resumeGame = gameId => dispatch => {
-    axios.get(`/api/v1/games/${gameId}`)
+    return axios.get(`/api/v1/games/${gameId}`)
     .then(res => {
         console.log(res)
         const game = res.data.game
@@ -287,7 +287,7 @@ export const dealFirstHand = gameId => dispatch => {
 }
 
 export const setPlayers = (playerOne, playerTwo) => dispatch => {
-    axios.post('/api/v1/games', {
+    return axios.post('/api/v1/games', {
         playerOne: playerOne.userId,
         playerTwo: playerTwo.userId,
         p1Name: playerOne.name,
@@ -378,7 +378,7 @@ export const register = (userData, history) => dispatch => {
 }
 
 export const logoutUser = history => dispatch => {
-    localStorage.removeItem('token')
+    localStorage.clear()
     // remove auth header for future requests
     setAuthToken(false)
     // set current user to null which will set isAuthenticated to false
