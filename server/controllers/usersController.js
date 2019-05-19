@@ -149,6 +149,78 @@ exports.update = function (req, res) {
     })
 }
 
+// accept challenge
+exports.accept = function (req, res) {
+    if (currentUser(req).id !== req.params.user_id) 
+        return res.status(401).send('unauthorized')
+
+    User.updateOne(
+        { '_id': req.params.user_id, 'games.gameId': req.body.gameId },
+        { 
+            '$set': {
+                'games.$.pendingAnswer': false
+            }
+        }, 
+        function (err, numAffected) {
+            if (err) return res.json({ status: 'error', message: err })
+
+            User.updateOne(
+                { '_id': req.body.p1, 'games.gameId': req.body.gameId },
+                { 
+                    '$set': {
+                        'games.$.pendingRequest': false
+                    }
+                }, 
+                function (err, numAffected) {
+                    if (err) return res.json({ status: 'error', message: err })
+
+                    return res.json({
+                        status: 'success',
+                        message: 'accepted challenge'
+                    })
+                }
+            )
+        }
+    )
+}
+
+// decline challenge
+exports.decline = function (req, res) {
+    if (currentUser(req).id !== req.params.user_id) 
+        return res.status(401).send('unauthorized')
+
+    User.updateOne(
+        { '_id': req.params.user_id, 'games.gameId': req.body.gameId },
+        { 
+            '$set': {
+                'games.$.declined': true,
+                'games.$.current': false
+            }
+        }, 
+        function (err, numAffected) {
+            if (err) return res.json({ status: 'error', message: err })
+            console.log(numAffected)
+            User.updateOne(
+                { '_id': req.body.p1, 'games.gameId': req.body.gameId },
+                { 
+                    '$set': {
+                        'games.$.declined': true,
+                        'games.$.current': false
+                    }
+                }, 
+                function (err, numAffected) {
+                    if (err) return res.json({ status: 'error', message: err })
+                    console.log(numAffected)
+                    return res.json({
+                        status: 'success',
+                        message: 'declined challenge'
+                    })
+                }
+            )
+        }
+    )
+}
+
 // delete
 exports.delete = function (req, res) {
     if (currentUser(req).id !== req.params.user_id) 

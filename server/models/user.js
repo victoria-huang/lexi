@@ -26,7 +26,7 @@ const UsersSchema = new Schema({
         type: String,
         required: true
     },
-    currentGames: [{
+    games: [{
         gameId: {
             type: ObjectId,
             required: true
@@ -48,78 +48,22 @@ const UsersSchema = new Schema({
                 type: Number,
                 required: true
             }
-        }
-    }],
-    pendingGames: [{
-        gameId: {
-            type: ObjectId,
+        },
+        current: {
+            type: Boolean, 
+            default: true
+        },
+        pendingRequest: {
+            type: Boolean,
             required: true
         },
-        points: {
-            type: Number,
+        pendingAnswer: {
+            type: Boolean,
             required: true
         },
-        otherPlayer: {
-            playerId: {
-                type: ObjectId,
-                required: true
-            },
-            playerName: {
-                type: String,
-                required: true
-            },
-            points: {
-                type: Number,
-                required: true
-            }
-        }
-    }],
-    wonGames: [{
-        gameId: {
-            type: ObjectId,
-            required: true
-        },
-        points: {
-            type: Number,
-            required: true
-        },
-        otherPlayer: {
-            playerId: {
-                type: ObjectId,
-                required: true
-            },
-            playerName: {
-                type: String,
-                required: true
-            },
-            points: {
-                type: Number,
-                required: true
-            }
-        }
-    }],
-    lostGames: [{
-        gameId: {
-            type: ObjectId,
-            required: true
-        },
-        points: {
-            type: Number,
-            required: true
-        },
-        otherPlayer: {
-            playerId: {
-                type: ObjectId,
-                required: true
-            },
-            playerName: {
-                type: String,
-                required: true
-            },
-            points: {
-                type: Number,
-                required: true
-            }
+        declined: {
+            type: Boolean,
+            default: false
         }
     }]
 }, { timestamps: true })

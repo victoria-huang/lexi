@@ -56,6 +56,16 @@ router.route('/users/:user_id')
     .put(usersController.update)
     .delete(usersController.delete)
 
+router.route('/users/:user_id/accept')
+    .all(withAuth)
+    .patch(usersController.accept)
+    .put(usersController.accept)
+
+router.route('/users/:user_id/decline')
+    .all(withAuth)
+    .patch(usersController.decline)
+    .put(usersController.decline)
+
 // import game controller
 const gamesController = require('./controllers/gamesController')
 

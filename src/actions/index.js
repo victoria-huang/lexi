@@ -310,6 +310,29 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
 
 /************ USER ************/
 
+export const acceptChallenge = (gameId, p1, p2) => dispatch => {
+    dispatch({
+        type: types.ACCEPT_CHALLENGE,
+        payload: gameId
+    })
+
+    return axios.patch(`/api/v1/users/${p2}/decline`, {
+        gameId, 
+        p1
+    }).then(console.log)
+}
+
+export const declineChallenge = (gameId, p1, p2) => dispatch => {
+    dispatch({
+        type: types.DECLINE_CHALLENGE,
+        payload: gameId
+    })
+
+    axios.patch(`/api/v1/users/${p2}/decline`, {
+        gameId, 
+        p1
+    }).then(console.log)}
+
 export const login = (userData, history) => dispatch => {
     axios.post('/api/v1/login', userData)
     .then(res => {

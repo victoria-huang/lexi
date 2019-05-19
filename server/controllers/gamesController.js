@@ -376,7 +376,7 @@ exports.new = function (req, res) {
         p1Name: req.body.p1Name,
         p2Name: req.body.p2Name,
     })
-
+    
     newGame.tiles = new Tiles
     newGame.cells = new Cells
 
@@ -411,10 +411,12 @@ exports.new = function (req, res) {
                     playerId: game.playerTwo,
                     playerName: game.p2Name,
                     points: game.p2Points,
-                }
+                },
+                pendingRequest: true,
+                pendingAnswer: false
             }
 
-            user.currentGames.push(userGame)
+            user.games.push(userGame)
             user.save()
         })
 
@@ -426,10 +428,12 @@ exports.new = function (req, res) {
                     playerId: game.playerOne,
                     playerName: game.p1Name,
                     points: game.p1Points,
-                }
+                },
+                pendingRequest: false,
+                pendingAnswer: true
             }
 
-            user.currentGames.push(userGame)
+            user.games.push(userGame)
             user.save()
         })
 

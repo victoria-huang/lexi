@@ -13,6 +13,30 @@ module.exports.startGame = function (res, game) {
 module.exports.endGame = function (res, game) {
     game.gameOver = true 
 
+    User.updateOne(
+        { '_id': game.playerOne, 'games.gameId': game._id },
+        { 
+            '$set': {
+                'games.$.current': false
+            }
+        }, 
+        function (err, numAffected) {
+            if (err) return res.json({ status: 'error', message: err })
+        }
+    )
+
+    User.updateOne(
+        { '_id': game.playerTwo, 'games.gameId': game._id },
+        { 
+            '$set': {
+                'games.$.current': false
+            }
+        }, 
+        function (err, numAffected) {
+            if (err) return res.json({ status: 'error', message: err })
+        }
+    )
+
     game.save()
     .then(game => res.json({
         status: 'success',
@@ -27,10 +51,10 @@ module.exports.addPoints = function (res, game, points, p1, p2) {
         game.p1Points += points
 
         User.updateOne(
-            { '_id': p1, 'currentGames.gameId': game._id },
+            { '_id': p1, 'games.gameId': game._id },
             { 
                 '$set': {
-                    'currentGames.$.points': game.p1Points
+                    'games.$.points': game.p1Points
                 }
             }, 
             function (err, numAffected) {
@@ -39,10 +63,10 @@ module.exports.addPoints = function (res, game, points, p1, p2) {
         )
 
         User.updateOne(
-            { '_id': p2, 'currentGames.gameId': game._id },
+            { '_id': p2, 'games.gameId': game._id },
             { 
                 '$set': {
-                    'currentGames.$.otherPlayer.points': game.p1Points
+                    'games.$.otherPlayer.points': game.p1Points
                 }
             }, 
             function (err, numAffected) {
@@ -53,10 +77,10 @@ module.exports.addPoints = function (res, game, points, p1, p2) {
         game.p2Points += points
 
         User.updateOne(
-            { '_id': p1, 'currentGames.gameId': game._id },
+            { '_id': p1, 'games.gameId': game._id },
             { 
                 '$set': {
-                    'currentGames.$.otherPlayer.points': game.p2Points
+                    'games.$.otherPlayer.points': game.p2Points
                 }
             }, 
             function (err, numAffected) {
@@ -65,10 +89,10 @@ module.exports.addPoints = function (res, game, points, p1, p2) {
         )
 
         User.updateOne(
-            { '_id': p2, 'currentGames.gameId': game._id },
+            { '_id': p2, 'games.gameId': game._id },
             { 
                 '$set': {
-                    'currentGames.$.points': game.p2Points
+                    'games.$.points': game.p2Points
                 }
             }, 
             function (err, numAffected) {
