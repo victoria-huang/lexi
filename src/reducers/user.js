@@ -2,7 +2,8 @@ import {
     SET_CURRENT_USER,
     SET_ALL_USERS,
     ACCEPT_CHALLENGE,
-    DECLINE_CHALLENGE
+    DECLINE_CHALLENGE,
+    ADD_GAME_REQUEST
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -48,6 +49,14 @@ export default (state = initialState, action) => {
                 currUser: {
                     ...state.currUser,
                     games: declineGames
+                }
+            }
+        case ADD_GAME_REQUEST:
+            return {
+                ...state,
+                currUser: {
+                    ...state.currUser,
+                    games: state.currUser.games.concat(action.payload)
                 }
             }
         default:

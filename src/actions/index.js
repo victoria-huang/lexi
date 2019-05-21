@@ -6,7 +6,9 @@ import jwt_decode from 'jwt-decode'
 import setAuthToken from '../utils/setAuthToken'
 
 import {
-    sendMoveToServer
+    sendMove,
+    sendEndGame,
+    sendGameRequest
 } from '../socket'
 
 /************ ERROR ************/
@@ -68,13 +70,13 @@ export const selectTile = (gameId, selected) => dispatch => {
 }
 
 export const deselectTile = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
-        actionType: 'DESELECT_TILE',
-    }).then(res => console.log(res))
-
     dispatch({
         type: types.DESELECT_TILE
     })
+    
+    return axios.patch(`/api/v1/games/${gameId}`, { 
+        actionType: 'DESELECT_TILE',
+    }).then(res => console.log(res))
 }
 
 export const addToHand = (gameId, tile, player) => dispatch => {
@@ -237,10 +239,14 @@ export const startGame = gameId => dispatch => {
 export const endGame = gameId => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'END_GAME'
-    }).then(res => console.log(res))
+    }).then(res => {
+        console.log(res)
 
-    dispatch({
-        type: types.END_GAME
+        dispatch({
+            type: types.END_GAME
+        })
+
+        sendEndGame(gameId)
     })
 }
 
@@ -267,13 +273,13 @@ export const setExchanged = gameId => dispatch => {
 }
 
 export const resetExchanged = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
-        actionType: 'RESET_EXCHANGED'
-    }).then(res => console.log(res))
-
     dispatch({
         type: types.RESET_EXCHANGED
     })
+
+    return axios.patch(`/api/v1/games/${gameId}`, { 
+        actionType: 'RESET_EXCHANGED'
+    }).then(res => console.log(res))
 }
 
 export const switchTurn = gameId => dispatch => {
@@ -284,7 +290,7 @@ export const switchTurn = gameId => dispatch => {
             type: types.SWITCH_TURN
         })
 
-        sendMoveToServer(res.data.game, gameId)
+        sendMove(res.data.game, gameId)
     })
 }
 
@@ -309,9 +315,25 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
         const game = res.data.game
         
         localStorage.setItem('gameId', game._id)
-        
-        dispatch(setGame(game))
 
+        dispatch(setGame(game))
+        
+        const requestGame = {
+            gameId: game._id,
+            points: game.p2Points,
+            whoseTurn: game.playerOne,
+            otherPlayer: {
+                playerId: game.playerOne,
+                playerName: game.p1Name,
+                points: game.p1Points,
+            },
+            current: true,
+            pendingRequest: false,
+            pendingAnswer: true,
+            declined: false
+        }
+
+        sendGameRequest(playerTwo.email, requestGame)
         // dispatch(setCells(game.cells.allCells))
         // dispatch(setUnusedTiles(game.tiles.unusedTiles))
 
@@ -375,7 +397,6 @@ export const login = (userData, history) => dispatch => {
             payload: err.response.data
         })
     })
-
 }
 
 export const register = (userData, history) => dispatch => {

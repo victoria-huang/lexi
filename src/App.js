@@ -21,15 +21,6 @@ class App extends Component {
         <Route path='/login' render={ (routeProps) => <Login {...routeProps} /> } />
         <Route path='/register' component={ Register } />
         <Route path='/game' render={ (routeProps) => <GameContainer {...routeProps} /> } />
-
-      {/*<>
-        { 
-          this.props.playerOne && this.props.playerTwo ?
-          <GameContainer />
-          :
-          <Login />
-        }
-      </>*/}
       </Switch>
     )
   }

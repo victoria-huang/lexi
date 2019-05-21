@@ -14,6 +14,8 @@ import {
     clearGame
 } from '../actions'
 
+import { joinRoom, leaveRoom } from '../socket'
+
 const Home = ({ 
     user, 
     allUsers,
@@ -29,20 +31,25 @@ const Home = ({
         clearGame()
         localStorage.removeItem('gameId')
         setAllUsers()
+        joinRoom(user.email)
+    }, [])
+
+    useEffect(() => () => {
+        leaveRoom(user.email)
     }, [])
 
     const [search, setSearch] = useState('')
 
-    const handleStartPractice = () => {
-        setPlayers({
-            name: user.name, 
-            userId: user._id
-        }, {
-            name: 'practice',
-            userId: user._id
-        })
-        history.push('/game')
-    }
+    // const handleStartPractice = () => {
+    //     setPlayers({
+    //         name: user.name, 
+    //         userId: user._id
+    //     }, {
+    //         name: 'practice',
+    //         userId: user._id
+    //     })
+    //     history.push('/game')
+    // }
 
     const handleStartGame = (p2) => {
         setPlayers({
@@ -50,7 +57,8 @@ const Home = ({
             userId: user._id
         }, {
             name: p2.name,
-            userId: p2._id
+            userId: p2._id,
+            email: p2.email
         })
         .then(() => history.push('/game'))
     }
@@ -84,76 +92,117 @@ const Home = ({
         }
     })
 
-    const renderCurrentGames = () => user.games.map(game => {
-        if (game.current) {
-            return <li key={ v4() }>
-                you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
+    const getCurrentGames = () => user.games.filter(game => game.current && !game.pendingRequest && !game.pendingAnswer)
+
+    const getPendingRequests = () => user.games.filter(game => game.pendingRequest)
+
+    const getPendingGames = () => user.games.filter(game => game.pendingAnswer)
+
+    const getPastGames = () => user.games.filter(game => !game.current)
+
+    const renderCurrentGames = () => getCurrentGames().map(game => 
+        <li key={ v4() }>
+            you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
+            <button onClick={ () => handleResumeGame(game.gameId) }>
                 {
-                    game.pendingAnswer ?
-                    <>
-                    <button onClick={ () => handleAccept(game.gameId, game.otherPlayer.playerId, user._id) }>
-                        accept challenge
-                    </button>
-                    <button onClick={ () => handleDecline(game.gameId, game.otherPlayer.playerId, user._id) }>
-                        decline challenge
-                    </button>
-                    </>
+                    game.whoseTurn === user._id ?
+                    'your move'
                     :
-                    <button onClick={ () => handleResumeGame(game.gameId) }>
-                        { 
-                            game.pendingRequest ?
-                            'awaiting response'
-                            :
-                            <>
-                            {
-                                game.whoseTurn === user._id ?
-                                'your move'
-                                :
-                                'their move'
-                            }
-                            </>
-                        }
-                    </button>
+                    'their move'
                 }
-            </li>
-        } else return null 
-    })
+            </button>
+        </li>
+    )
+
+    const renderPendingRequests = () => getPendingRequests().map(game =>
+        <li key={ v4() }>
+            you vs. { game.otherPlayer.playerName }
+            <button onClick={ () => handleResumeGame(game.gameId) }>
+                awaiting response
+            </button>
+        </li>
+    )
+
+    const renderPendingGames = () => getPendingGames().map(game =>
+        <li key={ v4() }>
+            you vs. { game.otherPlayer.playerName }
+            <button onClick={ () => handleAccept(game.gameId, game.otherPlayer.playerId, user._id) }>
+                accept challenge
+            </button>
+            <button onClick={ () => handleDecline(game.gameId, game.otherPlayer.playerId, user._id) }>
+                decline challenge
+            </button>
+        </li>
+    )
+
+    // const renderCurrentGames = () => user.games.map(game => {
+    //     if (game.current) {
+    //         return <li key={ v4() }>
+    //             you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
+    //             {
+    //                 game.pendingAnswer ?
+    //                 <>
+    //                 <button onClick={ () => handleAccept(game.gameId, game.otherPlayer.playerId, user._id) }>
+    //                     accept challenge
+    //                 </button>
+    //                 <button onClick={ () => handleDecline(game.gameId, game.otherPlayer.playerId, user._id) }>
+    //                     decline challenge
+    //                 </button>
+    //                 </>
+    //                 :
+    //                 <button onClick={ () => handleResumeGame(game.gameId) }>
+    //                     { 
+    //                         game.pendingRequest ?
+    //                         'awaiting response'
+    //                         :
+    //                         <>
+    //                         {
+    //                             game.whoseTurn === user._id ?
+    //                             'your move'
+    //                             :
+    //                             'their move'
+    //                         }
+    //                         </>
+    //                     }
+    //                 </button>
+    //             }
+    //         </li>
+    //     } else return null 
+    // })
     
-    const renderPastGames = () => user.games.slice(-5).reverse().map(game => {
-        if (!game.current) {
-            return <li key={ v4() }>
-                you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
-                {
-                    !game.declined &&
-                    <p>
-                        {
-                            game.points > game.otherPlayer.points ?
-                            'you won'
-                            :
-                            'you lost'
-                        }
-                    </p>
-                }
-                {
-                    game.declined
-                    &&
-                    <p>
-                        { 
-                            game.pendingAnswer ?
-                            'you declined'
-                            :
-                            'they declined'
-                        }  
-                    </p>
-                }
-                <button onClick={ () => handleStartGame({
-                    _id: game.otherPlayer.playerId,
-                    name: game.otherPlayer.playerName
-                }) }>
-                    rechallenge
-                </button>
-            </li>
-        } else return null 
+    const renderPastGames = () => getPastGames().slice(-5).reverse().map(game => {
+        return <li key={ v4() }>
+            you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
+            {
+                !game.declined &&
+                <p>
+                    {
+                        game.points > game.otherPlayer.points ?
+                        'you won'
+                        :
+                        'you lost'
+                    }
+                </p>
+            }
+            {
+                game.declined
+                &&
+                <p>
+                    { 
+                        game.pendingAnswer ?
+                        'you declined'
+                        :
+                        'they declined'
+                    }  
+                </p>
+            }
+            <button onClick={ () => handleStartGame({
+                _id: game.otherPlayer.playerId,
+                name: game.otherPlayer.playerName
+            }) }>
+                rechallenge
+            </button>
+        </li>
     })
 
     return (
@@ -179,14 +228,24 @@ const Home = ({
             { renderCurrentGames() }
         </ul>
         <hr />
+        <h3>pending games</h3>
+        <ul>
+            { renderPendingGames() }
+        </ul>
+        <hr />
+        <h3>pending requests</h3>
+        <ul>
+            { renderPendingRequests() }
+        </ul>
+        <hr />
         <h3>past games</h3>
         <ul>
             { renderPastGames() }
         </ul>
         <hr />
-        <button onClick={ handleStartPractice }>
+        {/*<button onClick={ handleStartPractice }>
             start practice game
-        </button>
+        </button>*/}
 
         <button onClick={ () => logoutUser(history) }>
             logout
@@ -202,5 +261,13 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { logoutUser, setPlayers, setAllUsers, resumeGame, acceptChallenge, declineChallenge, clearGame }
+    { 
+        logoutUser, 
+        setPlayers, 
+        setAllUsers, 
+        resumeGame, 
+        acceptChallenge, 
+        declineChallenge, 
+        clearGame 
+    }
 )(withAuth(Home))

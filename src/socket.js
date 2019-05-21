@@ -1,5 +1,9 @@
 import io from 'socket.io-client'
-import { SET_GAME } from './constants/ActionTypes'
+import { 
+    SET_GAME, 
+    END_GAME, 
+    ADD_GAME_REQUEST 
+} from './constants/ActionTypes'
 
 const socket = io('localhost:8080', {transports: ['websocket']})
 
@@ -9,8 +13,16 @@ const configureSocket = dispatch => {
     })
 
     socket.on('successful move', game => {
-        console.log('in successful move')
         dispatch({ type: SET_GAME, payload: game })
+    })
+
+    socket.on('end game', () => {
+        dispatch({ type: END_GAME })
+    })
+
+    socket.on('game request', game => {
+        console.log(game)
+        dispatch({ type: ADD_GAME_REQUEST, payload: game })
     })
 
     socket.on('disconnect', () => console.log('disconnect'))
@@ -18,17 +30,22 @@ const configureSocket = dispatch => {
     return socket
 }
 
-export const joinRoom = (gameId) => 
-    socket.emit('room', { room: gameId })
+export const joinRoom = id => 
+    socket.emit('room', { room: id })
 
-export const leaveRoom = (gameId) => 
-    socket.emit('leave room', { room: gameId })
+export const leaveRoom = id => 
+    socket.emit('leave room', { room: id })
 
-export const sendMoveToServer = (game, room) => {
-    console.log('in client send move')
-    console.log('game', game)
-    console.log('room', room)
+export const sendMove = (game, room) => {
     socket.emit('send move', { game, room })
+}
+
+export const sendEndGame = room => {
+    socket.emit('send end game', { room })
+}
+
+export const sendGameRequest = (room, game) => {
+    socket.emit('send game request', { room, game })
 }
 
 export default configureSocket

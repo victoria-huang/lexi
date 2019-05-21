@@ -33,3 +33,4 @@ export const SET_PLAYERS = 'SET_PLAYERS'
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const SET_ALL_USERS = 'SET_ALL_USERS'
+export const ADD_GAME_REQUEST = 'ADD_GAME_REQUEST'

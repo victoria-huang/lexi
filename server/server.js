@@ -50,15 +50,22 @@ io.on('connection', socket => {
 
     socket.on('leave room', data => socket.leave(data.room))
 
-    socket.on('send move', (data) => {
-        console.log('in send move')
-        console.log(data)
-        console.log(io.sockets.adapter.rooms)
-        // socket.emit('successful move', data.game)
-        // io.sockets.in(data.room).emit('successful move', data.game)
-
+    socket.on('send move', data => {
         socket.to(data.room).emit('successful move', data.game)
     })
+    
+    socket.on('send end game', data => {
+        socket.to(data.room).emit('end game', null)
+    })
+
+    socket.on('send game request', data => {
+        socket.to(data.room).emit('game request', data.game)
+    })
+
+    // send decline game
+    // send accept game
+    // notification system
+    // chat
 
     socket.on('disconnect', () => {
         console.log('disconnected')

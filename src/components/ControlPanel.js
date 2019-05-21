@@ -81,9 +81,8 @@ const ControlPanel = ({
     }
 
     const handlePass = () => {
-        switchTurn(gameId)
-        resetExchanged(gameId)
-        deselectTile(gameId)
+        Promise.all([resetExchanged(gameId), deselectTile(gameId)])
+        .then(() => switchTurn(gameId))
     }
 
     let player = user._id === playerOne.userId ? 1 : 2
@@ -92,7 +91,7 @@ const ControlPanel = ({
         <div className='flex center'>
             { 
                 (whoseTurn === player || playerOne.userId === playerTwo.userId)
-                &&
+                ?
                 <>
                 <Submit createHand={ createHand } />
                 <Shuffle />
@@ -101,6 +100,8 @@ const ControlPanel = ({
                 <button onClick={ handlePass }>pass</button>
                 <EndGame />
                 </>
+                :
+                <div>waiting for their move...</div>
             }
         </div>
     ) 

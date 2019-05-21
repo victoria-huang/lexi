@@ -455,8 +455,11 @@ exports.update = function (req, res) {
         let playerId = ( game.whoseTurn === 1 ? game.playerOne : game.playerTwo )
         
         // make sure only the player whose turn it is in the game is making requests
-        if (currentUser(req).id !== playerId.toString())
+        if (currentUser(req).id !== playerId.toString()) {
+            console.log(currentUser(req).id)
+            console.log(playerId.toString())
             return res.status(401).send('unauthorized')
+        }
         
         const body = req.body
         
