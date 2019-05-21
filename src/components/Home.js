@@ -54,10 +54,13 @@ const Home = ({
     const handleStartGame = (p2) => {
         setPlayers({
             name: user.name,
-            userId: user._id
+            userId: user._id,
+            username: user.username,
+            email: user.email
         }, {
             name: p2.name,
             userId: p2._id,
+            username: p2.username,
             email: p2.email
         })
         .then(() => history.push('/game'))
@@ -94,9 +97,9 @@ const Home = ({
 
     const getCurrentGames = () => user.games.filter(game => game.current && !game.pendingRequest && !game.pendingAnswer)
 
-    const getPendingRequests = () => user.games.filter(game => game.pendingRequest)
+    const getPendingRequests = () => user.games.filter(game => game.current && game.pendingRequest)
 
-    const getPendingGames = () => user.games.filter(game => game.pendingAnswer)
+    const getPendingGames = () => user.games.filter(game => game.current && game.pendingAnswer)
 
     const getPastGames = () => user.games.filter(game => !game.current)
 
@@ -113,7 +116,7 @@ const Home = ({
             </button>
         </li>
     )
-
+    
     const renderPendingRequests = () => getPendingRequests().map(game =>
         <li key={ v4() }>
             you vs. { game.otherPlayer.playerName }
@@ -126,10 +129,10 @@ const Home = ({
     const renderPendingGames = () => getPendingGames().map(game =>
         <li key={ v4() }>
             you vs. { game.otherPlayer.playerName }
-            <button onClick={ () => handleAccept(game.gameId, game.otherPlayer.playerId, user._id) }>
+            <button onClick={ () => handleAccept(game.gameId, game.otherPlayer, user) }>
                 accept challenge
             </button>
-            <button onClick={ () => handleDecline(game.gameId, game.otherPlayer.playerId, user._id) }>
+            <button onClick={ () => handleDecline(game.gameId, game.otherPlayer, user) }>
                 decline challenge
             </button>
         </li>
@@ -197,8 +200,10 @@ const Home = ({
                 </p>
             }
             <button onClick={ () => handleStartGame({
+                name: game.otherPlayer.playerName,
                 _id: game.otherPlayer.playerId,
-                name: game.otherPlayer.playerName
+                username: game.otherPlayer.username,
+                email: game.otherPlayer.email
             }) }>
                 rechallenge
             </button>
@@ -268,6 +273,6 @@ export default connect(
         resumeGame, 
         acceptChallenge, 
         declineChallenge, 
-        clearGame 
+        clearGame
     }
 )(withAuth(Home))

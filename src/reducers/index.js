@@ -4,13 +4,15 @@ import tile from './tile'
 import errors from './errors'
 import game from './game'
 import user from './user'
+import notification from './notification'
 
 const rootReducer = combineReducers({
     cell,
     tile,
     errors,
     game,
-    user
+    user,
+    notification
 })
 
 export default rootReducer

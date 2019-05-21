@@ -8,7 +8,9 @@ import setAuthToken from '../utils/setAuthToken'
 import {
     sendMove,
     sendEndGame,
-    sendGameRequest
+    sendGameRequest,
+    sendNewGameNotif,
+    sendDeclineGame
 } from '../socket'
 
 /************ ERROR ************/
@@ -73,7 +75,7 @@ export const deselectTile = gameId => dispatch => {
     dispatch({
         type: types.DESELECT_TILE
     })
-    
+
     return axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'DESELECT_TILE',
     }).then(res => console.log(res))
@@ -309,7 +311,11 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
         playerOne: playerOne.userId,
         playerTwo: playerTwo.userId,
         p1Name: playerOne.name,
-        p2Name: playerTwo.name
+        p1Username: playerOne.username,
+        p1Email: playerOne.email,
+        p2Name: playerTwo.name,
+        p2Username: playerTwo.username,
+        p2Email: playerTwo.email
     }).then(res => {
         console.log(res)
         const game = res.data.game
@@ -325,6 +331,8 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
             otherPlayer: {
                 playerId: game.playerOne,
                 playerName: game.p1Name,
+                username: playerOne.username,
+                email: playerOne.email,
                 points: game.p1Points,
             },
             current: true,
@@ -333,7 +341,19 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
             declined: false
         }
 
+        const notif = {
+            type: 'new game request',
+            gameId: game._id,
+            user: {
+                id: game.playerOne,
+                name: game.p1Name,
+                username: playerOne.username,
+                email: playerOne.email
+            }
+        }
+
         sendGameRequest(playerTwo.email, requestGame)
+        sendNewGameNotif(playerTwo.email, notif)
         // dispatch(setCells(game.cells.allCells))
         // dispatch(setUnusedTiles(game.tiles.unusedTiles))
 
@@ -356,22 +376,44 @@ export const acceptChallenge = (gameId, p1, p2) => dispatch => {
         payload: gameId
     })
 
-    return axios.patch(`/api/v1/users/${p2}/accept`, {
+    return axios.patch(`/api/v1/users/${p2._id}/accept`, {
         gameId, 
-        p1
+        p1: p1.playerId
     }).then(console.log)
 }
+
+export const challengeAccepted = gameId => ({
+    type: types.CHALLENGE_ACCEPTED,
+    payload: gameId
+})
 
 export const declineChallenge = (gameId, p1, p2) => dispatch => {
     dispatch({
         type: types.DECLINE_CHALLENGE,
         payload: gameId
     })
+    console.log(p1)
+    const notif = {
+        type: 'game request reply',
+        gameId,
+        user: p2,
+        reply: 'declined'
+    }
 
-    axios.patch(`/api/v1/users/${p2}/decline`, {
+    sendDeclineGame(p1.email, notif)
+
+    axios.patch(`/api/v1/users/${p2._id}/decline`, {
         gameId, 
-        p1
-    }).then(console.log)}
+        p1: p1.playerId
+    }).then(console.log)
+}
+
+export const challengeDeclined = gameId => dispatch => {
+    dispatch({
+        type: types.DECLINE_CHALLENGE,
+        payload: gameId
+    })
+}
 
 export const login = (userData, history) => dispatch => {
     axios.post('/api/v1/login', userData)
@@ -436,6 +478,23 @@ export const setAllUsers = users => dispatch => {
         })
     })
 }
+
+export const addGameRequest = game => ({ 
+    type: types.ADD_GAME_REQUEST, 
+    payload: game 
+})
+
+/************ NOTIFICATION ************/
+
+export const addNotification = notif => ({
+    type: types.ADD_NOTIFICATION,
+    payload: notif  
+})
+
+export const removeNotification = notId => ({
+    type: types.REMOVE_NOTIFICATION,
+    payload: notId
+})
 
 /************ ALL ************/
 

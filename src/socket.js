@@ -1,9 +1,12 @@
 import io from 'socket.io-client'
-import { 
-    SET_GAME, 
-    END_GAME, 
-    ADD_GAME_REQUEST 
-} from './constants/ActionTypes'
+
+import { END_GAME } from './constants/ActionTypes'
+import {
+    setGame,
+    addGameRequest,
+    addNotification,
+    challengeDeclined
+} from './actions'
 
 const socket = io('localhost:8080', {transports: ['websocket']})
 
@@ -13,7 +16,7 @@ const configureSocket = dispatch => {
     })
 
     socket.on('successful move', game => {
-        dispatch({ type: SET_GAME, payload: game })
+        dispatch(setGame(game))
     })
 
     socket.on('end game', () => {
@@ -21,8 +24,16 @@ const configureSocket = dispatch => {
     })
 
     socket.on('game request', game => {
-        console.log(game)
-        dispatch({ type: ADD_GAME_REQUEST, payload: game })
+        dispatch(addGameRequest(game))
+    })
+
+    socket.on('new game notif', notif => {
+        dispatch(addNotification(notif))
+    })
+
+    socket.on('decline game', notif => {
+        dispatch(addNotification(notif))
+        dispatch(challengeDeclined(notif.gameId))
     })
 
     socket.on('disconnect', () => console.log('disconnect'))
@@ -36,16 +47,19 @@ export const joinRoom = id =>
 export const leaveRoom = id => 
     socket.emit('leave room', { room: id })
 
-export const sendMove = (game, room) => {
+export const sendMove = (game, room) => 
     socket.emit('send move', { game, room })
-}
 
-export const sendEndGame = room => {
+export const sendEndGame = room => 
     socket.emit('send end game', { room })
-}
 
-export const sendGameRequest = (room, game) => {
+export const sendGameRequest = (room, game) => 
     socket.emit('send game request', { room, game })
-}
+
+export const sendNewGameNotif = (room, notif) => 
+    socket.emit('send new game notif', { room, notif })
+
+export const sendDeclineGame = (room, notif) => 
+    socket.emit('send decline game', { room, notif })
 
 export default configureSocket

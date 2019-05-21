@@ -62,10 +62,19 @@ io.on('connection', socket => {
         socket.to(data.room).emit('game request', data.game)
     })
 
+    socket.on('send new game notif', data => {
+        socket.to(data.room).emit('new game notif', data.notif)
+    })
+
+    socket.on('send decline game', data => {
+        socket.to(data.room).emit('decline game', data.notif)
+    })
+
     // send decline game
     // send accept game
     // notification system
-    // chat
+    // friend requests?
+    // chat?
 
     socket.on('disconnect', () => {
         console.log('disconnected')

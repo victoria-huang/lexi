@@ -199,7 +199,7 @@ exports.decline = function (req, res) {
         }, 
         function (err, numAffected) {
             if (err) return res.json({ status: 'error', message: err })
-
+            
             User.updateOne(
                 { '_id': req.body.p1, 'games.gameId': req.body.gameId },
                 { 

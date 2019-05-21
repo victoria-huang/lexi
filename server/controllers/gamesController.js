@@ -411,6 +411,8 @@ exports.new = function (req, res) {
                 otherPlayer: {
                     playerId: game.playerTwo,
                     playerName: game.p2Name,
+                    username: req.body.p2Username,
+                    email: req.body.p2Email,
                     points: game.p2Points,
                 },
                 pendingRequest: true,
@@ -429,6 +431,8 @@ exports.new = function (req, res) {
                 otherPlayer: {
                     playerId: game.playerOne,
                     playerName: game.p1Name,
+                    username: req.body.p1Username,
+                    email: req.body.p1Email,
                     points: game.p1Points,
                 },
                 pendingRequest: false,
