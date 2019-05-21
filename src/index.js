@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import './index.css'
 
+import configureSocket from './socket'
 import App from './App'
 import rootReducer from './reducers'
 
@@ -18,6 +19,8 @@ const store = createStore(
         // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 )
+
+export const socket = configureSocket(store.dispatch)
 
 ReactDOM.render(
     <Router>

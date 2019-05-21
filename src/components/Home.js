@@ -10,7 +10,8 @@ import {
     setAllUsers, 
     resumeGame,
     acceptChallenge,
-    declineChallenge 
+    declineChallenge, 
+    clearGame
 } from '../actions'
 
 const Home = ({ 
@@ -25,6 +26,7 @@ const Home = ({
     declineChallenge
 }) => {
     useEffect(() => {
+        clearGame()
         localStorage.removeItem('gameId')
         setAllUsers()
     }, [])
@@ -200,5 +202,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps, 
-    { logoutUser, setPlayers, setAllUsers, resumeGame, acceptChallenge, declineChallenge }
+    { logoutUser, setPlayers, setAllUsers, resumeGame, acceptChallenge, declineChallenge, clearGame }
 )(withAuth(Home))

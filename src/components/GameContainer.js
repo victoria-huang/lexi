@@ -9,6 +9,7 @@ import ControlPanel from './ControlPanel'
 import GameOver from './GameOver'
 import withAuth from '../hocs/withAuth'
 import { resumeGame } from '../actions'
+import { joinRoom, leaveRoom } from '../socket'
 
 const GameContainer = ({
     p1Points,
@@ -23,16 +24,24 @@ const GameContainer = ({
 }) => {
     useEffect(() => {
         window.scrollTo(0, 0)
+        
+        if (gameId) joinRoom(gameId)
 
         const persistGameId = localStorage.getItem('gameId')
+
         // load game on page refresh
         if (persistGameId && !gameId) {
             resumeGame(persistGameId)
+            joinRoom(persistGameId)
         }
         // go back to home page if no game stored
         if (!persistGameId) history.push('/')
     }, [])
-    
+
+    useEffect(() => () => {
+        leaveRoom(gameId)
+    }, [])
+
     return (
         <div className='container'>
             { 

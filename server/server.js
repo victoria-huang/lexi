@@ -1,12 +1,12 @@
 const express = require('express')
+const socketIo = require('socket.io')
+const http = require('http')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const passport = require('passport')
 require('./config/passport')(passport)
 const cors = require('cors')
 const routes = require("./routes")
-const secretOrKey = require('./config/keys').secretOrKey
-const jwt = require('jsonwebtoken')
 
 // initialize the app
 const app = express()
@@ -37,6 +37,31 @@ app.get('/', (req, res) => res.send('Hello World with Express'))
 app.use('/api/v1', routes)
 
 // launch app to listen to specified port
-app.listen(port, function () {
+const server = app.listen(port, function () {
     console.log("App listening on port " + port);
 })
+
+const io = socketIo.listen(server)
+
+io.on('connection', socket => {
+    console.log('connected')
+    
+    socket.on('room', data => socket.join(data.room))
+
+    socket.on('leave room', data => socket.leave(data.room))
+
+    socket.on('send move', (data) => {
+        console.log('in send move')
+        console.log(data)
+        console.log(io.sockets.adapter.rooms)
+        // socket.emit('successful move', data.game)
+        // io.sockets.in(data.room).emit('successful move', data.game)
+
+        socket.to(data.room).emit('successful move', data.game)
+    })
+
+    socket.on('disconnect', () => {
+        console.log('disconnected')
+    })
+})
+

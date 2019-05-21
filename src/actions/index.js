@@ -5,6 +5,10 @@ import jwt_decode from 'jwt-decode'
 
 import setAuthToken from '../utils/setAuthToken'
 
+import {
+    sendMoveToServer
+} from '../socket'
+
 /************ ERROR ************/
 
 export const addErrors = error => ({
@@ -200,15 +204,21 @@ export const resumeGame = gameId => dispatch => {
     .then(res => {
         console.log(res)
         const game = res.data.game
-        
+
         localStorage.setItem('gameId', game._id)
 
-        dispatch({
-            type: types.RESUME_GAME,
-            payload: game
-        })
+        // dispatch({
+        //     type: types.RESUME_GAME
+        // })
+
+        dispatch(setGame({ ...game, gameResume: true}))
     })
 }
+
+export const setGame = (game) => ({
+    type: types.SET_GAME,
+    payload: game
+})
 
 export const resetGameResume = () => ({
     type: types.RESET_GAME_RESUME
@@ -269,10 +279,12 @@ export const resetExchanged = gameId => dispatch => {
 export const switchTurn = gameId => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'SWITCH_TURN'
-    }).then(res => console.log(res))
+    }).then(res => {
+        dispatch({
+            type: types.SWITCH_TURN
+        })
 
-    dispatch({
-        type: types.SWITCH_TURN
+        sendMoveToServer(res.data.game, gameId)
     })
 }
 
@@ -297,18 +309,20 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
         const game = res.data.game
         
         localStorage.setItem('gameId', game._id)
+        
+        dispatch(setGame(game))
 
-        dispatch(setCells(game.cells.allCells))
-        dispatch(setUnusedTiles(game.tiles.unusedTiles))
+        // dispatch(setCells(game.cells.allCells))
+        // dispatch(setUnusedTiles(game.tiles.unusedTiles))
 
-        dispatch({
-            type: types.SET_PLAYERS,
-            payload: {
-                gameId: game._id,
-                playerOne, 
-                playerTwo
-            }
-        })
+        // dispatch({
+        //     type: types.SET_PLAYERS,
+        //     payload: {
+        //         gameId: game._id,
+        //         playerOne, 
+        //         playerTwo
+        //     }
+        // })
     })
 }
 

@@ -193,7 +193,7 @@ module.exports.switchTurn = function (res, game) {
     .then(game => res.json({
         status: 'success',
         message: `switched turn to player ${game.whoseTurn}`,
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }

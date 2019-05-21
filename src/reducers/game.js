@@ -1,12 +1,13 @@
 import {
-    RESUME_GAME,
+    // RESUME_GAME,
+    SET_GAME,
     START_GAME,
     END_GAME,
     CLEAR_GAME,
     ADD_POINTS,
     SET_EXCHANGED,
     RESET_EXCHANGED,
-    SET_PLAYERS,
+    // SET_PLAYERS,
     SWITCH_TURN,
     DEAL_FIRST_HAND,
     RESET_GAME_RESUME
@@ -28,7 +29,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type) {
-        case RESUME_GAME:
+        // case RESUME_GAME:
+        //     return {
+        //         ...state,
+        //         gameResume: true
+        //     }
+        case SET_GAME:
             const { 
                 _id, 
                 playerOne, 
@@ -41,8 +47,11 @@ export default (state = initialState, action) => {
                 whoseTurn,
                 gameOver,
                 gameStart,
-                firstHandDealt
+                firstHandDealt,
+                gameResume
             } = action.payload
+
+            const resGameBoolean = gameResume ? gameResume : false
 
             return {
                 gameId: _id,
@@ -61,7 +70,7 @@ export default (state = initialState, action) => {
                 gameOver,
                 gameStart,
                 firstHandDealt,
-                gameResume: true
+                gameResume: resGameBoolean
             }
         case RESET_GAME_RESUME:
             return {
@@ -97,13 +106,13 @@ export default (state = initialState, action) => {
                 ...state,
                 exchanged: false
             }
-        case SET_PLAYERS:
-            return {
-                ...state,
-                gameId: action.payload.gameId,
-                playerOne: action.payload.playerOne,
-                playerTwo: action.payload.playerTwo
-            }
+        // case SET_PLAYERS:
+        //     return {
+        //         ...state,
+        //         gameId: action.payload.gameId,
+        //         playerOne: action.payload.playerOne,
+        //         playerTwo: action.payload.playerTwo
+        //     }
         case SWITCH_TURN:
             const playerTurn = ( state.whoseTurn === 1 ? 2 : 1 )
 

@@ -1,5 +1,5 @@
 import {
-    RESUME_GAME,
+    SET_GAME,
     SET_CELLS,
     SET_USED_CELLS,
     CLEAR_GAME
@@ -12,7 +12,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type) {
-        case RESUME_GAME:
+        case SET_GAME:
             const usedCellIds = action.payload.cells.usedCells.map(cell => cell._id)
             return {
                 allCells: action.payload.cells.allCells,

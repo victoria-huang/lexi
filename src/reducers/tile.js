@@ -1,5 +1,5 @@
 import {
-    RESUME_GAME,
+    SET_GAME,
     SET_UNUSED_TILES,
     SELECT_TILE,
     DESELECT_TILE,
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
     let key
 
     switch(action.type) {
-        case RESUME_GAME:
+        case SET_GAME:
             const {
                 unusedTiles,
                 tryTiles,
