@@ -374,7 +374,9 @@ exports.new = function (req, res) {
         playerOne: req.body.playerOne,
         playerTwo: req.body.playerTwo,
         p1Name: req.body.p1Name,
+        p1Email: req.body.p1Email,
         p2Name: req.body.p2Name,
+        p2Email: req.body.p2Email
     })
     
     newGame.tiles = new Tiles
@@ -412,7 +414,7 @@ exports.new = function (req, res) {
                     playerId: game.playerTwo,
                     playerName: game.p2Name,
                     username: req.body.p2Username,
-                    email: req.body.p2Email,
+                    email: game.p2Email,
                     points: game.p2Points,
                 },
                 pendingRequest: true,
@@ -432,7 +434,7 @@ exports.new = function (req, res) {
                     playerId: game.playerOne,
                     playerName: game.p1Name,
                     username: req.body.p1Username,
-                    email: req.body.p1Email,
+                    email: game.p1Email,
                     points: game.p1Points,
                 },
                 pendingRequest: false,

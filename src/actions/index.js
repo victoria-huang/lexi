@@ -10,7 +10,10 @@ import {
     sendEndGame,
     sendGameRequest,
     sendNewGameNotif,
-    sendDeclineGame
+    sendDeclineGame,
+    sendAcceptGame,
+    sendMoveNotif,
+    sendAddPoints
 } from '../socket'
 
 /************ ERROR ************/
@@ -252,11 +255,17 @@ export const endGame = gameId => dispatch => {
     })
 }
 
-export const addPoints = (gameId, points) => dispatch => {
+export const addPoints = (gameId, points, userId) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'ADD_POINTS',
         points
-    }).then(res => console.log(res))
+    }).then(res => {
+        console.log(res)
+        const game = res.data.game
+
+        let room = game.playerOne === userId ? game.p2Email : game.p1Email
+        sendAddPoints(room, gameId, points)
+    }) 
 
     dispatch({
         type: types.ADD_POINTS,
@@ -288,11 +297,25 @@ export const switchTurn = gameId => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'SWITCH_TURN'
     }).then(res => {
+        const game = res.data.game
+
         dispatch({
             type: types.SWITCH_TURN
         })
+        
+        const room = game.whoseTurn === 1 ? game.p1Email : game.p2Email
+        const name = game.whoseTurn === 1 ? game.p2Name : game.p1Name
+        const currUserId = game.whoseTurn === 1 ? game.playerOne : game.playerTwo
+
+        const notif = {
+            type: 'your move',
+            gameId,
+            name,
+            currUserId
+        }
 
         sendMove(res.data.game, gameId)
+        sendMoveNotif(room, notif)
     })
 }
 
@@ -345,10 +368,11 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
             type: 'new game request',
             gameId: game._id,
             user: {
-                id: game.playerOne,
-                name: game.p1Name,
+                playerId: game.playerOne,
+                playerName: game.p1Name,
                 username: playerOne.username,
-                email: playerOne.email
+                email: playerOne.email,
+                points: game.p1Points
             }
         }
 
@@ -376,6 +400,15 @@ export const acceptChallenge = (gameId, p1, p2) => dispatch => {
         payload: gameId
     })
 
+    const notif = {
+        type: 'game request reply',
+        gameId,
+        user: p2,
+        reply: 'accepted'
+    }
+
+    sendAcceptGame(p1.email, notif)
+
     return axios.patch(`/api/v1/users/${p2._id}/accept`, {
         gameId, 
         p1: p1.playerId
@@ -392,7 +425,7 @@ export const declineChallenge = (gameId, p1, p2) => dispatch => {
         type: types.DECLINE_CHALLENGE,
         payload: gameId
     })
-    console.log(p1)
+
     const notif = {
         type: 'game request reply',
         gameId,
@@ -414,6 +447,22 @@ export const challengeDeclined = gameId => dispatch => {
         payload: gameId
     })
 }
+
+export const switchUserTurn = (gameId, userId) => ({
+    type: types.SWITCH_USER_TURN,
+    payload: {
+        gameId,
+        userId
+    }
+})
+
+export const addUserPoints = (gameId, points) => ({
+    type: types.ADD_USER_POINTS,
+    payload: {
+        gameId,
+        points
+    }
+})
 
 export const login = (userData, history) => dispatch => {
     axios.post('/api/v1/login', userData)

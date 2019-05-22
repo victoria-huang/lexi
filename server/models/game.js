@@ -93,7 +93,15 @@ const GamesSchema = new Schema({
         type: String,
         required: true
     },
+    p1Email: {
+        type: String,
+        required: true
+    },
     p2Name: {
+        type: String,
+        required: true
+    },
+    p2Email: {
         type: String,
         required: true
     },

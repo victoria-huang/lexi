@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import v4 from 'uuid'
 
 import withAuth from '../hocs/withAuth'
@@ -34,12 +34,19 @@ const Nav = ({
 
     const [openNotification, setOpenNotification] = useState(false)
 
+    const handleResumeGame = (gameId, notId) => {
+        removeNotification(notId)
+
+        resumeGame(gameId)
+        .then(history.push('/game'))
+    }
+
     const handleAccept = (gameId, p1, p2, notId) => {
         removeNotification(notId)
+
         acceptChallenge(gameId, p1, p2)
         .then(() => {
-            resumeGame(gameId)
-            .then(history.push('/game'))
+            handleResumeGame(gameId)
         })
     }
 
@@ -50,6 +57,7 @@ const Nav = ({
 
     const renderNotifications = () => 
         notification.map(n => {
+            console.log(n)
             if (n.type === 'new game request') {
                 return <div key={ v4() }>
                     { n.user.name } ({ n.user.username }) challenged you to a game
@@ -63,26 +71,32 @@ const Nav = ({
             }
 
             if (n.type === 'game request reply') {
-                return <div 
-                    key={ v4() }
-                    onClick={ () => removeNotification(n.id) }
-                >
+                return <div key={ v4() }>
                     { n.user.name } has { n.reply } your game request
                     { 
                         n.reply === 'accepted' 
-                        &&
-                        <div>
+                        ?
+                        <button onClick={ () => handleResumeGame(n.gameId, n.id) }>
                             go to game
-                        </div>
+                        </button>
+                        :
+                        <button onClick={ () => removeNotification(n.id) }>
+                            ok
+                        </button>
                     }
                 </div>
             }
 
             if (n.type === 'your move') {
                 return <div key={ v4() }>
-                    your move with { n.user.name }   
+                    your move with { n.name } 
+                    <button onClick={ () => handleResumeGame(n.gameId, n.id) }>
+                        go to game
+                    </button>  
                 </div>
             }
+
+            return null
         })
     
     return (

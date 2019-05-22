@@ -33,7 +33,8 @@ const Submit = ({
     updateCells,
     startGame,
     createHand,
-    gameId
+    gameId,
+    user
 }) => {
 
     const findFilledCells = () => cells.filter(c => c.value)
@@ -408,7 +409,7 @@ const Submit = ({
             pointTotal += (points * wordMultiplier)
         })
         
-        addPoints(gameId, pointTotal)
+        addPoints(gameId, pointTotal, user._id)
         // console.log(tryWords)
         // console.log('points', pointTotal)
 
@@ -460,14 +461,15 @@ const mapStateToProps = (state) => ({
     usedCells: state.cell.usedCells,
     tryTiles: state.tile.tryTiles,
     whoseTurn: state.game.whoseTurn,
-    gameStart: state.game.gameStart
+    gameStart: state.game.gameStart,
+    user: state.user.currUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
     updateUsedTiles: (gameId, tiles) => dispatch(updateUsedTiles(gameId, tiles)),
     addErrors: (error) => dispatch(addErrors(error)),
     clearErrors: () => dispatch(clearErrors()),
-    addPoints: (gameId, points) => dispatch(addPoints(gameId, points)),
+    addPoints: (gameId, points, userId) => dispatch(addPoints(gameId, points, userId)),
     clearTryTiles: (gameId) => dispatch(clearTryTiles(gameId)),
     setUsedCells: (gameId, cellIds) => dispatch(setUsedCells(gameId, cellIds)),
     resetExchanged: (gameId) => dispatch(resetExchanged(gameId)),

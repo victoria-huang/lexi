@@ -173,7 +173,7 @@ exports.accept = function (req, res) {
                 }, 
                 function (err, numAffected) {
                     if (err) return res.json({ status: 'error', message: err })
-
+        
                     return res.json({
                         status: 'success',
                         message: 'accepted challenge'

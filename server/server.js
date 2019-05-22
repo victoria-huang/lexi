@@ -70,9 +70,18 @@ io.on('connection', socket => {
         socket.to(data.room).emit('decline game', data.notif)
     })
 
-    // send decline game
-    // send accept game
-    // notification system
+    socket.on('send accept game', data => {
+        socket.to(data.room).emit('accept game', data.notif)
+    })
+
+    socket.on('send move notif', data => {
+        socket.to(data.room).emit('move notif', data.notif)
+    })
+
+    socket.on('send add points', data => {
+        socket.to(data.room).emit('add points', data)
+    })
+
     // friend requests?
     // chat?
 

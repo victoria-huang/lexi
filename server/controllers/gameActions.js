@@ -105,7 +105,7 @@ module.exports.addPoints = function (res, game, points, p1, p2) {
     .then(game => res.json({
         status: 'success',
         message: `added ${points} points to player ${game.whoseTurn}`,
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }

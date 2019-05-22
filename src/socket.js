@@ -5,7 +5,10 @@ import {
     setGame,
     addGameRequest,
     addNotification,
-    challengeDeclined
+    challengeDeclined,
+    challengeAccepted,
+    switchUserTurn,
+    addUserPoints
 } from './actions'
 
 const socket = io('localhost:8080', {transports: ['websocket']})
@@ -36,6 +39,20 @@ const configureSocket = dispatch => {
         dispatch(challengeDeclined(notif.gameId))
     })
 
+    socket.on('accept game', notif => {
+        dispatch(addNotification(notif))
+        dispatch(challengeAccepted(notif.gameId))
+    })
+
+    socket.on('move notif', notif => {
+        dispatch(addNotification(notif))
+        dispatch(switchUserTurn(notif.gameId, notif.currUserId))
+    })
+
+    socket.on('add points', data => {
+        dispatch(addUserPoints(data.gameId, data.points))
+    })
+
     socket.on('disconnect', () => console.log('disconnect'))
   
     return socket
@@ -61,5 +78,14 @@ export const sendNewGameNotif = (room, notif) =>
 
 export const sendDeclineGame = (room, notif) => 
     socket.emit('send decline game', { room, notif })
+
+export const sendAcceptGame = (room, notif) =>
+    socket.emit('send accept game', { room, notif })
+
+export const sendMoveNotif = (room, notif) => 
+    socket.emit('send move notif', { room, notif })
+
+export const sendAddPoints = (room, gameId, points) =>
+    socket.emit('send add points', { room, gameId, points })
 
 export default configureSocket
