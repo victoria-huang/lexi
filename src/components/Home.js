@@ -11,7 +11,8 @@ import {
     resumeGame,
     acceptChallenge,
     declineChallenge, 
-    clearGame
+    clearGame,
+    removeNotification
 } from '../actions'
 
 import { joinRoom, leaveRoom } from '../socket'
@@ -25,7 +26,9 @@ const Home = ({
     setAllUsers,
     resumeGame,
     acceptChallenge,
-    declineChallenge
+    declineChallenge,
+    notification,
+    removeNotification
 }) => {
     useEffect(() => {
         clearGame()
@@ -66,12 +69,36 @@ const Home = ({
         .then(() => history.push('/game'))
     }
 
+    const removeMoveNotification = (gameId) => {
+        const notType1 = 'game request reply'
+        const notType2 = 'your move'
+
+        const foundNot = notification.find(n =>
+           n.gameId === gameId && (n.type === notType1 || n.type === notType2)
+        )
+
+        if (foundNot) removeNotification(foundNot.id)
+    }
+
+    const removeRequestNotification = (gameId) => {
+        const notType = "new game request"
+
+        const foundNot = notification.find(n => 
+            n.type === notType && n.gameId === gameId
+        )
+        if (foundNot) removeNotification(foundNot.id)
+    }
+
     const handleResumeGame = (gameId) => {
+        removeMoveNotification(gameId)
+
         resumeGame(gameId)
         .then(() => history.push('/game'))
     }
 
     const handleAccept = (gameId, p1, p2) => {
+        removeRequestNotification(gameId)
+
         acceptChallenge(gameId, p1, p2)
         .then(() => {
             handleResumeGame(gameId)
@@ -79,6 +106,8 @@ const Home = ({
     }
 
     const handleDecline = (gameId, p1, p2) => {
+        removeRequestNotification(gameId)
+
         declineChallenge(gameId, p1, p2)
     }
 
@@ -261,7 +290,8 @@ const Home = ({
 
 const mapStateToProps = state => ({
     user: state.user.currUser,
-    allUsers: state.user.allUsers
+    allUsers: state.user.allUsers,
+    notification: state.notification
 })
 
 export default connect(
@@ -273,6 +303,7 @@ export default connect(
         resumeGame, 
         acceptChallenge, 
         declineChallenge, 
-        clearGame
+        clearGame,
+        removeNotification
     }
 )(withAuth(Home))
