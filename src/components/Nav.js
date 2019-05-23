@@ -57,10 +57,9 @@ const Nav = ({
 
     const renderNotifications = () => 
         notification.map(n => {
-            console.log(n)
             if (n.type === 'new game request') {
                 return <div key={ v4() }>
-                    { n.user.name } ({ n.user.username }) challenged you to a game
+                    { n.user.playerName } ({ n.user.username }) challenged you to a game
                     <button onClick={ () => handleAccept(n.gameId, n.user, user, n.id) }>
                         accept
                     </button>
@@ -72,7 +71,7 @@ const Nav = ({
 
             if (n.type === 'game request reply') {
                 return <div key={ v4() }>
-                    { n.user.name } has { n.reply } your game request
+                    { n.user.playerName } has { n.reply } your game request
                     { 
                         n.reply === 'accepted' 
                         ?
