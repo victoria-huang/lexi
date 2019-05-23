@@ -8,7 +8,8 @@ import {
     challengeDeclined,
     challengeAccepted,
     switchUserTurn,
-    addUserPoints
+    addUserPoints,
+    userEndGame
 } from './actions'
 
 const socket = io('localhost:8080', {transports: ['websocket']})
@@ -24,6 +25,10 @@ const configureSocket = dispatch => {
 
     socket.on('end game', () => {
         dispatch({ type: END_GAME })
+    })
+
+    socket.on('user end game', gameId => {
+        dispatch(userEndGame(gameId))
     })
 
     socket.on('game request', game => {
@@ -58,17 +63,19 @@ const configureSocket = dispatch => {
     return socket
 }
 
-export const joinRoom = id => 
-    socket.emit('room', { room: id })
+export const joinRoom = room => 
+    socket.emit('room', { room })
 
-export const leaveRoom = id => 
-    socket.emit('leave room', { room: id })
+export const leaveRoom = room => 
+    socket.emit('leave room', { room })
 
 export const sendMove = (game, room) => 
     socket.emit('send move', { game, room })
 
-export const sendEndGame = room => 
-    socket.emit('send end game', { room })
+export const sendEndGame = (gameRoom, userRoom) => {
+    socket.emit('send end game', { gameRoom })
+    socket.emit('send user end game', { userRoom, gameRoom })
+}
 
 export const sendGameRequest = (room, game) => 
     socket.emit('send game request', { room, game })

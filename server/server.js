@@ -55,7 +55,11 @@ io.on('connection', socket => {
     })
     
     socket.on('send end game', data => {
-        socket.to(data.room).emit('end game', null)
+        socket.to(data.gameRoom).emit('end game', null)
+    })
+
+    socket.on('send user end game', data => {
+        socket.to(data.userRoom).emit('user end game', data.gameRoom)
     })
 
     socket.on('send game request', data => {

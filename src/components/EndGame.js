@@ -15,7 +15,7 @@ const customStyles = {
     }
 }
 
-const EndGame = ({ endGame, gameId }) => {
+const EndGame = ({ endGame, gameId, user }) => {
     const [modal, setModal] = useState(false)
 
     const openModal = () => setModal(true)
@@ -23,7 +23,7 @@ const EndGame = ({ endGame, gameId }) => {
 
     const end = () => {
         closeModal()
-        endGame(gameId)
+        endGame(gameId, user._id)
     }
 
     return (
@@ -60,11 +60,12 @@ const EndGame = ({ endGame, gameId }) => {
 }
 
 const mapStateToProps = state => ({
-    gameId: state.game.gameId
+    gameId: state.game.gameId,
+    user: state.user.currUser
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    endGame: (gameId) => dispatch(endGame(gameId))
+    endGame: (gameId, userId) => dispatch(endGame(gameId, userId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EndGame)

@@ -6,7 +6,8 @@ import {
     ADD_GAME_REQUEST,
     CHALLENGE_ACCEPTED,
     SWITCH_USER_TURN,
-    ADD_USER_POINTS
+    ADD_USER_POINTS,
+    USER_END_GAME
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -15,6 +16,8 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+    let games 
+    
     switch (action.type) {
         case SET_CURRENT_USER:
             return {
@@ -27,7 +30,7 @@ export default (state = initialState, action) => {
                 allUsers: action.payload
             }
         case ACCEPT_CHALLENGE:
-            const acceptGames = state.currUser.games.map(game => {
+            games = state.currUser.games.map(game => {
                 if (game.gameId === action.payload) {
                     return { ...game, pendingAnswer: false }
                 } else return game
@@ -37,11 +40,11 @@ export default (state = initialState, action) => {
                 ...state,
                 currUser: {
                     ...state.currUser,
-                    games: acceptGames
+                    games
                 }
             }
         case CHALLENGE_ACCEPTED:
-            const acceptedGames = state.currUser.games.map(game => {
+            games = state.currUser.games.map(game => {
                 if (game.gameId === action.payload) {
                     return { ...game, pendingRequest: false }
                 } else return game
@@ -51,11 +54,11 @@ export default (state = initialState, action) => {
                 ...state,
                 currUser: {
                     ...state.currUser,
-                    games: acceptedGames
+                    games
                 }
             }
         case DECLINE_CHALLENGE:
-            const declineGames = state.currUser.games.map(game => {
+            games = state.currUser.games.map(game => {
                 if (game.gameId === action.payload) {
                     return { ...game, declined: true, current: false }
                 } else return game
@@ -65,7 +68,7 @@ export default (state = initialState, action) => {
                 ...state,
                 currUser: {
                     ...state.currUser,
-                    games: declineGames
+                    games
                 }
             }
         case ADD_GAME_REQUEST:
@@ -77,7 +80,7 @@ export default (state = initialState, action) => {
                 }
             }
         case SWITCH_USER_TURN:
-            const newGames = state.currUser.games.map(game => {
+            games = state.currUser.games.map(game => {
                 if (game.gameId === action.payload.gameId) {
                     return { ...game, whoseTurn: action.payload.userId }
                 } else return game 
@@ -87,11 +90,11 @@ export default (state = initialState, action) => {
                 ...state,
                 currUser: {
                     ...state.currUser,
-                    games: newGames
+                    games
                 }
             }
         case ADD_USER_POINTS:
-            const pointGames = state.currUser.games.map(game => {
+            games = state.currUser.games.map(game => {
                 if (game.gameId === action.payload.gameId) {
                     return { 
                         ...game,
@@ -102,12 +105,26 @@ export default (state = initialState, action) => {
                     }
                 } else return game 
             })
-            console.log(pointGames)
+
             return {
                 ...state,
                 currUser: {
                     ...state.currUser,
-                    games: pointGames
+                    games
+                }
+            }
+        case USER_END_GAME:
+            games = state.currUser.games.map(game => {
+                if (game.gameId === action.payload) {
+                    return { ...game, current: false }
+                } else return game 
+            }) 
+
+            return {
+                ...state,
+                currUser: {
+                    ...state.currUser,
+                    games
                 }
             }
         default:

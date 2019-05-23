@@ -241,17 +241,20 @@ export const startGame = gameId => dispatch => {
     })
 }
 
-export const endGame = gameId => dispatch => {
+export const endGame = (gameId, userId) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'END_GAME'
     }).then(res => {
         console.log(res)
+        const game = res.data.game
 
         dispatch({
             type: types.END_GAME
         })
 
-        sendEndGame(gameId)
+        let userRoom = game.playerOne === userId ? game.p2Email : game.p1Email
+
+        sendEndGame(gameId, userRoom)
     })
 }
 
@@ -393,6 +396,11 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
 }
 
 /************ USER ************/
+
+export const userEndGame = gameId => ({
+    type: types.USER_END_GAME,
+    payload: gameId
+})
 
 export const acceptChallenge = (gameId, p1, p2) => dispatch => {
     dispatch({

@@ -41,7 +41,7 @@ module.exports.endGame = function (res, game) {
     .then(game => res.json({
         status: 'success',
         message: 'game ended',
-        data: game
+        game
     }))
     .catch(err => res.json({ status: 'error', message: err }))
 }
