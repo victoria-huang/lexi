@@ -55,7 +55,7 @@ io.on('connection', socket => {
     })
     
     socket.on('send end game', data => {
-        socket.to(data.gameRoom).emit('end game', null)
+        socket.to(data.gameRoom).emit('end game')
     })
 
     socket.on('send user end game', data => {
@@ -72,6 +72,10 @@ io.on('connection', socket => {
 
     socket.on('send decline game', data => {
         socket.to(data.room).emit('decline game', data.notif)
+    })
+
+    socket.on('send user decline game', data => {
+        socket.to(data.room).emit('user decline game', data.room)
     })
 
     socket.on('send accept game', data => {

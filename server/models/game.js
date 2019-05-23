@@ -121,6 +121,10 @@ const GamesSchema = new Schema({
         type: Number,
         default: 1
     },
+    declined: {
+        type: Boolean,
+        default: false
+    },
     gameOver: {
         type: Boolean,
         default: false

@@ -188,6 +188,18 @@ exports.accept = function (req, res) {
 exports.decline = function (req, res) {
     if (currentUser(req).id !== req.params.user_id) 
         return res.status(401).send('unauthorized')
+    
+    Game.updateOne(
+        { '_id': req.body.gameId },
+        {
+            '$set': {
+                'declined': true
+            }
+        },
+        function (err, numAffected) {
+            if (err) return res.json({ status: 'error', message: err })
+        }
+    )
 
     User.updateOne(
         { '_id': req.params.user_id, 'games.gameId': req.body.gameId },

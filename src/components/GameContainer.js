@@ -7,6 +7,7 @@ import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
 import ControlPanel from './ControlPanel'
 import GameOver from './GameOver'
+import Declined from './Declined'
 import withAuth from '../hocs/withAuth'
 import { resumeGame } from '../actions'
 import { joinRoom, leaveRoom } from '../socket'
@@ -18,6 +19,7 @@ const GameContainer = ({
     playerOne,
     playerTwo,
     gameOver,
+    declined,
     resumeGame,
     gameId,
     history
@@ -76,6 +78,8 @@ const GameContainer = ({
             }
 
             { gameOver && <GameOver /> }
+
+            { declined && <Declined />}
         </div>
     )
 }
@@ -87,6 +91,7 @@ const mapStateToProps = (state) => ({
     playerOne: state.game.playerOne,
     playerTwo: state.game.playerTwo,
     gameOver: state.game.gameOver,
+    declined: state.game.declined,
     gameId: state.game.gameId
 })
 

@@ -9,7 +9,8 @@ import {
     challengeAccepted,
     switchUserTurn,
     addUserPoints,
-    userEndGame
+    userEndGame,
+    declineGame
 } from './actions'
 
 const socket = io('localhost:8080', {transports: ['websocket']})
@@ -42,6 +43,10 @@ const configureSocket = dispatch => {
     socket.on('decline game', notif => {
         dispatch(addNotification(notif))
         dispatch(challengeDeclined(notif.gameId))
+    })
+
+    socket.on('user decline game', gameId => {
+        dispatch(declineGame(gameId))
     })
 
     socket.on('accept game', notif => {
@@ -85,6 +90,9 @@ export const sendNewGameNotif = (room, notif) =>
 
 export const sendDeclineGame = (room, notif) => 
     socket.emit('send decline game', { room, notif })
+
+export const sendUserDeclineGame = (room) => 
+    socket.emit('send user decline game', { room })
 
 export const sendAcceptGame = (room, notif) =>
     socket.emit('send accept game', { room, notif })

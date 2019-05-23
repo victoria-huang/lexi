@@ -11,6 +11,7 @@ import {
     sendGameRequest,
     sendNewGameNotif,
     sendDeclineGame,
+    sendUserDeclineGame,
     sendAcceptGame,
     sendMoveNotif,
     sendAddPoints
@@ -442,6 +443,7 @@ export const declineChallenge = (gameId, p1, p2) => dispatch => {
     }
 
     sendDeclineGame(p1.email, notif)
+    sendUserDeclineGame(gameId)
 
     axios.patch(`/api/v1/users/${p2._id}/decline`, {
         gameId, 
@@ -470,6 +472,11 @@ export const addUserPoints = (gameId, points) => ({
         gameId,
         points
     }
+})
+
+export const declineGame = gameId => ({
+    type: types.DECLINE_GAME,
+    payload: gameId
 })
 
 export const login = (userData, history) => dispatch => {

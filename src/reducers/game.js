@@ -10,7 +10,8 @@ import {
     // SET_PLAYERS,
     SWITCH_TURN,
     DEAL_FIRST_HAND,
-    RESET_GAME_RESUME
+    RESET_GAME_RESUME,
+    DECLINE_GAME
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
     whoseTurn: 1,
     gameOver: false,
     gameStart: false,
+    declined: false,
     firstHandDealt: false,
     gameResume: false
 }
@@ -47,6 +49,7 @@ export default (state = initialState, action) => {
                 whoseTurn,
                 gameOver,
                 gameStart,
+                declined,
                 firstHandDealt,
                 gameResume
             } = action.payload
@@ -69,6 +72,7 @@ export default (state = initialState, action) => {
                 whoseTurn,
                 gameOver,
                 gameStart,
+                declined,
                 firstHandDealt,
                 gameResume: resGameBoolean
             }
@@ -124,6 +128,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 firstHandDealt: true
+            }
+        case DECLINE_GAME:
+            return {
+                ...state,
+                declined: true
             }
         default:
             return state
