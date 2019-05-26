@@ -72,6 +72,11 @@ input[type=submit] {
   font-size: 3em;
 }
 
+.app-logo, .app-logo span {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
 .wrapper {
   height: 100vh;
 }
@@ -267,7 +272,7 @@ input[type=submit] {
   width: 30%;
   border: none;
   border-radius: 4px;
-  background-color: rgb(124, 210, 122, 0.7);
+  background-color: rgba(124, 210, 122, 0.7);
   margin-bottom: 10px;
   font-size: 0.8em;
   text-align: center;
@@ -388,3 +393,95 @@ input[type=submit] {
     width: 10%;
   }
 }
+
+/********** ANIMATIONS **********/
+
+@import url('https://fonts.googleapis.com/css?family=Tangerine');
+
+.logo-container {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 100vh;
+	
+	svg {
+		max-width: 45rem;
+		width: 100%;
+		height: auto;
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		
+		tspan > tspan {
+			stroke-dasharray: 1500;
+			stroke-dashoffset: -1500;
+			
+			@for $i from 1 through 15 {
+				&:nth-of-type(#{$i}) {
+					animation: draw 900ms #{$i * 150}ms forwards;
+				}	
+			}	
+		}
+	}	
+}
+
+@keyframes draw {
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
+
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+  animation-duration: 0.5s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.springy-text {
+  animation-name: springy-text;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+}
+
+@keyframes springy-text {
+  0% {
+    letter-spacing: 0.1em;
+  }
+  100% {
+    letter-spacing: 0em;
+  }
+}
+
+// .flip {
+// 	-webkit-animation: flip 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+// 	        animation: flip 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+// }
+
+// @keyframes flip {
+//   0% {
+//     -webkit-transform: rotateY(180deg);
+//             transform: rotateY(180deg);
+//   }
+//   100% {
+//     -webkit-transform: rotateY(0);
+//             transform: rotateY(0);
+//   }
+// }
+

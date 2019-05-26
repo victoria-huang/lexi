@@ -17,6 +17,8 @@ import {
 
 import { joinRoom, leaveRoom } from '../socket'
 
+import Nav from './Nav'
+
 const Home = ({ 
     user, 
     allUsers,
@@ -28,7 +30,7 @@ const Home = ({
     acceptChallenge,
     declineChallenge,
     notification,
-    removeNotification
+    removeNotification,
 }) => {
     useEffect(() => {
         clearGame()
@@ -241,6 +243,7 @@ const Home = ({
 
     return (
         <>
+        <Nav />
         <div className='flex column'>
             <h1 className='app-header'>hi { user.name }.</h1>
             <p>search for a user to start a game</p>

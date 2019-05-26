@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 
 import jwt_decode from 'jwt-decode'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 import setAuthToken from '../utils/setAuthToken'
 import { setCurrentUser } from '../actions'
 import axios from 'axios'
 
 const withAuth = (ComponentToWrap) => {
-    return connect(null, { setCurrentUser })(class extends Component {        
+    return connect(null, { setCurrentUser })(withRouter(class extends Component {        
         state = { tokenSet: false }
         
         componentDidMount() {
@@ -39,7 +40,7 @@ const withAuth = (ComponentToWrap) => {
                 </div>
             )
         }
-    })
+    }))
 }
 
 export default withAuth

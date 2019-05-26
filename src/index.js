@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
-import './index.css'
+import './index.scss'
 
 import configureSocket from './socket'
 import App from './App'
