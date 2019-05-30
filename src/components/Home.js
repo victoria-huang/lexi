@@ -19,6 +19,8 @@ import { joinRoom, leaveRoom } from '../socket'
 
 import Nav from './Nav'
 import CurrentGameCard from './CurrentGameCard'
+import PendingRequestCard from './PendingRequestCard'
+import PendingGameCard from './PendingGameCard'
 
 const Home = ({ 
     user, 
@@ -142,24 +144,11 @@ const Home = ({
     )
     
     const renderPendingRequests = () => getPendingRequests().map(game =>
-        <li key={ v4() }>
-            you vs. { game.otherPlayer.playerName }
-            <button onClick={ () => handleResumeGame(game.gameId) }>
-                awaiting response
-            </button>
-        </li>
+        <PendingRequestCard key={ v4() } { ...game } handleResumeGame={ handleResumeGame } />
     )
 
     const renderPendingGames = () => getPendingGames().map(game =>
-        <li key={ v4() }>
-            you vs. { game.otherPlayer.playerName }
-            <button onClick={ () => handleAccept(game.gameId, game.otherPlayer, user) }>
-                accept challenge
-            </button>
-            <button onClick={ () => handleDecline(game.gameId, game.otherPlayer, user) }>
-                decline challenge
-            </button>
-        </li>
+        <PendingGameCard key={ v4() } { ...game } handleAccept={ handleAccept } handleDecline={ handleDecline } />
     )
 
     // const renderCurrentGames = () => user.games.map(game => {
@@ -248,34 +237,32 @@ const Home = ({
                 onChange={ (e) => setSearch(e.target.value) }
             />*/} 
         </div>
-        <h3>all users</h3>
-        <ul>
-            { renderUsers() }
-        </ul>
-        
+        <br />
+        <br />
         <div className='card-grid'>
             { renderCurrentGames() }
         </div>
-
+        <br />
         <h3>pending games</h3>
-        <ul>
+        <div className='card-grid'>
             { renderPendingGames() }
-        </ul>
-        <hr />
+        </div>
+        <br />
         <h3>pending requests</h3>
-        <ul>
+        <div className='card-grid'>
             { renderPendingRequests() }
-        </ul>
-        <hr />
+        </div>
+        <br />
         <h3>past games</h3>
         <ul>
             { renderPastGames() }
         </ul>
         <hr />
-        {/*<button onClick={ handleStartPractice }>
-            start practice game
-        </button>*/}
-
+        <h3>all users</h3>
+        <ul>
+            { renderUsers() }
+        </ul>
+        
         <button onClick={ () => logoutUser(history) }>
             logout
         </button>
