@@ -18,6 +18,7 @@ import {
 import { joinRoom, leaveRoom } from '../socket'
 
 import Nav from './Nav'
+import CurrentGameCard from './CurrentGameCard'
 
 const Home = ({ 
     user, 
@@ -45,7 +46,7 @@ const Home = ({
         leaveRoom(user.email)
     }, [])
 
-    const [search, setSearch] = useState('')
+    // const [search, setSearch] = useState('')
 
     // const handleStartPractice = () => {
     //     setPlayers({
@@ -137,17 +138,7 @@ const Home = ({
     const getPastGames = () => user.games.filter(game => !game.current)
 
     const renderCurrentGames = () => getCurrentGames().map(game => 
-        <li key={ v4() }>
-            you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
-            <button onClick={ () => handleResumeGame(game.gameId) }>
-                {
-                    game.whoseTurn === user._id ?
-                    'your move'
-                    :
-                    'their move'
-                }
-            </button>
-        </li>
+        <CurrentGameCard key={ v4() } { ...game } handleResumeGame={ handleResumeGame } />
     )
     
     const renderPendingRequests = () => getPendingRequests().map(game =>
@@ -261,12 +252,11 @@ const Home = ({
         <ul>
             { renderUsers() }
         </ul>
-        <hr />
-        <h3>current games</h3>
-        <ul>
+        
+        <div className='card-grid'>
             { renderCurrentGames() }
-        </ul>
-        <hr />
+        </div>
+
         <h3>pending games</h3>
         <ul>
             { renderPendingGames() }
