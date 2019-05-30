@@ -33,6 +33,8 @@ const Home = ({
     removeNotification,
 }) => {
     useEffect(() => {
+        window.scrollTo(0, 0)
+
         clearGame()
         localStorage.removeItem('gameId')
         setAllUsers()
@@ -244,16 +246,16 @@ const Home = ({
     return (
         <>
         <Nav />
-        <div className='flex column'>
-            <h1 className='app-header'>hi { user.name }.</h1>
-            <p>search for a user to start a game</p>
+        <div className='flex column center app-header box-shadow'>
+            <h1>welcome back, { user.name }.</h1>
+            {/*<p>search for a user to start a game</p>
             
             <input 
                 type='text'
                 placeholder='type username or email here...'
                 value={ search } 
                 onChange={ (e) => setSearch(e.target.value) }
-            /> 
+            />*/} 
         </div>
         <h3>all users</h3>
         <ul>

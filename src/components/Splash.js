@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Switch, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 
 import Login from './Login'
 import Register from './Register'
@@ -12,10 +12,10 @@ const Splash = ({ history }) => {
 
     return (
         <div className='logo-container'>
-            <svg viewBox="0 0 1418 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink">
+            <svg viewBox="0 0 900 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink">
                 <g stroke="none" fill="none" fillRule="evenodd" fillOpacity="0">
                     <text id="lexi" stroke="#000" fill="#fff" fontWeight="normal" fontFamily="Tangerine" fontSize="130">
-                        <tspan x="43%" y="109">
+                        <tspan x="40%" y="109">
                             <tspan>l</tspan>
                             <tspan> </tspan>
                             <tspan>e</tspan>
@@ -31,9 +31,6 @@ const Splash = ({ history }) => {
                     </text>
                 </g>
             </svg>
-        {/*</div>
-        <div className='wrapper flex center column'>
-            <h1 className='app-header app-logo'>l e x i .</h1>*/}
             { 
                 animationLogoEnd 
                 &&

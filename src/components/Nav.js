@@ -99,7 +99,7 @@ const Nav = ({
         })
     
     return (
-        <>
+        <div className='nav'>
             <div 
                 style={{ cursor: 'pointer' }}
                 onClick={() => setOpenNotification(!openNotification)}
@@ -107,7 +107,7 @@ const Nav = ({
                 you have { notification.length } new notifications
                 { openNotification && <>{ renderNotifications() }</> }
             </div>
-        </>
+        </div>
     )
 }
 

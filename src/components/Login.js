@@ -24,20 +24,25 @@ const Login = ({ login, history }) => {
             </div>
         }
         <form onSubmit={ handleSubmit } className='fade-in'>
-            <input 
-                type='text'
-                placeholder='username'
-                value={ username } 
-                onChange={ (e) => setUsername(e.target.value) }
-            />
-            <br />
-            <input 
-                type='password'
-                placeholder='password'
-                value={ password } 
-                onChange={ (e) => setPassword(e.target.value) }
-            />
-            <br />
+            <div className='form-input'>
+                <input 
+                    type='text'
+                    placeholder='username'
+                    value={ username } 
+                    onChange={ (e) => setUsername(e.target.value) }
+                />
+                <div className="line"></div>
+            </div>
+            
+            <div className='form-input'>
+                <input 
+                    type='password'
+                    placeholder='password'
+                    value={ password } 
+                    onChange={ (e) => setPassword(e.target.value) }
+                />
+                <div className="line"></div>
+            </div>
 
             <div className='flex center'>
                 <input 
