@@ -21,6 +21,7 @@ import Nav from './Nav'
 import CurrentGameCard from './CurrentGameCard'
 import PendingRequestCard from './PendingRequestCard'
 import PendingGameCard from './PendingGameCard'
+import PastGameCard from './PastGameCard'
 
 const Home = ({ 
     user, 
@@ -186,42 +187,9 @@ const Home = ({
     //     } else return null 
     // })
     
-    const renderPastGames = () => getPastGames().slice(-5).reverse().map(game => {
-        return <li key={ v4() }>
-            you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
-            {
-                !game.declined &&
-                <p>
-                    {
-                        game.points > game.otherPlayer.points ?
-                        'you won'
-                        :
-                        'you lost'
-                    }
-                </p>
-            }
-            {
-                game.declined
-                &&
-                <p>
-                    { 
-                        game.pendingAnswer ?
-                        'you declined'
-                        :
-                        'they declined'
-                    }  
-                </p>
-            }
-            <button onClick={ () => handleStartGame({
-                name: game.otherPlayer.playerName,
-                _id: game.otherPlayer.playerId,
-                username: game.otherPlayer.username,
-                email: game.otherPlayer.email
-            }) }>
-                rechallenge
-            </button>
-        </li>
-    })
+    const renderPastGames = () => getPastGames().slice(-5).reverse().map(game => 
+        <PastGameCard key={ v4() } { ...game } handleStartGame={ handleStartGame } />
+    )
 
     return (
         <>
@@ -254,9 +222,9 @@ const Home = ({
         </div>
         <br />
         <h3>past games</h3>
-        <ul>
+        <div className='card-grid'>
             { renderPastGames() }
-        </ul>
+        </div>
         <hr />
         <h3>all users</h3>
         <ul>
