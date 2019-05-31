@@ -99,9 +99,19 @@ const Nav = ({
         })
     
     return (
-        <div className='nav'>
+        <div className='flex column app-header'>
+            <div className='flex greeting' style={{ borderBottom: '1px solid white', alignItems: 'center', height: '10vh' }}>
+                <img 
+                    src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
+                    alt='profile-pic'
+                    className='card-avatar'
+                    style={{ marginLeft: '1vh' }} 
+                />
+                <h1 style={{ marginLeft: '1vh' }}>welcome back, { user.name }.</h1>
+            </div>
             <div 
-                style={{ cursor: 'pointer' }}
+                className='flex center'
+                style={{ cursor: 'pointer', height: '5vh' }}
                 onClick={() => setOpenNotification(!openNotification)}
             >
                 you have { notification.length } new notifications

@@ -6,7 +6,7 @@ const PendingRequestCard = ({
     handleResumeGame, 
 }) => (
     <div 
-        className='current-game pending-request box-shadow'
+        className='pending-game pending-request box-shadow'
         onClick={ () => handleResumeGame(gameId) }
     >  
         <div className='flex card-details'>

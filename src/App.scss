@@ -1,7 +1,7 @@
 html, body {
   height: 100vh;
   font-family: 'Raleway', sans-serif;
-  padding: 0;
+  margin: 0;
 }
 
 button {
@@ -87,7 +87,19 @@ input[type=submit] {
 }
 
 .current-game {
+  height: 15vh;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.pending-game {
   height: 12vh;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.past-game {
+  height: 10vh;
   padding-left: 10px;
   cursor: pointer;
 }
@@ -106,6 +118,12 @@ input[type=submit] {
 
 .pending-request {
   border-left: 6px solid rgb(241, 202, 28);
+}
+
+.current-card-avatar {
+  height: 9vh;
+  width: 9vh;
+  border-radius: 50%;
 }
 
 .card-avatar {
@@ -138,13 +156,15 @@ input[type=submit] {
 
 .app-header {
   // margin-bottom: 20px;
-  letter-spacing: 5px;
-  font-family: 'Tangerine', cursive;
-  font-size: 1.5em;
   background-color: rgb(220,208,255);
   background-size: cover;
   height: 15vh;
   color: white;
+}
+
+.greeting {
+  letter-spacing: 5px;
+  font-family: 'Tangerine', cursive;
 }
 
 .app-logo, .app-logo span {
@@ -351,11 +371,6 @@ input[type=submit] {
   margin-bottom: 10px;
   font-size: 0.8em;
   text-align: center;
-}
-
-.nav {
-  height: 5vh;
-  width: 100%;
 }
 
 .box-shadow {

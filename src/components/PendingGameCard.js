@@ -8,7 +8,7 @@ const PendingGameCard = ({
     handleAccept, 
     handleDecline
 }) => (
-    <div className='current-game pending-game box-shadow'>  
+    <div className='pending-game pending-game box-shadow'>  
         <div className='flex card-3-details'>
             <div className='flex' style={{ alignItems: 'center' }}>
                 <img 

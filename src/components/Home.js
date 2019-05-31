@@ -151,51 +151,14 @@ const Home = ({
     const renderPendingGames = () => getPendingGames().map(game =>
         <PendingGameCard key={ v4() } { ...game } handleAccept={ handleAccept } handleDecline={ handleDecline } />
     )
-
-    // const renderCurrentGames = () => user.games.map(game => {
-    //     if (game.current) {
-    //         return <li key={ v4() }>
-    //             you ({ game.points }) vs. { game.otherPlayer.playerName } ({ game.otherPlayer.points })
-    //             {
-    //                 game.pendingAnswer ?
-    //                 <>
-    //                 <button onClick={ () => handleAccept(game.gameId, game.otherPlayer.playerId, user._id) }>
-    //                     accept challenge
-    //                 </button>
-    //                 <button onClick={ () => handleDecline(game.gameId, game.otherPlayer.playerId, user._id) }>
-    //                     decline challenge
-    //                 </button>
-    //                 </>
-    //                 :
-    //                 <button onClick={ () => handleResumeGame(game.gameId) }>
-    //                     { 
-    //                         game.pendingRequest ?
-    //                         'awaiting response'
-    //                         :
-    //                         <>
-    //                         {
-    //                             game.whoseTurn === user._id ?
-    //                             'your move'
-    //                             :
-    //                             'their move'
-    //                         }
-    //                         </>
-    //                     }
-    //                 </button>
-    //             }
-    //         </li>
-    //     } else return null 
-    // })
     
-    const renderPastGames = () => getPastGames().slice(-5).reverse().map(game => 
+    const renderPastGames = () => getPastGames().slice(-10).reverse().map(game => 
         <PastGameCard key={ v4() } { ...game } handleStartGame={ handleStartGame } />
     )
 
     return (
         <>
-        <Nav />
-        <div className='flex column center app-header box-shadow'>
-            <h1>welcome back, { user.name }.</h1>
+        <Nav />   
             {/*<p>search for a user to start a game</p>
             
             <input 
@@ -204,36 +167,37 @@ const Home = ({
                 value={ search } 
                 onChange={ (e) => setSearch(e.target.value) }
             />*/} 
-        </div>
         <br />
         <br />
-        <div className='card-grid'>
-            { renderCurrentGames() }
+        <div style={{ margin: '8px '}}>
+            <div className='card-grid'>
+                { renderCurrentGames() }
+            </div>
+            <br />
+            <h3>pending games</h3>
+            <div className='card-grid'>
+                { renderPendingGames() }
+            </div>
+            <br />
+            <h3>pending requests</h3>
+            <div className='card-grid'>
+                { renderPendingRequests() }
+            </div>
+            <br />
+            <h3>past games</h3>
+            <div className='card-grid'>
+                { renderPastGames() }
+            </div>
+            <hr />
+            <h3>all users</h3>
+            <ul>
+                { renderUsers() }
+            </ul>
+            
+            <button onClick={ () => logoutUser(history) }>
+                logout
+            </button>
         </div>
-        <br />
-        <h3>pending games</h3>
-        <div className='card-grid'>
-            { renderPendingGames() }
-        </div>
-        <br />
-        <h3>pending requests</h3>
-        <div className='card-grid'>
-            { renderPendingRequests() }
-        </div>
-        <br />
-        <h3>past games</h3>
-        <div className='card-grid'>
-            { renderPastGames() }
-        </div>
-        <hr />
-        <h3>all users</h3>
-        <ul>
-            { renderUsers() }
-        </ul>
-        
-        <button onClick={ () => logoutUser(history) }>
-            logout
-        </button>
         </>
     )
 }

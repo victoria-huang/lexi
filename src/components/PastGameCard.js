@@ -7,7 +7,7 @@ const PastGameCard = ({
     pendingAnswer,
     handleStartGame
 }) => (
-    <div className='current-game'>  
+    <div className='past-game'>  
         <div className='flex card-3-details'>
             <div className='flex' style={{ alignItems: 'center' }}>
                 <img 
