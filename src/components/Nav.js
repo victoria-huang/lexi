@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { CSSTransitionGroup } from 'react-transition-group'
 // import { Link } from 'react-router-dom'
 import v4 from 'uuid'
 
@@ -58,20 +59,22 @@ const Nav = ({
     const renderNotifications = () => 
         notification.map(n => {
             if (n.type === 'new game request') {
-                return <div key={ v4() }>
+                return <div key={ v4() } className='flex column center notification box-shadow'>
                     { n.user.playerName } ({ n.user.username }) challenged you to a game
-                    <button onClick={ () => handleAccept(n.gameId, n.user, user, n.id) }>
-                        accept
-                    </button>
-                    <button onClick={ () => handleDecline(n.gameId, n.user, user, n.id) }>
-                        decline
-                    </button>       
+                    <div className='flex'>
+                        <button onClick={ () => handleAccept(n.gameId, n.user, user, n.id) } style={{ width: '100%' }}>
+                            accept
+                        </button>
+                        <button onClick={ () => handleDecline(n.gameId, n.user, user, n.id) } style={{ width: '100%' }}>
+                            decline
+                        </button>
+                    </div>       
                 </div>
             }
 
             if (n.type === 'game request reply') {
-                return <div key={ v4() }>
-                    { n.user.playerName } has { n.reply } your game request
+                return <div key={ v4() } className='flex column center notification box-shadow'>
+                    { n.user.name } has { n.reply } your game request
                     { 
                         n.reply === 'accepted' 
                         ?
@@ -87,7 +90,7 @@ const Nav = ({
             }
 
             if (n.type === 'your move') {
-                return <div key={ v4() }>
+                return <div key={ v4() } className='flex column center notification box-shadow'>
                     your move with { n.name } 
                     <button onClick={ () => handleResumeGame(n.gameId, n.id) }>
                         go to game
@@ -99,25 +102,47 @@ const Nav = ({
         })
     
     return (
-        <div className='flex column app-header'>
-            <div className='flex greeting' style={{ borderBottom: '1px solid white', alignItems: 'center', height: '10vh' }}>
-                <img 
-                    src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
-                    alt='profile-pic'
-                    className='card-avatar'
-                    style={{ marginLeft: '1vh' }} 
-                />
-                <h1 style={{ marginLeft: '1vh' }}>welcome back, { user.name }.</h1>
-            </div>
+        <>
+        <div className='flex greeting app-header' style={{ borderBottom: '1px solid white', alignItems: 'center' }}>
+            <img 
+                src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
+                alt='profile-pic'
+                className='card-avatar'
+                style={{ marginLeft: '1vh' }} 
+            />
+            <h1 style={{ marginLeft: '1vh' }}>welcome back, { user.name }.</h1>
+        </div>
+        { 
+            !openNotification 
+            && 
             <div 
-                className='flex center'
-                style={{ cursor: 'pointer', height: '5vh' }}
+                className='flex center not-header'
+                style={{ cursor: 'pointer' }}
                 onClick={() => setOpenNotification(!openNotification)}
             >
                 you have { notification.length } new notifications
-                { openNotification && <>{ renderNotifications() }</> }
             </div>
-        </div>
+        }
+
+        <CSSTransitionGroup transitionName="slidedown">
+            { 
+                openNotification 
+                && 
+                <>
+                <div className='flex column panel box-shadow'>
+                    { renderNotifications() }
+                </div>
+                <div 
+                    className='flex center not-header'
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setOpenNotification(!openNotification)}
+                >
+                    close notifications
+                </div> 
+                </>
+            }
+        </CSSTransitionGroup>
+        </>
     )
 }
 

@@ -86,6 +86,12 @@ input[type=submit] {
   grid-gap: 10px;
 }
 
+.notification {
+  height: 10vh;
+  margin-top: 2vh;
+  background-color: white;
+}
+
 .current-game {
   height: 15vh;
   padding-left: 10px;
@@ -157,8 +163,13 @@ input[type=submit] {
 .app-header {
   // margin-bottom: 20px;
   background-color: rgb(220,208,255);
-  background-size: cover;
-  height: 15vh;
+  height: 13vh;
+  color: white;
+}
+
+.not-header {
+  background-color: rgb(220,208,255);
+  height: 5vh;
   color: white;
 }
 
@@ -566,6 +577,26 @@ input[type=submit] {
   100% {
     letter-spacing: 0em;
   }
+}
+
+.panel {
+  width: 100%;
+  height: 75vh;
+  background-image: linear-gradient(to bottom right, rgb(162, 221, 255), rgb(182, 148, 245));
+}
+
+.slidedown-enter {
+  height: 0vh;
+}
+
+.slidedown-enter.slidedown-enter-active {
+  height: 75vh;
+  -webkit-transition: height .3s ease;
+}
+
+.slidedown-leave.slidedown-leave-active {
+  height: 0vh;
+  -webkit-transition: height .3s ease;
 }
 
 // .flip {

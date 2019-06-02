@@ -16,7 +16,7 @@ const PastGameCard = ({
                     className='card-avatar' 
                 />
             </div>
-            <div className='flex column' style={{ justifyContent: 'center' }}>
+            <div className='flex column' style={{ justifyContent: 'center', borderBottom: '1px solid #ccc' }}>
                 <h3 style={{ margin: '0', marginBottom: '1vh' }}>{ otherPlayer.playerName }</h3>
                 {
                     !declined &&
@@ -45,7 +45,7 @@ const PastGameCard = ({
                     </span>
                 }
             </div>
-            <div className='flex column' style={{ justifyContent: 'center' }}>
+            <div className='flex column' style={{ justifyContent: 'center', borderBottom: '1px solid #ccc' }}>
                 <button onClick={ () => handleStartGame({
                     name: otherPlayer.playerName,
                     _id: otherPlayer.playerId,
