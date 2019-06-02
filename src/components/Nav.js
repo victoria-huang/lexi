@@ -12,7 +12,8 @@ import {
     acceptChallenge, 
     declineChallenge, 
     resumeGame, 
-    removeNotification 
+    removeNotification,
+    logoutUser 
 } from '../actions'
 import { joinRoom, leaveRoom } from '../socket'
 
@@ -23,7 +24,8 @@ const Nav = ({
     declineChallenge,
     resumeGame,
     removeNotification,
-    history 
+    history,
+    logoutUser 
 }) => {
     useEffect(() => {
         joinRoom(user.email)
@@ -110,7 +112,17 @@ const Nav = ({
                 className='card-avatar'
                 style={{ marginLeft: '1vh' }} 
             />
-            <h1 style={{ marginLeft: '1vh' }}>welcome back, { user.name }.</h1>
+            <div className='flex' style={{ justifyContent: 'space-between', width: '100%'}}>
+                <h1 style={{ marginLeft: '1vh' }}>hello { user.name }.</h1>
+                <div className='flex' style={{ alignItems: 'flex-start' }}>
+                <button
+                    onClick={ () => logoutUser(history) }
+                    style={{ padding: '8px', marginTop: '8px', marginRight: '8px' }}
+                >
+                    logout
+                </button>
+                </div>
+            </div>
         </div>
         { 
             !openNotification 
@@ -120,7 +132,12 @@ const Nav = ({
                 style={{ cursor: 'pointer' }}
                 onClick={() => setOpenNotification(!openNotification)}
             >
-                you have { notification.length } new notifications
+                {
+                    notification.length > 0
+                    &&
+                    <>&#128308; &nbsp;</>
+                } 
+                notifications &nbsp; &#9663;
             </div>
         }
 
@@ -141,7 +158,7 @@ const Nav = ({
                     style={{ cursor: 'pointer' }}
                     onClick={() => setOpenNotification(!openNotification)}
                 >
-                    close notifications
+                    close &#9653;
                 </div> 
                 </>
             }
@@ -159,5 +176,6 @@ export default connect(mapStateToProps, {
     acceptChallenge, 
     declineChallenge, 
     resumeGame, 
-    removeNotification 
+    removeNotification,
+    logoutUser 
 })(withAuth(withRouter(Nav)))

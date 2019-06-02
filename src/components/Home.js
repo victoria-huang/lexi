@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { v4 } from 'uuid'
 
 import withAuth from '../hocs/withAuth'
-import { 
-    logoutUser, 
+import {  
     setPlayers, 
     setAllUsers, 
     resumeGame,
@@ -25,8 +24,7 @@ import PastGameCard from './PastGameCard'
 
 const Home = ({ 
     user, 
-    allUsers,
-    logoutUser, 
+    allUsers, 
     history,
     setPlayers,
     setAllUsers,
@@ -218,15 +216,10 @@ const Home = ({
                 </>
             }
             
-            <hr />
             <h3>all users</h3>
             <ul>
                 { renderUsers() }
             </ul>
-            
-            <button onClick={ () => logoutUser(history) }>
-                logout
-            </button>
         </div>
         </>
     )
@@ -241,7 +234,6 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps, 
     { 
-        logoutUser, 
         setPlayers, 
         setAllUsers, 
         resumeGame, 
