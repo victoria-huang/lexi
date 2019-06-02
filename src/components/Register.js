@@ -28,53 +28,67 @@ const Register = ({ register, history }) => {
         <>
         <p className='fade-in'>create your account</p>
         <form onSubmit={ handleSubmit } className='fade-in'>
-            <input 
-                type='text'
-                placeholder='name'
-                value={ name } 
-                onChange={ (e) => setName(e.target.value) }
-            />
-            <br />
-            <input 
-                type='text'
-                placeholder='username'
-                value={ username } 
-                onChange={ (e) => setUsername(e.target.value) }
-            />
-            <br />
-            <input 
-                type='text'
-                placeholder='email'
-                value={ email } 
-                onChange={ (e) => setEmail(e.target.value) }
-            />
-            <br />
-            <input 
-                data-tip
-                data-for='password'
-                type='password'
-                placeholder='password'
-                value={ password } 
-                onChange={ (e) => setPassword(e.target.value) }
-            />
-            <ReactTooltip 
-                id='password'  
-                place='right'
-                type='light' 
-                effect='solid'
-            >
-                <span className='tooltip'>
-                    must be between 6 and 30 characters
-                </span>
-            </ReactTooltip>
-            <br />
-            <input 
-                type='password'
-                placeholder='confirm password'
-                value={ password2 } 
-                onChange={ (e) => setPassword2(e.target.value) }
-            />
-            <br />
+            <div className='form-input'>
+                <input 
+                    type='text'
+                    placeholder='name'
+                    value={ name } 
+                    onChange={ (e) => setName(e.target.value) }
+                />
+                <div className="line"></div>
+            </div>
+
+            <div className='form-input'>
+                <input 
+                    type='text'
+                    placeholder='username'
+                    value={ username } 
+                    onChange={ (e) => setUsername(e.target.value) }
+                />
+                <div className="line"></div>
+            </div>
+
+            <div className='form-input'>
+                <input 
+                    type='text'
+                    placeholder='email'
+                    value={ email } 
+                    onChange={ (e) => setEmail(e.target.value) }
+                />
+                <div className="line"></div>
+            </div>
+
+            <div className='form-input'>
+                <input 
+                    data-tip
+                    data-for='password'
+                    type='password'
+                    placeholder='password'
+                    value={ password } 
+                    onChange={ (e) => setPassword(e.target.value) }
+                />
+                <ReactTooltip 
+                    id='password'  
+                    place='right'
+                    type='light' 
+                    effect='solid'
+                >
+                    <span className='tooltip'>
+                        must be between 6 and 30 characters
+                    </span>
+                </ReactTooltip>
+                <div className="line"></div>
+            </div>
+            
+            <div className='form-input'>
+                <input 
+                    type='password'
+                    placeholder='confirm password'
+                    value={ password2 } 
+                    onChange={ (e) => setPassword2(e.target.value) }
+                />
+                <div className="line"></div>
+            </div>
 
             <div className='flex center'>
                 <input 
