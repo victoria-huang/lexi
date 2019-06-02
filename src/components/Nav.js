@@ -124,7 +124,11 @@ const Nav = ({
             </div>
         }
 
-        <CSSTransitionGroup transitionName="slidedown">
+        <CSSTransitionGroup 
+            transitionName="slidedown"
+            transitionEnterTimeout={ 300 }
+            transitionLeaveTimeout={ 300 }
+        >
             { 
                 openNotification 
                 && 

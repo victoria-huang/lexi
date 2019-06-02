@@ -170,24 +170,54 @@ const Home = ({
         <br />
         <br />
         <div style={{ margin: '8px '}}>
+            {
+                getCurrentGames().length < 1
+                &&
+                <>
+                <h3>you have no current games!</h3>
+                <p>create a game to get started.</p>
+                </>
+            }
             <div className='card-grid'>
                 { renderCurrentGames() }
             </div>
             <br />
-            <h3>pending games</h3>
-            <div className='card-grid'>
-                { renderPendingGames() }
-            </div>
-            <br />
-            <h3>pending requests</h3>
-            <div className='card-grid'>
-                { renderPendingRequests() }
-            </div>
-            <br />
-            <h3>past games</h3>
-            <div className='card-grid'>
-                { renderPastGames() }
-            </div>
+
+            { 
+                getPendingGames().length > 0 
+                &&
+                <>
+                <h3>pending games</h3>
+                <div className='card-grid'>
+                    { renderPendingGames() }
+                </div>
+                <br />
+                </>
+            }
+
+            {
+                getPendingRequests().length > 0
+                &&
+                <>
+                <h3>pending requests</h3>
+                <div className='card-grid'>
+                    { renderPendingRequests() }
+                </div>
+                <br />
+                </>
+            }
+            
+            {
+                getPastGames().length > 0
+                &&
+                <>
+                <h3>past games</h3>
+                <div className='card-grid'>
+                    { renderPastGames() }
+                </div>
+                </>
+            }
+            
             <hr />
             <h3>all users</h3>
             <ul>
