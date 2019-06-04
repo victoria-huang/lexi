@@ -16,7 +16,7 @@ import Definition from './Definition'
 
 const customStyles = {
     content: {
-        margin: '5% 20% 5% 20%'
+        margin: '5%'
     }
 }
 

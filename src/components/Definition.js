@@ -9,7 +9,7 @@ const Definition = ({ word, phonetic, meaning }) => {
                 { word }
             </h1>
             <h4 className='definition-phonetic'>
-                [ { phonetic.join(' | ') } ]
+                [ { Array.isArray(phonetic) ? phonetic.join(' | ') : phonetic } ]
             </h4>
         </div>
 

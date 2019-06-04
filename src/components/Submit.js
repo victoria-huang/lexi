@@ -347,18 +347,18 @@ const Submit = ({
                     // only add unique words to cell
                     const formattedMeanings = []
 
-                    for (const meaningType in result.meaning) {
+                    for (const meaningType in result[0].meaning) {
                         const meaning = {
                             meaningType,
-                            definitions: result.meaning[meaningType].map(def => def.definition)
+                            definitions: result[0].meaning[meaningType].map(def => def.definition)
                         }
-
+                        
                         formattedMeanings.push(meaning)
                     }
 
                     const formattedWord = {
-                        word: result.word,
-                        phonetic: result.phonetic,
+                        word: result[0].word,
+                        phonetic: result[0].phonetic,
                         meaning: formattedMeanings
                     }
                     
