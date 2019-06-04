@@ -45,7 +45,7 @@ const GameContainer = ({
     }, [])
 
     return (
-        <div className='container'>
+        <div className='container slide-in-left'>
             { 
                 gameId
                 ?

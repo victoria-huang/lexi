@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { CSSTransitionGroup } from 'react-transition-group'
-// import { Link } from 'react-router-dom'
 import v4 from 'uuid'
 
 import withAuth from '../hocs/withAuth'

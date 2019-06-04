@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { v4 } from 'uuid'
+import v4 from 'uuid'
 import Modal from 'react-modal'
 
 import { setPlayers } from '../actions'
@@ -47,7 +47,7 @@ const CreateGame = ({
     }
 
     const findUsers = () => allUsers.filter(u => 
-        u.username.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase())    
+        u.username.toLowerCase().includes(search.toLowerCase())
     )
 
     const renderUsers = () => findUsers().map(u => {

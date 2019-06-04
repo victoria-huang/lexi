@@ -38,7 +38,7 @@ const Exchange = ({
     }
 
     return (
-        <button onClick={ exchangeTile }>exchange</button>
+        <button onClick={ exchangeTile }>swap</button>
     )
 }
 

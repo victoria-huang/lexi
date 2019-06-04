@@ -37,7 +37,7 @@ const TileBag = ({ unusedTiles }) => {
 
     return (
         <>
-        <button onClick={ openModal }>tile bag</button>
+        <button onClick={ openModal }>tiles</button>
         <Modal
             isOpen={ modal }
             onRequestClose={ closeModal }
