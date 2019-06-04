@@ -654,11 +654,13 @@ input[type=submit] {
 .slidedown-enter.slidedown-enter-active {
   height: 75vh;
   -webkit-transition: height .3s ease;
+          transition: height .3s ease;
 }
 
 .slidedown-leave.slidedown-leave-active {
   height: 0vh;
   -webkit-transition: height .3s ease;
+          transition: height .3s ease;
 }
 
 .slide-in-left {
