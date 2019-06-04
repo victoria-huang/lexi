@@ -7,6 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import v4 from 'uuid'
 
 import withAuth from '../hocs/withAuth'
+import CreateGame from './CreateGame'
 
 import { 
     acceptChallenge, 
@@ -132,12 +133,13 @@ const Nav = ({
                 style={{ cursor: 'pointer' }}
                 onClick={() => setOpenNotification(!openNotification)}
             >
+                notifications&nbsp;
                 {
                     notification.length > 0
                     &&
-                    <>&#128308; &nbsp;</>
+                    `( ${notification.length} )`
                 } 
-                notifications &nbsp; &#9663;
+                &nbsp; &#9663;
             </div>
         }
 
@@ -163,6 +165,8 @@ const Nav = ({
                 </>
             }
         </CSSTransitionGroup>
+
+        <CreateGame />
         </>
     )
 }

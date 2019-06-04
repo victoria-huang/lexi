@@ -46,14 +46,14 @@ const PastGameCard = ({
                 }
             </div>
             <div className='flex column' style={{ justifyContent: 'center', borderBottom: '1px solid #ccc' }}>
-                <button onClick={ () => handleStartGame({
+                <div className='flex center' onClick={ () => handleStartGame({
                     name: otherPlayer.playerName,
                     _id: otherPlayer.playerId,
                     username: otherPlayer.username,
                     email: otherPlayer.email
                 }) }>
-                    rechallenge
-                </button>
+                    <span>&#10227;</span>
+                </div>
             </div>
         </div>
     </div>

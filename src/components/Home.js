@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import { connect } from 'react-redux'
 import { v4 } from 'uuid'
@@ -17,6 +17,7 @@ import {
 import { joinRoom, leaveRoom } from '../socket'
 
 import Nav from './Nav'
+import Footer from './Footer'
 import CurrentGameCard from './CurrentGameCard'
 import PendingRequestCard from './PendingRequestCard'
 import PendingGameCard from './PendingGameCard'
@@ -24,7 +25,6 @@ import PastGameCard from './PastGameCard'
 
 const Home = ({ 
     user, 
-    allUsers, 
     history,
     setPlayers,
     setAllUsers,
@@ -46,8 +46,6 @@ const Home = ({
     useEffect(() => () => {
         leaveRoom(user.email)
     }, [])
-
-    // const [search, setSearch] = useState('')
 
     // const handleStartPractice = () => {
     //     setPlayers({
@@ -117,19 +115,6 @@ const Home = ({
         declineChallenge(gameId, p1, p2)
     }
 
-    const renderUsers = () => allUsers.map(u => {
-        if (u._id !== user._id) {
-            return <li key={ v4() }>
-                { u.username }
-                <button onClick={ () => handleStartGame(u) }>
-                    start game
-                </button>
-            </li>
-        } else {
-            return null
-        }
-    })
-
     const getCurrentGames = () => user.games.filter(game => game.current && !game.pendingRequest && !game.pendingAnswer)
 
     const getPendingRequests = () => user.games.filter(game => game.current && game.pendingRequest)
@@ -157,17 +142,10 @@ const Home = ({
     return (
         <>
         <Nav />   
-            {/*<p>search for a user to start a game</p>
-            
-            <input 
-                type='text'
-                placeholder='type username or email here...'
-                value={ search } 
-                onChange={ (e) => setSearch(e.target.value) }
-            />*/} 
+
         <br />
         <br />
-        <div style={{ margin: '8px '}}>
+        <div className='body-home' style={{ marginLeft: '8px', marginRight: '8px', marginBottom: '15vh'}}>
             {
                 getCurrentGames().length < 1
                 &&
@@ -215,19 +193,14 @@ const Home = ({
                 </div>
                 </>
             }
-            
-            <h3>all users</h3>
-            <ul>
-                { renderUsers() }
-            </ul>
         </div>
+        <Footer />
         </>
     )
 }
 
 const mapStateToProps = state => ({
     user: state.user.currUser,
-    allUsers: state.user.allUsers,
     notification: state.notification
 })
 

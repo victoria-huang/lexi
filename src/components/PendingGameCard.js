@@ -22,12 +22,12 @@ const PendingGameCard = ({
                 <span>challenged you</span>
             </div>
             <div className='flex column' style={{ justifyContent: 'center' }}>
-                <button onClick={ () => handleAccept(gameId, otherPlayer, user) }>
-                    accept
-                </button>
-                <button onClick={ () => handleDecline(gameId, otherPlayer, user) }>
-                    decline
-                </button>
+                <div className='flex center' style={{ margin: '1vh' }} onClick={ () => handleAccept(gameId, otherPlayer, user) }>
+                    <span>&#10003;</span>
+                </div>
+                <div className='flex center' onClick={ () => handleDecline(gameId, otherPlayer, user) }>
+                    <span>&#120;</span>
+                </div>
             </div>
         </div>
     </div>

@@ -138,6 +138,12 @@ input[type=submit] {
   border-radius: 50%;
 }
 
+.play-avatar {
+  height: 3.5vh;
+  width: 3.5vh;
+  border-radius: 50%;
+}
+
 .card-details {
   display: grid;
   grid-template-columns: 1fr 1.8fr;
@@ -146,7 +152,7 @@ input[type=submit] {
 
 .card-3-details {
   display: grid;
-  grid-template-columns: 1fr 1.25fr 1fr;
+  grid-template-columns: 1fr 1.25fr 0.5fr;
   height: 100%;
 }
 
@@ -387,6 +393,39 @@ input[type=submit] {
 .box-shadow {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+.create-game {
+  position: fixed;
+  bottom: 5vh;
+  right: 0;
+  background-color: rgba(182, 148, 245, 0.9);
+  color: white;
+  width: 8vh;
+  height: 8vh;
+  margin: 2vh;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 4em;
+}
+
+.search-user {
+  width: 80%;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: rgb(182, 148, 245);
+  height: 3vh;
+  color: white;
+  margin-top: 3vh;
+  font-size: 0.8em;
+}
+
+// .body-home {
+//   margin-bottom: 300px;
+// }
 
 /************ MEDIA QUERIES ************/
 
