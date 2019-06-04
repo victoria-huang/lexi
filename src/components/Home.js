@@ -144,7 +144,7 @@ const Home = ({
         <>
         <Nav />   
 
-        <div className='body-home fade-in' style={{ marginLeft: '8px', marginRight: '8px', marginBottom: '15vh', marginTop: '5vh' }}>
+        <div className='body-home fade-in'>
             {
                 getCurrentGames().length < 1
                 &&

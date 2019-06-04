@@ -98,6 +98,12 @@ input[type=submit] {
   cursor: pointer;
 }
 
+.whose-move {
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  font-size: 0.8em;
+}
+
 .pending-game {
   height: 12vh;
   padding-left: 10px;
@@ -138,10 +144,22 @@ input[type=submit] {
   border-radius: 50%;
 }
 
+.play-user-container {
+  width: 80%;
+  margin-top: 2vh;
+}
+
 .play-avatar {
   height: 3.5vh;
   width: 3.5vh;
   border-radius: 50%;
+}
+
+.play-user-card {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2vh;
 }
 
 .card-details {
@@ -423,9 +441,12 @@ input[type=submit] {
   font-size: 0.8em;
 }
 
-// .body-home {
-//   margin-bottom: 300px;
-// }
+.body-home {
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 15vh;
+  margin-top: 5vh;
+}
 
 /************ MEDIA QUERIES ************/
 
@@ -593,7 +614,8 @@ input[type=submit] {
 @keyframes fadeInOpacity {
 	0% {
 		opacity: 0;
-	}
+  }
+  
 	100% {
 		opacity: 1;
 	}
@@ -613,6 +635,7 @@ input[type=submit] {
   0% {
     letter-spacing: 0.08em;
   }
+
   100% {
     letter-spacing: 0em;
   }
@@ -638,22 +661,6 @@ input[type=submit] {
   -webkit-transition: height .3s ease;
 }
 
-// .flip {
-// 	-webkit-animation: flip 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
-// 	        animation: flip 0.4s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
-// }
-
-// @keyframes flip {
-//   0% {
-//     -webkit-transform: rotateY(180deg);
-//             transform: rotateY(180deg);
-//   }
-//   100% {
-//     -webkit-transform: rotateY(0);
-//             transform: rotateY(0);
-//   }
-// }
-
 .slide-in-left {
 	-webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -665,6 +672,7 @@ input[type=submit] {
             transform: translateX(-1000px);
     opacity: 0;
   }
+
   100% {
     -webkit-transform: translateX(0);
             transform: translateX(0);
@@ -678,6 +686,7 @@ input[type=submit] {
             transform: translateX(-1000px);
     opacity: 0;
   }
+
   100% {
     -webkit-transform: translateX(0);
             transform: translateX(0);

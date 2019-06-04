@@ -52,17 +52,19 @@ const CreateGame = ({
 
     const renderUsers = () => findUsers().map(u => {
         if (u._id !== user._id) {
-            return <div key={ v4() } className='flex' style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2vh' }}>
-                <img 
-                    src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
-                    alt='profile-pic'
-                    className='play-avatar' 
-                />
-                <span>{ u.username }</span>
-                <button onClick={ () => handleStartGame(u) }>
-                    &#9654; 
-                </button>
-            </div>
+            return (
+                <div key={ v4() } className='flex play-user-card'>
+                    <img 
+                        src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
+                        alt='profile-pic'
+                        className='play-avatar' 
+                    />
+                    <span>{ u.username }</span>
+                    <button onClick={ () => handleStartGame(u) }>
+                        &#9654; 
+                    </button>
+                </div>
+            )
         } else {
             return null
         }
@@ -93,7 +95,7 @@ const CreateGame = ({
                 onChange={ (e) => setSearch(e.target.value) }
             />
 
-            <div className='flex column' style={{ width: '80%', marginTop: '2vh' }}>
+            <div className='flex column play-user-container'>
                 { search && renderUsers() }
             </div>
         </Modal>

@@ -22,7 +22,7 @@ const CurrentGameCard = ({
     >  
         <div className='flex card-details'>
             <div>
-                <div style={{ marginBottom: '1vh', marginTop: '1vh', fontSize: '0.8em' }}>
+                <div className='whose-move'>
                     {
                         whoseTurn === user._id ?
                         'your move'

@@ -18,7 +18,9 @@ const PendingRequestCard = ({
                 />
             </div>
             <div className='flex column' style={{ justifyContent: 'center' }}>
-                <h3 style={{ margin: '0', marginBottom: '1vh' }}>{ otherPlayer.playerName }</h3>
+                <h3 style={{ margin: '0', marginBottom: '1vh' }}>
+                    { otherPlayer.playerName }
+                </h3>
                 <span>awaiting response</span>
             </div>
         </div>
