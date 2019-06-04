@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import Modal from 'react-modal'
 
+import Modal from 'react-modal'
 import { connect } from 'react-redux'
+
 import { endGame } from '../actions'
 
 const customStyles = {
@@ -64,8 +65,8 @@ const mapStateToProps = state => ({
     user: state.user.currUser
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    endGame: (gameId, userId) => dispatch(endGame(gameId, userId))
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     endGame: (gameId, userId) => dispatch(endGame(gameId, userId))
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EndGame)
+export default connect(mapStateToProps, { endGame })(EndGame)

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import Modal from 'react-modal'
 import { Route, Switch, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 
 import Splash from './components/Splash'
 import Home from './components/Home'
@@ -24,9 +23,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  playerOne: state.game.playerOne,
-  playerTwo: state.game.playerTwo
-})
-
-export default connect(mapStateToProps)(withRouter(App))
+export default withRouter(App)

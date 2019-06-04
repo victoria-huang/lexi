@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+
 import Modal from 'react-modal'
 import v4 from 'uuid'
-
 import { connect } from 'react-redux'
+
 import {
     selectTile,
     deselectTile,
@@ -182,13 +183,20 @@ const mapStateToProps = (state) => ({
     playerTwo: state.game.playerTwo
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    selectTile: (gameId, tile) => dispatch(selectTile(gameId, tile)),
-    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
-    addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
-    removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
-    updateUsedTiles: (gameId, tile) => dispatch(updateUsedTiles(gameId, tile)),
-    updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles))
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     selectTile: (gameId, tile) => dispatch(selectTile(gameId, tile)),
+//     deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+//     addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
+//     removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
+//     updateUsedTiles: (gameId, tile) => dispatch(updateUsedTiles(gameId, tile)),
+//     updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles))
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tile)
+export default connect(mapStateToProps, {
+    selectTile,
+    deselectTile,
+    addToHand,
+    removeFromHand,
+    updateUsedTiles,
+    updateUnusedTiles
+})(Tile)

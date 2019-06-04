@@ -3,6 +3,7 @@ import React from 'react'
 import Modal from 'react-modal'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+
 import { clearGame } from '../actions'
 
 const customStyles = {
@@ -49,8 +50,8 @@ const mapStateToProps = (state) => ({
     playerTwo: state.game.playerTwo
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    clearGame: () => dispatch(clearGame())
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     clearGame: () => dispatch(clearGame())
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Declined)
+export default connect(mapStateToProps, { clearGame })(Declined)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
+
 import Modal from 'react-modal'
 import v4 from 'uuid'
-
 import { connect } from 'react-redux'
 
 const customStyles = {

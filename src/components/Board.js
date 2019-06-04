@@ -1,6 +1,6 @@
 import React from 'react'
-import v4 from 'uuid'
 
+import v4 from 'uuid'
 import { connect } from 'react-redux'
 
 import Cell from './Cell'

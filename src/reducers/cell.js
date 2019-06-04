@@ -14,6 +14,7 @@ export default (state = initialState, action) => {
     switch(action.type) {
         case SET_GAME:
             const usedCellIds = action.payload.cells.usedCells.map(cell => cell._id)
+            
             return {
                 allCells: action.payload.cells.allCells,
                 usedCells: usedCellIds

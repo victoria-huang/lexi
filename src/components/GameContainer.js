@@ -2,15 +2,19 @@ import React, { useEffect } from 'react'
 
 import { connect } from 'react-redux'
 
+import { resumeGame } from '../actions'
+
+import { joinRoom, leaveRoom } from '../socket'
+
 import Board from './Board'
 import TileContainer from './TileContainer'
 import ErrorContainer from './ErrorContainer'
 import ControlPanel from './ControlPanel'
 import GameOver from './GameOver'
 import Declined from './Declined'
+
 import withAuth from '../hocs/withAuth'
-import { resumeGame } from '../actions'
-import { joinRoom, leaveRoom } from '../socket'
+
 
 const GameContainer = ({
     p1Points,
@@ -95,4 +99,7 @@ const mapStateToProps = (state) => ({
     gameId: state.game.gameId
 })
 
-export default connect(mapStateToProps, { resumeGame })(withAuth(GameContainer))
+export default connect(
+    mapStateToProps, 
+    { resumeGame }
+)(withAuth(GameContainer))

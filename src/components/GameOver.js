@@ -3,6 +3,7 @@ import React from 'react'
 import Modal from 'react-modal'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+
 import { clearGame } from '../actions'
 
 const customStyles = {
@@ -60,8 +61,8 @@ const mapStateToProps = (state) => ({
     p2Points: state.game.p2Points
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    clearGame: () => dispatch(clearGame())
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     clearGame: () => dispatch(clearGame())
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameOver)
+export default connect(mapStateToProps, { clearGame })(GameOver)

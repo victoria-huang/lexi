@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
+
 import { shufflePlayerTiles } from '../actions'
 
 const Shuffle = ({ 
@@ -38,8 +39,8 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    shufflePlayerTiles: (gameId, tiles, player) => dispatch(shufflePlayerTiles(gameId, tiles, player))
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     shufflePlayerTiles: (gameId, tiles, player) => dispatch(shufflePlayerTiles(gameId, tiles, player))
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Shuffle)
+export default connect(mapStateToProps, { shufflePlayerTiles })(Shuffle)

@@ -3,10 +3,12 @@ import React, { Component } from 'react'
 import jwt_decode from 'jwt-decode'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import axios from 'axios'
 
 import setAuthToken from '../utils/setAuthToken'
+
 import { setCurrentUser } from '../actions'
-import axios from 'axios'
+
 
 const withAuth = (ComponentToWrap) => {
     return connect(null, { setCurrentUser })(withRouter(class extends Component {        

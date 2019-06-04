@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { v4 } from 'uuid'
 
-import withAuth from '../hocs/withAuth'
 import {  
     setPlayers, 
     setAllUsers, 
@@ -22,6 +21,8 @@ import CurrentGameCard from './CurrentGameCard'
 import PendingRequestCard from './PendingRequestCard'
 import PendingGameCard from './PendingGameCard'
 import PastGameCard from './PastGameCard'
+
+import withAuth from '../hocs/withAuth'
 
 const Home = ({ 
     user, 

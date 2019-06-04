@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
+
 import { 
     addToHand,
     removeFromHand,
@@ -50,12 +51,18 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
-    removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
-    updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
-    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
-    setExchanged: (gameId) => dispatch(setExchanged(gameId))
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
+//     removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
+//     updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
+//     deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+//     setExchanged: (gameId) => dispatch(setExchanged(gameId))
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Exchange)
+export default connect(mapStateToProps, {
+    addToHand,
+    removeFromHand,
+    updateUnusedTiles,
+    deselectTile,
+    setExchanged
+})(Exchange)

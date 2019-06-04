@@ -1,7 +1,7 @@
-// import React, { Component } from 'react'
 import React, { useEffect, useRef } from 'react'
 
 import { connect } from 'react-redux'
+
 import {
     updateUnusedTiles,
     dealPlayerTiles,
@@ -172,15 +172,24 @@ const mapStateToProps = (state) => ({
     gameResume: state.game.gameResume
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    dealPlayerTiles: (gameId, tiles, player) => dispatch(dealPlayerTiles(gameId, tiles, player)),
-    updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
-    switchTurn: (gameId) => dispatch(switchTurn(gameId)),
-    resetExchanged: (gameId) => dispatch(resetExchanged(gameId)),
-    deselectTile: (gameId) => dispatch(deselectTile(gameId)),
-    endGame: (gameId) => dispatch(endGame(gameId)),
-    dealFirstHand: (gameId) => dispatch(dealFirstHand(gameId)),
-    resetGameResume: () => dispatch(resetGameResume())
-})
+// const mapDispatchToProps = (dispatch) => ({
+//     dealPlayerTiles: (gameId, tiles, player) => dispatch(dealPlayerTiles(gameId, tiles, player)),
+//     updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
+//     switchTurn: (gameId) => dispatch(switchTurn(gameId)),
+//     resetExchanged: (gameId) => dispatch(resetExchanged(gameId)),
+//     deselectTile: (gameId) => dispatch(deselectTile(gameId)),
+//     endGame: (gameId) => dispatch(endGame(gameId)),
+//     dealFirstHand: (gameId) => dispatch(dealFirstHand(gameId)),
+//     resetGameResume: () => dispatch(resetGameResume())
+// })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel)
+export default connect(mapStateToProps, {
+    dealPlayerTiles,
+    updateUnusedTiles,
+    switchTurn,
+    resetExchanged,
+    deselectTile,
+    endGame,
+    dealFirstHand,
+    resetGameResume
+})(ControlPanel)

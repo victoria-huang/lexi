@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
+import v4 from 'uuid'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { CSSTransitionGroup } from 'react-transition-group'
-import v4 from 'uuid'
-
-import withAuth from '../hocs/withAuth'
-import CreateGame from './CreateGame'
 
 import { 
     acceptChallenge, 
@@ -15,7 +12,12 @@ import {
     removeNotification,
     logoutUser 
 } from '../actions'
+
 import { joinRoom, leaveRoom } from '../socket'
+
+import CreateGame from './CreateGame'
+
+import withAuth from '../hocs/withAuth'
 
 const Nav = ({ 
     user, 
