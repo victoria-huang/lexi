@@ -160,6 +160,7 @@ input[type=submit] {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2vh;
+  font-size: 0.9em;
 }
 
 .card-details {
@@ -172,6 +173,12 @@ input[type=submit] {
   display: grid;
   grid-template-columns: 1fr 1.25fr 0.5fr;
   height: 100%;
+}
+
+.game-avatar {
+  height: 4vh;
+  width: 4vh;
+  border-radius: 50%;
 }
 
 /************ END GAME CARD STYLES ************/
@@ -444,7 +451,7 @@ input[type=submit] {
 .body-home {
   margin-left: 8px;
   margin-right: 8px;
-  margin-bottom: 15vh;
+  margin-bottom: 20vh;
   margin-top: 5vh;
 }
 

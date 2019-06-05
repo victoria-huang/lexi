@@ -47,18 +47,21 @@ const CreateGame = ({
     }
 
     const findUsers = () => allUsers.filter(u => 
-        u.username.toLowerCase().includes(search.toLowerCase())
+        u.username.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase())
     )
 
     const renderUsers = () => findUsers().map(u => {
         if (u._id !== user._id) {
             return (
                 <div key={ v4() } className='flex play-user-card'>
-                    <img 
+                    <div className='play-avatar flex center' style={{ backgroundColor: '#ffcf8f', color: 'white', fontSize: '1.3em'}}>
+                        { u.name[0].toUpperCase() }
+                    </div>
+                    { /* <img 
                         src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
                         alt='profile-pic'
                         className='play-avatar' 
-                    />
+                    /> */}
                     <span>{ u.username }</span>
                     <button onClick={ () => handleStartGame(u) }>
                         &#9654; 
@@ -73,7 +76,7 @@ const CreateGame = ({
     return (
         <>
         <div 
-            className='flex center create-game'
+            className='flex center create-game box-shadow'
             onClick={ openModal }
         >
             <span>+</span>

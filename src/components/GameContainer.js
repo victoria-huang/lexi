@@ -55,9 +55,19 @@ const GameContainer = ({
                 ?
                 <>
                 <div className='top-wrapper flex'>
-                    <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
-                        { playerOne.name }: { p1Points }
-                    </h1>
+                    <span className='flex center'>
+                        <div className='game-avatar flex center' style={{ backgroundColor: '#ffcf8f', color: 'white', fontSize: '1.2em', fontFamily: 'Raleway', letterSpacing: '0' }}>
+                            { playerOne.name[0].toUpperCase() }
+                        </div>
+                        {/* <img 
+                            src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
+                            alt='profile-pic'
+                            className='game-avatar' 
+                        /> */}
+                        <h1 className={ whoseTurn === 1 ? 'turn game-header' : 'game-header'}>
+                            { playerOne.name.split(' ')[0] }: { p1Points }
+                        </h1>
+                    </span>
 
                     <h1 
                         onClick={ () => history.push('/') }
@@ -67,9 +77,19 @@ const GameContainer = ({
                         l e x i .
                     </h1>
 
-                    <h1 className={ whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
-                        { playerTwo.name }: { p2Points }
-                    </h1>
+                    <span className='flex center'>
+                        <h1 className={ whoseTurn === 2 ? 'turn game-header' : 'game-header'}>
+                            { playerTwo.name.split(' ')[0] }: { p2Points }
+                        </h1>
+                        <div className='game-avatar flex center' style={{ backgroundColor: '#ffcf8f', color: 'white', fontSize: '1em', fontFamily: 'Raleway', letterSpacing: '0' }}>
+                            { playerTwo.name[0].toUpperCase() }
+                        </div>
+                        {/* <img 
+                            src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
+                            alt='profile-pic'
+                            className='game-avatar' 
+                        /> */}
+                    </span>
                 </div>
                 
                 <ErrorContainer />
