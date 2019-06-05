@@ -36,12 +36,12 @@ export const setCells = cells => ({
 })
 
 export const updateCells = (gameId, cells) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, {
+    dispatch(setCells(cells))
+    
+    return axios.patch(`/api/v1/games/${gameId}`, {
         actionType: 'UPDATE_CELLS', 
         cells 
     }).then(res => console.log(res))
-    
-    dispatch(setCells(cells))
 }
 
 export const setUsedCells = (gameId, cellIds) => dispatch => {
@@ -86,12 +86,6 @@ export const deselectTile = gameId => dispatch => {
 }
 
 export const addToHand = (gameId, tile, player) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
-        actionType: 'ADD_TO_HAND',
-        tile,
-        player
-    }).then(res => console.log(res))
-
     dispatch({
         type: types.ADD_TO_HAND,
         payload: {
@@ -99,6 +93,12 @@ export const addToHand = (gameId, tile, player) => dispatch => {
             player 
         }
     })
+
+    return axios.patch(`/api/v1/games/${gameId}`, { 
+        actionType: 'ADD_TO_HAND',
+        tile,
+        player
+    }).then(res => console.log(res))
 }
 
 export const removeFromHand = (gameId, tile, player) => dispatch => {
@@ -142,13 +142,13 @@ export const removeTryTile = (gameId, tile) => dispatch => {
 }
 
 export const clearTryTiles = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
-        actionType: 'CLEAR_TRY_TILES',
-    }).then(res => console.log(res))
-
     dispatch({
         type: types.CLEAR_TRY_TILES
     })
+
+    return axios.patch(`/api/v1/games/${gameId}`, { 
+        actionType: 'CLEAR_TRY_TILES',
+    }).then(res => console.log(res))
 }
 
 export const dealPlayerTiles = (gameId, tiles, player) => dispatch => {

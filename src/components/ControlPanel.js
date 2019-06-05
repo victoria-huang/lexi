@@ -5,12 +5,9 @@ import { connect } from 'react-redux'
 import {
     updateUnusedTiles,
     dealPlayerTiles,
-    switchTurn,
     endGame,
-    resetExchanged,
-    deselectTile,
     dealFirstHand,
-    resetGameResume
+    resetGameResume,
 } from '../actions'
 
 import Submit from './Submit'
@@ -18,15 +15,13 @@ import Shuffle from './Shuffle'
 import Exchange from './Exchange'
 import TileBag from './TileBag'
 import EndGame from './EndGame'
+import Pass from './Pass'
 
 const ControlPanel = ({ 
     unusedTiles, 
     dealPlayerTiles, 
     updateUnusedTiles, 
     endGame,  
-    switchTurn, 
-    resetExchanged, 
-    deselectTile,
     selected, 
     exchanged,
     firstHandDealt,
@@ -80,10 +75,24 @@ const ControlPanel = ({
         } else endGame(gameId)
     }
 
-    const handlePass = () => {
-        Promise.all([resetExchanged(gameId), deselectTile(gameId)])
-        .then(() => switchTurn(gameId))
-    }
+    // const handlePass = () => {
+    //     const copyCells = cells.map(cell => {
+    //         if (tryTiles.find(tile => tile._id === cell.tileId)) {
+    //             return { ...cell, tileId: null, value: null, points: null }
+    //         } else return cell
+    //     })
+
+    //     const tryTilePromises = tryTiles.map(tile => addToHand(gameId, tile, whoseTurn))
+        
+    //     updateCells(gameId, copyCells)
+    //     .then(() => {
+    //         Promise.all(tryTilePromises)
+    //         .then(() => {
+    //             Promise.all([resetExchanged(gameId), deselectTile(gameId), clearTryTiles(gameId)])
+    //             .then(() => switchTurn(gameId))
+    //         })
+    //     })
+    // }
 
     let player = user._id === playerOne.userId ? 1 : 2
     
@@ -97,7 +106,7 @@ const ControlPanel = ({
                 <Shuffle />
                 { (selected && !exchanged) && <Exchange /> }
                 <TileBag />
-                <button onClick={ handlePass }>pass</button>
+                <Pass />
                 <EndGame />
                 </>
                 :
@@ -169,7 +178,7 @@ const mapStateToProps = (state) => ({
     playerOne: state.game.playerOne,
     playerTwo: state.game.playerTwo,
     user: state.user.currUser,
-    gameResume: state.game.gameResume
+    gameResume: state.game.gameResume,
 })
 
 // const mapDispatchToProps = (dispatch) => ({
@@ -186,9 +195,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     dealPlayerTiles,
     updateUnusedTiles,
-    switchTurn,
-    resetExchanged,
-    deselectTile,
     endGame,
     dealFirstHand,
     resetGameResume
