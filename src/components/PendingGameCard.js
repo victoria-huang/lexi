@@ -9,7 +9,7 @@ const PendingGameCard = ({
     handleAccept, 
     handleDecline
 }) => (
-    <div className='pending-game pending-game box-shadow'>  
+    <div className='pending-game box-shadow'>  
         <div className='flex card-3-details'>
             <div className='flex' style={{ alignItems: 'center' }}>
                 <div className='card-avatar flex center' style={{ backgroundColor: '#ffcf8f', color: 'white', fontSize: '2em'}}>
@@ -30,13 +30,14 @@ const PendingGameCard = ({
             <div className='flex column' style={{ justifyContent: 'center' }}>
                 <div 
                     className='flex center' 
-                    style={{ margin: '1vh' }} 
+                    style={{ margin: '1vh', cursor: 'pointer' }} 
                     onClick={ () => handleAccept(gameId, otherPlayer, user) }
                 >
                     <span>&#10003;</span>
                 </div>
                 <div 
                     className='flex center' 
+                    style={{ cursor: 'pointer' }}
                     onClick={ () => handleDecline(gameId, otherPlayer, user) }
                 >
                     <span>&#120;</span>

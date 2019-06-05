@@ -66,12 +66,16 @@ const PastGameCard = ({
                     borderBottom: '1px solid #ccc' 
                 }}
             >
-                <div className='flex center' onClick={ () => handleStartGame({
-                    name: otherPlayer.playerName,
-                    _id: otherPlayer.playerId,
-                    username: otherPlayer.username,
-                    email: otherPlayer.email
-                }) }>
+                <div 
+                    className='flex center' 
+                    style={{ cursor: 'pointer' }} 
+                    onClick={ () => handleStartGame({
+                        name: otherPlayer.playerName,
+                        _id: otherPlayer.playerId,
+                        username: otherPlayer.username,
+                        email: otherPlayer.email
+                    }) }
+                >
                     <span>&#10227;</span>
                 </div>
             </div>
