@@ -13,7 +13,7 @@ import {
     declineGame
 } from './actions'
 
-const socket = io('localhost:8080', {transports: ['websocket']})
+const socket = io('https://lexi-con-server.herokuapp.com/', {transports: ['websocket']})
 
 const configureSocket = dispatch => {
     socket.on('connect', () => {
