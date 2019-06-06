@@ -1,19 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
+import v4 from 'uuid'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { login } from '../actions'
+import { login, clearErrors } from '../actions'
 
-const Login = ({ login, history }) => {
+import Error from './Error'
+
+const Login = ({ errors, login, history, clearErrors }) => {
+    useEffect(() => {
+        clearErrors()
+    }, [])
+    
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     
     const handleSubmit = (e) => {
         e.preventDefault()
+        clearErrors()
         login({ username, password }, history)
     }
 
+    const renderErrors = () => errors.map(e => <Error key={ v4()} message={ e } /> )
+    
     return (
         <>
         { 
@@ -23,9 +33,17 @@ const Login = ({ login, history }) => {
                 <span>{ history.location.state.newAccount }</span>
             </div>
         }
+        { 
+            errors.length > 0 
+            &&
+            <div className='error-message-login flex column center'>
+                { renderErrors() }
+            </div>
+        }
         <form onSubmit={ handleSubmit } className='fade-in'>
             <div className='form-input'>
                 <input 
+                    required
                     type='text'
                     placeholder='username'
                     value={ username } 
@@ -36,6 +54,7 @@ const Login = ({ login, history }) => {
             
             <div className='form-input'>
                 <input 
+                    required
                     type='password'
                     placeholder='password'
                     value={ password } 
@@ -64,4 +83,11 @@ const Login = ({ login, history }) => {
     )
 }
 
-export default connect(null, { login })(Login)
+const mapStateToProps = state => ({
+    errors: state.errors
+})
+
+export default connect(mapStateToProps, { 
+    login, 
+    clearErrors 
+})(Login)

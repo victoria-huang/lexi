@@ -498,10 +498,12 @@ export const login = (userData, history) => dispatch => {
         })
     })
     .catch(err => {
-        dispatch({
-            type: types.ADD_ERRORS,
-            payload: err.response.data
-        })
+        for (const key in err.response.data) {
+            dispatch({
+                type: types.ADD_ERRORS,
+                payload: err.response.data[key]
+            })
+        } 
     })
 }
 
@@ -511,10 +513,12 @@ export const register = (userData, history) => dispatch => {
         history.push('/login', { newAccount: 'success! login below.' })
     })
     .catch(err => {
-        dispatch({
-            type: types.ADD_ERRORS,
-            payload: err.response.data
-        })
+        for (const key in err.response.data) {
+            dispatch({
+                type: types.ADD_ERRORS,
+                payload: err.response.data[key]
+            })
+        } 
     })
 }
 

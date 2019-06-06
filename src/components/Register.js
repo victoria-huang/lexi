@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
+import v4 from 'uuid'
 import ReactTooltip from 'react-tooltip'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { register } from '../actions'
+import { register, clearErrors } from '../actions'
 
-const Register = ({ register, history }) => {
+import Error from './Error'
+
+const Register = ({ errors, register, history, clearErrors }) => {
+    useEffect(() => {
+        clearErrors()
+    }, [])
+
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -15,6 +22,7 @@ const Register = ({ register, history }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        clearErrors()
         register({ 
             name,
             username, 
@@ -24,12 +32,22 @@ const Register = ({ register, history }) => {
         }, history)
     }
 
+    const renderErrors = () => errors.map(e => <Error key={ v4()} message={ e } nested={ true } /> )
+
     return (
         <>
         <p className='fade-in'>create your account</p>
+        { 
+            errors.length > 0 
+            &&
+            <div className='error-message-login flex column center'>
+                { renderErrors() }
+            </div>
+        }
         <form onSubmit={ handleSubmit } className='fade-in'>
             <div className='form-input'>
                 <input 
+                    required
                     type='text'
                     placeholder='name'
                     value={ name } 
@@ -40,6 +58,7 @@ const Register = ({ register, history }) => {
 
             <div className='form-input'>
                 <input 
+                    required
                     type='text'
                     placeholder='username'
                     value={ username } 
@@ -50,6 +69,7 @@ const Register = ({ register, history }) => {
 
             <div className='form-input'>
                 <input 
+                    required
                     type='text'
                     placeholder='email'
                     value={ email } 
@@ -60,6 +80,7 @@ const Register = ({ register, history }) => {
 
             <div className='form-input'>
                 <input 
+                    required
                     data-tip
                     data-for='password'
                     type='password'
@@ -82,6 +103,7 @@ const Register = ({ register, history }) => {
             
             <div className='form-input'>
                 <input 
+                    required
                     type='password'
                     placeholder='confirm password'
                     value={ password2 } 
@@ -111,4 +133,11 @@ const Register = ({ register, history }) => {
     )
 }
 
-export default connect(null, { register })(Register)
+const mapStateToProps = state => ({
+    errors: state.errors
+})
+
+export default connect(mapStateToProps, { 
+    register,
+    clearErrors
+})(Register)

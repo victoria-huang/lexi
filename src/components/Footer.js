@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaGithub, FaLinkedin, FaMedium, FaEnvelopeSquare } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelopeSquare } from 'react-icons/fa'
 
 const Footer = () => (
     <div 

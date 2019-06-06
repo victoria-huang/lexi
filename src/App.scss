@@ -371,6 +371,11 @@ a:hover {
   font-size: 0.8em;
 }
 
+.error-message-login {
+  font-size: 0.8em;
+  margin-bottom: 1vh;
+}
+
 .register {
   font-size: 0.7em;
   padding-top: 5px;
@@ -416,7 +421,7 @@ a:hover {
 }
 
 .success-message {
-  width: 30%;
+  width: 40%;
   border: none;
   border-radius: 4px;
   background-color: rgba(124, 210, 122, 0.7);
@@ -452,7 +457,7 @@ a:hover {
   width: 100%;
   bottom: 0;
   background-color: rgb(182, 148, 245);
-  height: 3vh;
+  height: 3.5vh;
   color: white;
   margin-top: 3vh;
   font-size: 0.8em;
