@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes'
+import { LEXI_API } from '../constants'
 
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
@@ -38,7 +39,7 @@ export const setCells = cells => ({
 export const updateCells = (gameId, cells) => dispatch => {
     dispatch(setCells(cells))
     
-    return axios.patch(`/api/v1/games/${gameId}`, {
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, {
         actionType: 'UPDATE_CELLS', 
         cells 
     })
@@ -46,7 +47,7 @@ export const updateCells = (gameId, cells) => dispatch => {
 }
 
 export const setUsedCells = (gameId, cellIds) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'SET_USED_CELLS',
         cellIds 
     })
@@ -66,7 +67,7 @@ export const setUnusedTiles = tiles => ({
 })
 
 export const selectTile = (gameId, selected) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'SELECT_TILE',
         selected 
     })
@@ -83,7 +84,7 @@ export const deselectTile = gameId => dispatch => {
         type: types.DESELECT_TILE
     })
 
-    return axios.patch(`/api/v1/games/${gameId}`, { 
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'DESELECT_TILE',
     })
     // .then(res => console.log(res))
@@ -98,7 +99,7 @@ export const addToHand = (gameId, tile, player) => dispatch => {
         }
     })
 
-    return axios.patch(`/api/v1/games/${gameId}`, { 
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'ADD_TO_HAND',
         tile,
         player
@@ -107,7 +108,7 @@ export const addToHand = (gameId, tile, player) => dispatch => {
 }
 
 export const removeFromHand = (gameId, tile, player) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'REMOVE_FROM_HAND',
         tile,
         player
@@ -124,7 +125,7 @@ export const removeFromHand = (gameId, tile, player) => dispatch => {
 }
 
 export const addTryTile = (gameId, tile) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'ADD_TRY_TILE',
         tile
     })
@@ -137,7 +138,7 @@ export const addTryTile = (gameId, tile) => dispatch => {
 }
 
 export const removeTryTile = (gameId, tile) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'REMOVE_TRY_TILE',
         tile
     })
@@ -154,14 +155,14 @@ export const clearTryTiles = gameId => dispatch => {
         type: types.CLEAR_TRY_TILES
     })
 
-    return axios.patch(`/api/v1/games/${gameId}`, { 
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'CLEAR_TRY_TILES',
     })
     // .then(res => console.log(res))
 }
 
 export const dealPlayerTiles = (gameId, tiles, player) => dispatch => {
-    return axios.patch(`/api/v1/games/${gameId}`, { 
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'DEAL_PLAYER_TILES',
         tiles,
         player
@@ -178,7 +179,7 @@ export const dealPlayerTiles = (gameId, tiles, player) => dispatch => {
 }
 
 export const shufflePlayerTiles = (gameId, tiles, player) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'SHUFFLE_PLAYER_TILES',
         tiles,
         player
@@ -197,7 +198,7 @@ export const shufflePlayerTiles = (gameId, tiles, player) => dispatch => {
 export const updateUnusedTiles = (gameId, tiles) => dispatch => {
     dispatch(setUnusedTiles(tiles))
 
-    return axios.patch(`/api/v1/games/${gameId}`, { 
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'UPDATE_UNUSED_TILES',
         tiles
     })
@@ -205,7 +206,7 @@ export const updateUnusedTiles = (gameId, tiles) => dispatch => {
 }
 
 export const updateUsedTiles = (gameId, tiles) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'UPDATE_USED_TILES',
         tiles
     })
@@ -220,7 +221,7 @@ export const updateUsedTiles = (gameId, tiles) => dispatch => {
 /************ GAME ************/
 
 export const resumeGame = gameId => dispatch => {
-    return axios.get(`/api/v1/games/${gameId}`)
+    return axios.get(`${LEXI_API}/api/v1/games/${gameId}`)
     .then(res => {
         // console.log(res)
         const game = res.data.game
@@ -241,7 +242,7 @@ export const resetGameResume = () => ({
 })
 
 export const startGame = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'START_GAME'
     })
     // .then(res => console.log(res))
@@ -252,7 +253,7 @@ export const startGame = gameId => dispatch => {
 }
 
 export const endGame = (gameId, userId) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'END_GAME'
     }).then(res => {
         // console.log(res)
@@ -269,7 +270,7 @@ export const endGame = (gameId, userId) => dispatch => {
 }
 
 export const addPoints = (gameId, points, userId) => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'ADD_POINTS',
         points
     }).then(res => {
@@ -287,7 +288,7 @@ export const addPoints = (gameId, points, userId) => dispatch => {
 }
 
 export const setExchanged = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'SET_EXCHANGED'
     })
     // .then(res => console.log(res))
@@ -302,14 +303,14 @@ export const resetExchanged = gameId => dispatch => {
         type: types.RESET_EXCHANGED
     })
 
-    return axios.patch(`/api/v1/games/${gameId}`, { 
+    return axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'RESET_EXCHANGED'
     })
     // .then(res => console.log(res))
 }
 
 export const switchTurn = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'SWITCH_TURN'
     }).then(res => {
         const game = res.data.game
@@ -335,7 +336,7 @@ export const switchTurn = gameId => dispatch => {
 }
 
 export const dealFirstHand = gameId => dispatch => {
-    axios.patch(`/api/v1/games/${gameId}`, { 
+    axios.patch(`${LEXI_API}/api/v1/games/${gameId}`, { 
         actionType: 'DEAL_FIRST_HAND'
     })
     // .then(res => console.log(res))
@@ -346,7 +347,7 @@ export const dealFirstHand = gameId => dispatch => {
 }
 
 export const setPlayers = (playerOne, playerTwo) => dispatch => {
-    return axios.post('/api/v1/games', {
+    return axios.post(`${LEXI_API}/api/v1/games`, {
         playerOne: playerOne.userId,
         playerTwo: playerTwo.userId,
         p1Name: playerOne.name,
@@ -419,7 +420,7 @@ export const acceptChallenge = (gameId, p1, p2) => dispatch => {
 
     sendAcceptGame(p1.email, notif)
 
-    return axios.patch(`/api/v1/users/${p2._id}/accept`, {
+    return axios.patch(`${LEXI_API}/api/v1/users/${p2._id}/accept`, {
         gameId, 
         p1: p1.playerId
     })
@@ -447,7 +448,7 @@ export const declineChallenge = (gameId, p1, p2) => dispatch => {
     sendDeclineGame(p1.email, notif)
     sendUserDeclineGame(gameId)
 
-    axios.patch(`/api/v1/users/${p2._id}/decline`, {
+    axios.patch(`${LEXI_API}/api/v1/users/${p2._id}/decline`, {
         gameId, 
         p1: p1.playerId
     })
@@ -483,7 +484,7 @@ export const declineGame = gameId => ({
 })
 
 export const login = (userData, history) => dispatch => {
-    axios.post('/api/v1/login', userData)
+    axios.post(`${LEXI_API}/api/v1/login`, userData)
     .then(res => {
         const { token } = res.data
 
@@ -492,7 +493,7 @@ export const login = (userData, history) => dispatch => {
 
         const decodedUser = jwt_decode(token)
 
-        axios.get(`/api/v1/users/${decodedUser.id}`)
+        axios.get(`${LEXI_API}/api/v1/users/${decodedUser.id}`)
         .then(res => {
             dispatch(setCurrentUser(res.data.user))
             dispatch(clearErrors())
@@ -511,7 +512,7 @@ export const login = (userData, history) => dispatch => {
 }
 
 export const register = (userData, history) => dispatch => {
-    axios.post('/api/v1/register', userData)
+    axios.post(`${LEXI_API}/api/v1/register`, userData)
     .then(res => {
         history.push('/login', { newAccount: 'success! login below.' })
     })
@@ -541,7 +542,7 @@ export const setCurrentUser = user => ({
 })  
 
 export const setAllUsers = users => dispatch => {
-    axios.get('/api/v1/users')
+    axios.get(`${LEXI_API}/api/v1/users`)
     .then(res => {
         dispatch({
             type: types.SET_ALL_USERS,

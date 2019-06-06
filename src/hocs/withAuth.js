@@ -8,7 +8,7 @@ import axios from 'axios'
 import setAuthToken from '../utils/setAuthToken'
 
 import { setCurrentUser } from '../actions'
-
+import { LEXI_API } from '../constants'
 
 const withAuth = (ComponentToWrap) => {
     return connect(null, { setCurrentUser })(withRouter(class extends Component {        
@@ -23,7 +23,7 @@ const withAuth = (ComponentToWrap) => {
                 setAuthToken(token)
                 const decodedUser = jwt_decode(token)
 
-                axios.get(`/api/v1/users/${decodedUser.id}`)
+                axios.get(`${LEXI_API}/api/v1/users/${decodedUser.id}`)
                 .then(res => {
                     this.props.setCurrentUser(res.data.user)
                     this.setState({ tokenSet: true })

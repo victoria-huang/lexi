@@ -1,3 +1,5 @@
+export const LEXI_API = 'https://lexi-con-server.herokuapp.com'
+
 // export const ALL_TILES = [
 //     { id: 1, letter: 'a', points: 1 },
 //     { id: 2, letter: 'a', points: 1 },
