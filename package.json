@@ -25,7 +25,7 @@
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node ./src/index.js",
+    "start": "NODE_ENV=production cd src && node index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
