@@ -17,9 +17,10 @@ const TileContainer = ({
 }) => {
     const renderPlayerTiles = () => {
         let tileIds = ( user._id === playerOne.userId ? p1Tiles : p2Tiles )
-        // self practice game
-        if (playerOne.userId === playerTwo.userId) 
-            tileIds = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
+        
+        // self practice game (incorporate later)
+        // if (playerOne.userId === playerTwo.userId) 
+        //     tileIds = ( whoseTurn === 1 ? p1Tiles : p2Tiles )
         
         const foundPlayerTiles = tileIds.map( tId => playerTiles.find(t => t._id === tId) )
         return foundPlayerTiles.map( t => <Tile key={ v4() } { ...t } /> )

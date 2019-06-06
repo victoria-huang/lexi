@@ -50,8 +50,4 @@ const mapStateToProps = (state) => ({
     playerTwo: state.game.playerTwo
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     clearGame: () => dispatch(clearGame())
-// })
-
 export default connect(mapStateToProps, { clearGame })(Declined)

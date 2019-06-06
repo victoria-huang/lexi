@@ -61,8 +61,4 @@ const mapStateToProps = (state) => ({
     p2Points: state.game.p2Points
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     clearGame: () => dispatch(clearGame())
-// })
-
 export default connect(mapStateToProps, { clearGame })(GameOver)

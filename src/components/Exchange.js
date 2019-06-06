@@ -51,14 +51,6 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
-//     removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
-//     updateUnusedTiles: (gameId, tiles) => dispatch(updateUnusedTiles(gameId, tiles)),
-//     deselectTile: (gameId) => dispatch(deselectTile(gameId)),
-//     setExchanged: (gameId) => dispatch(setExchanged(gameId))
-// })
-
 export default connect(mapStateToProps, {
     addToHand,
     removeFromHand,

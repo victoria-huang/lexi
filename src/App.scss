@@ -23,14 +23,10 @@ input[type=text], input[type=password], select {
   margin: 5px;
   border: none;
   border-bottom: 1px solid #ccc;
-  // border: 1px solid #ccc;
-  // border-radius: 4px;
-  // box-sizing: border-box;
 }
 
 input[type=text]:focus, input[type=password]:focus, select:focus {
   outline: none;
-  // border-bottom: 1px solid #000;
 }
 
 .form-input .line {
@@ -202,7 +198,6 @@ a:hover {
 }
 
 .app-header {
-  // margin-bottom: 20px;
   background-color: rgb(220,208,255);
   height: 9vh;
   color: white;

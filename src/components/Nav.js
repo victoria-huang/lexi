@@ -111,12 +111,7 @@ const Nav = ({
             <div className='card-avatar flex center' style={{ backgroundColor: '#ffcf8f', color: 'white', fontSize: '2em', marginLeft: '1vh', fontFamily: 'Raleway', letterSpacing: '0' }}>
                 { user.name[0].toUpperCase() }
             </div>
-            {/* <img 
-                src='https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png' 
-                alt='profile-pic'
-                className='card-avatar'
-                style={{ marginLeft: '1vh' }} 
-            /> */}
+
             <div className='flex' style={{ justifyContent: 'space-between', width: '100%'}}>
                 <h1 style={{ marginLeft: '1vh' }}>hello { user.name }.</h1>
                 <div className='flex' style={{ alignItems: 'flex-start' }}>

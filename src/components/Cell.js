@@ -200,15 +200,6 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     updateCells: (gameId, cells) => dispatch(updateCells(gameId, cells)),
-//     deselectTile: (gameId) => dispatch(deselectTile(gameId)),
-//     addToHand: (gameId, tile, player) => dispatch(addToHand(gameId, tile, player)),
-//     removeFromHand: (gameId, tile, player) => dispatch(removeFromHand(gameId, tile, player)),
-//     addTryTile: (gameId, tile) => dispatch(addTryTile(gameId, tile)),
-//     removeTryTile: (gameId, tile) => dispatch(removeTryTile(gameId, tile))
-// })
-
 export default connect(mapStateToProps, {
     updateCells,
     deselectTile,

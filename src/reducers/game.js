@@ -1,5 +1,4 @@
 import {
-    // RESUME_GAME,
     SET_GAME,
     START_GAME,
     END_GAME,
@@ -7,7 +6,6 @@ import {
     ADD_POINTS,
     SET_EXCHANGED,
     RESET_EXCHANGED,
-    // SET_PLAYERS,
     SWITCH_TURN,
     DEAL_FIRST_HAND,
     RESET_GAME_RESUME,
@@ -31,11 +29,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type) {
-        // case RESUME_GAME:
-        //     return {
-        //         ...state,
-        //         gameResume: true
-        //     }
         case SET_GAME:
             const { 
                 _id, 
@@ -110,13 +103,6 @@ export default (state = initialState, action) => {
                 ...state,
                 exchanged: false
             }
-        // case SET_PLAYERS:
-        //     return {
-        //         ...state,
-        //         gameId: action.payload.gameId,
-        //         playerOne: action.payload.playerOne,
-        //         playerTwo: action.payload.playerTwo
-        //     }
         case SWITCH_TURN:
             const playerTurn = ( state.whoseTurn === 1 ? 2 : 1 )
 

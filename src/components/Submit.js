@@ -466,20 +466,6 @@ const mapStateToProps = (state) => ({
     user: state.user.currUser
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     updateUsedTiles: (gameId, tiles) => dispatch(updateUsedTiles(gameId, tiles)),
-//     addErrors: (error) => dispatch(addErrors(error)),
-//     clearErrors: () => dispatch(clearErrors()),
-//     addPoints: (gameId, points, userId) => dispatch(addPoints(gameId, points, userId)),
-//     clearTryTiles: (gameId) => dispatch(clearTryTiles(gameId)),
-//     setUsedCells: (gameId, cellIds) => dispatch(setUsedCells(gameId, cellIds)),
-//     resetExchanged: (gameId) => dispatch(resetExchanged(gameId)),
-//     deselectTile: (gameId) => dispatch(deselectTile(gameId)),
-//     switchTurn: (gameId) => dispatch(switchTurn(gameId)),
-//     updateCells: (gameId, cells) => dispatch(updateCells(gameId, cells)),
-//     startGame: (gameId) => dispatch(startGame(gameId))
-// })
-
 export default connect(mapStateToProps, {
     updateUsedTiles,
     addErrors,

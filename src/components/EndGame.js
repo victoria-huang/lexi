@@ -65,8 +65,4 @@ const mapStateToProps = state => ({
     user: state.user.currUser
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     endGame: (gameId, userId) => dispatch(endGame(gameId, userId))
-// })
-
 export default connect(mapStateToProps, { endGame })(EndGame)

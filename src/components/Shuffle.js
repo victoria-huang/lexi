@@ -39,8 +39,4 @@ const mapStateToProps = (state) => ({
     whoseTurn: state.game.whoseTurn
 })
 
-// const mapDispatchToProps = (dispatch) => ({
-//     shufflePlayerTiles: (gameId, tiles, player) => dispatch(shufflePlayerTiles(gameId, tiles, player))
-// })
-
 export default connect(mapStateToProps, { shufflePlayerTiles })(Shuffle)

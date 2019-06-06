@@ -41,14 +41,16 @@ export const updateCells = (gameId, cells) => dispatch => {
     return axios.patch(`/api/v1/games/${gameId}`, {
         actionType: 'UPDATE_CELLS', 
         cells 
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 }
 
 export const setUsedCells = (gameId, cellIds) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'SET_USED_CELLS',
         cellIds 
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.SET_USED_CELLS,
@@ -67,7 +69,8 @@ export const selectTile = (gameId, selected) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'SELECT_TILE',
         selected 
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.SELECT_TILE,
@@ -82,7 +85,8 @@ export const deselectTile = gameId => dispatch => {
 
     return axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'DESELECT_TILE',
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 }
 
 export const addToHand = (gameId, tile, player) => dispatch => {
@@ -98,7 +102,8 @@ export const addToHand = (gameId, tile, player) => dispatch => {
         actionType: 'ADD_TO_HAND',
         tile,
         player
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 }
 
 export const removeFromHand = (gameId, tile, player) => dispatch => {
@@ -106,7 +111,8 @@ export const removeFromHand = (gameId, tile, player) => dispatch => {
         actionType: 'REMOVE_FROM_HAND',
         tile,
         player
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.REMOVE_FROM_HAND,
@@ -121,7 +127,8 @@ export const addTryTile = (gameId, tile) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'ADD_TRY_TILE',
         tile
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.ADD_TRY_TILE,
@@ -133,7 +140,8 @@ export const removeTryTile = (gameId, tile) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'REMOVE_TRY_TILE',
         tile
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.REMOVE_TRY_TILE,
@@ -148,7 +156,8 @@ export const clearTryTiles = gameId => dispatch => {
 
     return axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'CLEAR_TRY_TILES',
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 }
 
 export const dealPlayerTiles = (gameId, tiles, player) => dispatch => {
@@ -157,7 +166,7 @@ export const dealPlayerTiles = (gameId, tiles, player) => dispatch => {
         tiles,
         player
     }).then((res) => {
-        console.log(res)
+        // console.log(res)
         dispatch({
             type: types.DEAL_PLAYER_TILES,
             payload: {
@@ -173,7 +182,8 @@ export const shufflePlayerTiles = (gameId, tiles, player) => dispatch => {
         actionType: 'SHUFFLE_PLAYER_TILES',
         tiles,
         player
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.SHUFFLE_PLAYER_TILES,
@@ -190,14 +200,16 @@ export const updateUnusedTiles = (gameId, tiles) => dispatch => {
     return axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'UPDATE_UNUSED_TILES',
         tiles
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 }
 
 export const updateUsedTiles = (gameId, tiles) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'UPDATE_USED_TILES',
         tiles
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.UPDATE_USED_TILES,
@@ -210,14 +222,10 @@ export const updateUsedTiles = (gameId, tiles) => dispatch => {
 export const resumeGame = gameId => dispatch => {
     return axios.get(`/api/v1/games/${gameId}`)
     .then(res => {
-        console.log(res)
+        // console.log(res)
         const game = res.data.game
 
         localStorage.setItem('gameId', game._id)
-
-        // dispatch({
-        //     type: types.RESUME_GAME
-        // })
 
         dispatch(setGame({ ...game, gameResume: true}))
     })
@@ -235,7 +243,8 @@ export const resetGameResume = () => ({
 export const startGame = gameId => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'START_GAME'
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.START_GAME
@@ -246,7 +255,7 @@ export const endGame = (gameId, userId) => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'END_GAME'
     }).then(res => {
-        console.log(res)
+        // console.log(res)
         const game = res.data.game
 
         dispatch({
@@ -264,7 +273,7 @@ export const addPoints = (gameId, points, userId) => dispatch => {
         actionType: 'ADD_POINTS',
         points
     }).then(res => {
-        console.log(res)
+        // console.log(res)
         const game = res.data.game
 
         let room = game.playerOne === userId ? game.p2Email : game.p1Email
@@ -280,7 +289,8 @@ export const addPoints = (gameId, points, userId) => dispatch => {
 export const setExchanged = gameId => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'SET_EXCHANGED'
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.SET_EXCHANGED
@@ -294,7 +304,8 @@ export const resetExchanged = gameId => dispatch => {
 
     return axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'RESET_EXCHANGED'
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 }
 
 export const switchTurn = gameId => dispatch => {
@@ -326,7 +337,8 @@ export const switchTurn = gameId => dispatch => {
 export const dealFirstHand = gameId => dispatch => {
     axios.patch(`/api/v1/games/${gameId}`, { 
         actionType: 'DEAL_FIRST_HAND'
-    }).then(res => console.log(res))
+    })
+    // .then(res => console.log(res))
 
     dispatch({
         type: types.DEAL_FIRST_HAND
@@ -344,7 +356,7 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
         p2Username: playerTwo.username,
         p2Email: playerTwo.email
     }).then(res => {
-        console.log(res)
+        // console.log(res)
         const game = res.data.game
         
         localStorage.setItem('gameId', game._id)
@@ -382,17 +394,6 @@ export const setPlayers = (playerOne, playerTwo) => dispatch => {
 
         sendGameRequest(playerTwo.email, requestGame)
         sendNewGameNotif(playerTwo.email, notif)
-        // dispatch(setCells(game.cells.allCells))
-        // dispatch(setUnusedTiles(game.tiles.unusedTiles))
-
-        // dispatch({
-        //     type: types.SET_PLAYERS,
-        //     payload: {
-        //         gameId: game._id,
-        //         playerOne, 
-        //         playerTwo
-        //     }
-        // })
     })
 }
 
@@ -421,7 +422,8 @@ export const acceptChallenge = (gameId, p1, p2) => dispatch => {
     return axios.patch(`/api/v1/users/${p2._id}/accept`, {
         gameId, 
         p1: p1.playerId
-    }).then(console.log)
+    })
+    // .then(console.log)
 }
 
 export const challengeAccepted = gameId => ({
@@ -448,7 +450,8 @@ export const declineChallenge = (gameId, p1, p2) => dispatch => {
     axios.patch(`/api/v1/users/${p2._id}/decline`, {
         gameId, 
         p1: p1.playerId
-    }).then(console.log)
+    })
+    // .then(console.log)
 }
 
 export const challengeDeclined = gameId => dispatch => {
@@ -488,7 +491,7 @@ export const login = (userData, history) => dispatch => {
         setAuthToken(token)
 
         const decodedUser = jwt_decode(token)
-        // localStorage.setItem('user_id', decodedUser.id)
+
         axios.get(`/api/v1/users/${decodedUser.id}`)
         .then(res => {
             dispatch(setCurrentUser(res.data.user))

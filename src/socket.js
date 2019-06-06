@@ -17,7 +17,7 @@ const socket = io('localhost:8080', {transports: ['websocket']})
 
 const configureSocket = dispatch => {
     socket.on('connect', () => {
-        console.log('connected')
+        // console.log('connected to socket')
     })
 
     socket.on('successful move', game => {

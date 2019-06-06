@@ -48,17 +48,6 @@ const Home = ({
         leaveRoom(user.email)
     }, [])
 
-    // const handleStartPractice = () => {
-    //     setPlayers({
-    //         name: user.name, 
-    //         userId: user._id
-    //     }, {
-    //         name: 'practice',
-    //         userId: user._id
-    //     })
-    //     history.push('/game')
-    // }
-
     const handleStartGame = (p2) => {
         setPlayers({
             name: user.name,
