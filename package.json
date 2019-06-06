@@ -2,6 +2,10 @@
   "name": "lexi",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "npm": "6.9.0",
+    "node": "11.14.0"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "jwt-decode": "^2.2.0",

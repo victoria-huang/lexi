@@ -3,7 +3,7 @@ const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const keys = require('../config/keys')
-const secretOrKey = keys.secretOrKey
+const secretOrKey = keys.secretOrKey || process.env.SECRET_KEY
 
 // load input validation
 const validateRegistration = require('../validation/register')

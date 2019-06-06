@@ -23,7 +23,7 @@ app.use(passport.initialize())
 
 // connect to mongoose and set connection variable
 mongoose.set('useCreateIndex', true)
-mongoose.connect('mongodb://localhost/lexi', { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/lexi', { useNewUrlParser: true })
 mongoose.set('useFindAndModify', false)
 
 const db = mongoose.connection
@@ -32,7 +32,7 @@ const db = mongoose.connection
 const port = process.env.PORT || 8080
 
 // send message for default URL
-app.get('/', (req, res) => res.send('Hello World with Express'))
+app.get('/', (req, res) => res.send('Welcome to Lexi!'))
 
 // use api routes in the app
 app.use('/api/v1', routes)
@@ -46,3 +46,4 @@ const io = socketIo.listen(server)
 
 io.on('connection', socket)
 
+module.exports = server

@@ -10,7 +10,7 @@ router.get('/', function (req, res) {
 })
 
 // with auth check
-const secretOrKey = require('./config/keys').secretOrKey
+const secretOrKey = require('./config/keys').secretOrKey || process.env.SECRET_KEY
 const jwt = require('jsonwebtoken')
 
 const withAuth = (req, res, next) => {

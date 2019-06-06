@@ -4,7 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const GamesSchema = require('./game').schema
 const jwt = require('jsonwebtoken')
 const keys = require('../config/keys')
-const secretOrKey = keys.secretOrKey
+const secretOrKey = keys.secretOrKey || process.env.SECRET_KEY
 
 // setup schema
 const UsersSchema = new Schema({
