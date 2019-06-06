@@ -113,7 +113,7 @@ const Nav = ({
             </div>
 
             <div className='flex' style={{ justifyContent: 'space-between', width: '100%'}}>
-                <h1 style={{ marginLeft: '1vh' }}>hello { user.name }.</h1>
+                <h1 style={{ marginLeft: '1vh' }}>hello { user.name.split(' ')[0] }.</h1>
                 <div className='flex' style={{ alignItems: 'flex-start' }}>
                 <button
                     onClick={ () => logoutUser(history) }
