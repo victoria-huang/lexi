@@ -35,7 +35,14 @@ const PastGameCard = ({
                             points > otherPlayer.points ?
                             'you won'
                             :
-                            'you lost'
+                            <>
+                            {
+                                points === otherPlayer.Points ?
+                                'you tied'
+                                :
+                                'you lost'
+                            }
+                            </>
                         }
                     </span>
                     <span>{ points } vs { otherPlayer.points }</span>
