@@ -37,7 +37,7 @@ const PastGameCard = ({
                             :
                             <>
                             {
-                                points === otherPlayer.Points ?
+                                points === otherPlayer.points ?
                                 'you tied'
                                 :
                                 'you lost'
