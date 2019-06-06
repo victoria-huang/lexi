@@ -32,7 +32,7 @@ const Register = ({ errors, register, history, clearErrors }) => {
         }, history)
     }
 
-    const renderErrors = () => errors.map(e => <Error key={ v4()} message={ e } nested={ true } /> )
+    const renderErrors = () => errors.map(e => <Error key={ v4()} message={ e } /> )
 
     return (
         <>

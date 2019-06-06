@@ -1,12 +1,12 @@
 import React from 'react' 
 
-const Error = ({ message, nested }) => {
+const Error = ({ message }) => {
     return ( 
         <div>       
             <img 
                 alt='error' 
                 className='error'
-                src={ nested ? '../ban-sign.png' : 'ban-sign.png' }
+                src={ 'https://dl.dropboxusercontent.com/s/t7x57kh30spf44t/ban-sign.png' }
             />
             { message }
         </div>
