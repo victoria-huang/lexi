@@ -11,8 +11,8 @@
     "client": "cd ../ && yarn start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Victoria Huang",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
@@ -29,5 +29,8 @@
     "passport-jwt": "^4.0.0",
     "socket.io": "^2.2.0",
     "validator": "^10.11.0"
+  },
+  "engines": {
+    "node": "11.14.0"
   }
 }
