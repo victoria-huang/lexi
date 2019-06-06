@@ -3,6 +3,7 @@ const socketIo = require('socket.io')
 const http = require('http')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 const passport = require('passport')
 require('./config/passport')(passport)
 const cors = require('cors')
@@ -11,6 +12,9 @@ const socket = require('./socket')
 
 // initialize the app
 const app = express()
+
+// logging
+app.use(morgan('tiny'))
 
 // configure bodyparser to handle post requests
 app.use(bodyParser.urlencoded({ extended: true }))
