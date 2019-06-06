@@ -42,18 +42,18 @@ exports.new = function (req, res) {
 
     if (!isValid) return res.status(400).json(errors)
 
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email.toLowerCase() })
     .then(user => {
         if (user) return res.status(400).json({ email: 'email already exists' })
 
-        User.findOne({ username: req.body.username })
+        User.findOne({ username: req.body.username.toLowerCase() })
         .then(user => {
             if (user) return res.status(400).json({ username: 'username already exists' })
             
             const newUser = new User({
-                username: req.body.username,
-                name: req.body.name,
-                email: req.body.email,
+                username: req.body.username.toLowerCase(),
+                name: req.body.name.toLowerCase(),
+                email: req.body.email.toLowerCase(),
                 password: req.body.password
             })
         
@@ -84,7 +84,7 @@ exports.login = function (req, res) {
 
     if (!isValid) return res.status(400).json(errors)
 
-    const username = req.body.username
+    const username = req.body.username.toLowerCase()
     const password = req.body.password
 
     // find user by username
