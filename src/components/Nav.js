@@ -43,7 +43,7 @@ const Nav = ({
         removeNotification(notId)
 
         resumeGame(gameId)
-        .then(history.push('/game'))
+        .then(() => history.push('/game'))
     }
 
     const handleAccept = (gameId, p1, p2, notId) => {
