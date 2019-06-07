@@ -9,7 +9,7 @@ import { setPlayers } from '../actions'
 
 const customStyles = {
     content: {
-        margin: '20% 5% 20% 5%',
+        margin: '5%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
