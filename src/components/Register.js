@@ -112,13 +112,13 @@ const Register = ({ errors, register, history, clearErrors }) => {
                 <div className="line"></div>
             </div>
 
-            <div className='flex center'>
+            <button className='flex center'>
                 <input 
                     type='submit' 
                     className='submit-auth'
                     value='register' 
                 />
-            </div>
+            </button>
         
             <div className='register flex center column'>
                 <span>already registered?</span>
