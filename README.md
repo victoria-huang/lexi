@@ -5,13 +5,13 @@ Lexi is an interactive Scrabble experience inspired by Words with Friends. Chall
 
 Demo the application with these login credentials:
 
-Player One:
+#### Player One
 
 Username: lexicon
 
 Password: password
 
-Player Two:
+#### Player Two
 
 Username: vocabulary
 
