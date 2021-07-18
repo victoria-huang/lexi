@@ -446,7 +446,7 @@ const Submit = ({
     }
 
     const testWord = (word) => {
-        return fetch(`https://googledictionaryapi.eu-gb.mybluemix.net/?define=${word}`) 
+        return fetch(`https://dictionaryapi.herokuapp.com/?define=${word}`) 
         .then(resp => resp.json())
         .catch(err => console.log(err))
     }
